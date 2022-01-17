@@ -1,0 +1,13 @@
+.title{
+    font-size: 25px;
+    margin-top: 40px;
+}
+.content{
+    margin-top: 20px;
+    text-align: left;
+    font-size: 15px;
+    white-space: pre-wrap;
+}
+.bt-content{
+    margin-top: 30px;
+}

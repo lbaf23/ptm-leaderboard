@@ -1,0 +1,12 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://localhost:31112
+functions:
+  leaderboard:
+    lang: dockerfile
+    handler: ./client
+    image: lbaf23/ptm-leaderboard-client:latest
+    labels:
+      com.openfaas.scale.zero: false
+
