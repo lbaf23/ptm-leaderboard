@@ -1,18 +1,16 @@
-FROM openfaas/of-watchdog:0.7.7 AS watchdog
+FROM --platform=${TARGETPLATFORM:-linux/amd64} ghcr.io/openfaas/of-watchdog:0.9.2 as watchdog
+FROM --platform=${TARGETPLATFORM:-linux/amd64} node:16-alpine AS build
 
-
-FROM node:16-alpine AS build
 WORKDIR /root
 
 COPY ./package*.json ./
-
 
 RUN yarn
 COPY . .
 RUN yarn build
 
 
-FROM nginxinc/nginx-unprivileged:1.17-alpine AS runtime
+FROM --platform=${TARGETPLATFORM:-linux/amd64} nginxinc/nginx-unprivileged:1.20-alpine AS runtime
 USER root
 COPY --from=watchdog /fwatchdog /usr/bin/fwatchdog
 RUN chmod +x /usr/bin/fwatchdog
