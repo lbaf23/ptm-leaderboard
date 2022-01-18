@@ -12,7 +12,7 @@ import RankInfo from "../rank/RankInfo";
 import Record from "../record/Record";
 
 const {Header, Content, Sider} = Layout;
-const base_url = process.env.PUBLIC_URL
+const public_url = process.env.PUBLIC_URL
 
 function MainLayout() {
   const [collapsed, setCollapsed] = useState(false);
@@ -23,7 +23,7 @@ function MainLayout() {
   return (
     <Layout style={{height: "100vh"}}>
       <Header style={{paddingLeft: '20px'}}>
-        <a href={`${base_url}`}>
+        <a href={`${public_url}`}>
           <span style={{color: 'white', fontSize: '40px', fontWeight:'bold'}}>
             PTMA
           </span>
@@ -51,17 +51,17 @@ function MainLayout() {
             }}
           >
             <Routes>
-              <Route exact path={`${base_url}`} element={<Home/>}/>
-              <Route exact path={`${base_url}/submit`} element={<Submit/>}/>
+              <Route exact path={`${public_url}`} element={<Home/>}/>
+              <Route exact path={`${public_url}/submit`} element={<Submit/>}/>
 
-              <Route exact path={`${base_url}/rank`} element={<Rank/>}/>
-              <Route path={`${base_url}/rank/:id`} element={<RankInfo/>}/>
+              <Route exact path={`${public_url}/rank`} element={<Rank/>}/>
+              <Route path={`${public_url}/rank/:id`} element={<RankInfo/>}/>
 
-              <Route exact path={`${base_url}/tasks`} element={<Tasks/>}/>
-              <Route path={`${base_url}/tasks/:id`} element={<TaskInfo/>}/>
+              <Route exact path={`${public_url}/tasks`} element={<Tasks/>}/>
+              <Route path={`${public_url}/tasks/:id`} element={<TaskInfo/>}/>
 
-              <Route path={`${base_url}/record`} element={<Record/>}/>
-              <Route path={`${base_url}/record/:id`} element={<TaskInfo/>}/>
+              <Route path={`${public_url}/record`} element={<Record/>}/>
+              <Route path={`${public_url}/record/:id`} element={<TaskInfo/>}/>
             </Routes>
           </Content>
         </Layout>

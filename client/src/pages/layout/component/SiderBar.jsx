@@ -3,7 +3,7 @@ import {Menu} from "antd"
 import {HddOutlined,SendOutlined,TrophyOutlined, HomeOutlined,UserOutlined} from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
-const base_url = process.env.PUBLIC_URL
+const public_url = process.env.PUBLIC_URL
 
 function SiderBar() {
   const [selected, setSelected] = useState('')
@@ -31,7 +31,7 @@ function SiderBar() {
         key=""
         icon={<HomeOutlined style={{fontSize: '20px'}}/>}
       >
-        <Link to={`${base_url}`}>
+        <Link to={`${public_url}`}>
           Home
         </Link>
       </Menu.Item>
@@ -39,28 +39,28 @@ function SiderBar() {
         key="submit"
         icon={<SendOutlined style={{fontSize: '20px'}}/>}
       >
-        <Link to={`${base_url}/submit`}>
+        <Link to={`${public_url}/submit`}>
           Submit
         </Link>
       </Menu.Item>
       <Menu.Item
         key="rank"
         icon={<TrophyOutlined style={{fontSize: '20px'}} />} >
-        <Link to={`${base_url}/rank`}>
+        <Link to={`${public_url}/rank`}>
           Rank
         </Link>
       </Menu.Item>
       <Menu.Item
         key="tasks"
         icon={<HddOutlined style={{fontSize: '20px'}} />} >
-        <Link to={`${base_url}/tasks`}>
+        <Link to={`${public_url}/tasks`}>
           Tasks
         </Link>
       </Menu.Item>
       <Menu.Item
         key="record"
         icon={<UserOutlined style={{fontSize: '20px'}} />} >
-        <Link to={`${base_url}/record`}>
+        <Link to={`${public_url}/record`}>
           Record
         </Link>
       </Menu.Item>
