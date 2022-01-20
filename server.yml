@@ -3,12 +3,6 @@ provider:
   name: openfaas
   gateway: http://localhost:31112
 functions:
-  leaderboard:
-    lang: dockerfile
-    handler: ./web
-    image: lbaf23/ptm-leaderboard-web:latest
-    labels:
-      com.openfaas.scale.zero: false
   server:
     lang: dockerfile
     handler: ./server
