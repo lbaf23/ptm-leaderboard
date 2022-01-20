@@ -1,3 +1,6 @@
 /conf
-/sql/ptm-leaderboard-db.sql
+/sql
 /main
+
+.idea
+.vscode
