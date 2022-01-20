@@ -11,7 +11,7 @@ functions:
       GO111MODULE: on
     environment:
       run_mode: release
-      postgres_db: ptm-leaderboard-db
+      postgres_db: ptm_leaderboard_db
       postgres_port: 5432
       postgres_host: postgresql.default.svc.cluster.local
       postgres_user: postgres
