@@ -5,8 +5,8 @@ provider:
 functions:
   leaderboard:
     lang: dockerfile
-    handler: ./client
-    image: lbaf23/ptm-leaderboard-client:latest
+    handler: ./web
+    image: lbaf23/ptm-leaderboard-web:latest
     labels:
       com.openfaas.scale.zero: false
 
