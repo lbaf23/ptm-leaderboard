@@ -1,9 +1,9 @@
 package models
 
 import (
+	"api/settings"
 	"fmt"
 	"log"
-	"server/settings"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

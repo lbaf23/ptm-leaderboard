@@ -6,13 +6,13 @@ functions:
   leaderboard:
     lang: dockerfile
     handler: ./web
-    image: lbaf23/ptm-leaderboard-web:latest
+    image: lbaf23/ptm-leaderboard-web:1.0.0
     labels:
       com.openfaas.scale.zero: false
   server:
     lang: dockerfile
-    handler: ./server
-    image: lbaf23/ptm-leaderboard-server:latest
+    handler: ./api
+    image: lbaf23/ptm-leaderboard-api:1.0.0
     build_args:
       GO111MODULE: on
     environment:

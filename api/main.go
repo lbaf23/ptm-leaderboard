@@ -1,9 +1,9 @@
 package main
 
 import (
-	"server/models"
-	"server/routers"
-	"server/settings"
+	"api/models"
+	"api/routers"
+	"api/settings"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

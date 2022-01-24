@@ -5,8 +5,8 @@ provider:
 functions:
   server:
     lang: dockerfile
-    handler: ./server
-    image: lbaf23/ptm-leaderboard-server:latest
+    handler: ./api
+    image: lbaf23/ptm-leaderboard-api:1.0.0
     build_args:
       GO111MODULE: on
     environment:
