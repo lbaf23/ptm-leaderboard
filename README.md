@@ -16,3 +16,19 @@ faas-cli push -f stack.yml
 
 faas-cli deploy -f stack.yml
 ```
+
+
+## api
+
+dev
+
+```bash
+export GIN_MODE=debug
+go run main.go
+```
+
+prod
+
+```bash
+faas-cli up -f api.yml
+```
