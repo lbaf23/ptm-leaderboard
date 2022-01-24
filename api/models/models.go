@@ -23,11 +23,11 @@ func Setup() {
 	var err error
 
 	connStr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=Asia/ShangHai",
-		settings.Config.Host,
-		settings.Config.User,
-		settings.Config.Password,
+		settings.Config.DBHost,
+		settings.Config.DBUser,
+		settings.Config.DBPassword,
 		settings.Config.DBName,
-		settings.Config.Port,
+		settings.Config.DBPort,
 		settings.Config.SSLMode)
 
 	db, err = gorm.Open(postgres.Open(connStr))

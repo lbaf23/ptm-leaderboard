@@ -10,27 +10,27 @@ import (
 )
 
 type config struct {
-	RunMode  string
-	User     string
-	Host     string
-	Password string
-	Port     string
-	DBName   string
-	SSLMode  string
+	Port       string
+	DBUser     string
+	DBHost     string
+	DBPassword string
+	DBPort     string
+	DBName     string
+	SSLMode    string
 }
 
 var Config = &config{}
 
 func Setup() {
-	if os.Getenv("run_mode") == "release" {
-		Config.RunMode = "release"
-		Config.User = os.Getenv("postgres_user")
-		Config.Host = os.Getenv("postgres_host")
-		Config.Password = loadSecret("ptm-leaderboard-db-password")
-		Config.Port = os.Getenv("postgres_port")
+	if os.Getenv("GIN_MODE") == "release" {
+		Config.Port = os.Getenv("port")
+		Config.DBUser = os.Getenv("postgres_user")
+		Config.DBHost = os.Getenv("postgres_host")
+		Config.DBPassword = loadSecret("ptm-leaderboard-db-password")
+		Config.DBPort = os.Getenv("postgres_port")
 		Config.DBName = os.Getenv("postgres_db")
 		Config.SSLMode = os.Getenv("postgres_sslmode")
-	} else if os.Getenv("run_mode") == "debug" {
+	} else if os.Getenv("GIN_MODE") == "debug" {
 		loadConfigFile("conf/app.dev.ini")
 	} else {
 		loadConfigFile("conf/app.ini")

@@ -6,7 +6,6 @@ import (
 	"api/settings"
 
 	"github.com/gin-contrib/cors"
-	"github.com/gin-gonic/gin"
 )
 
 func init() {
@@ -22,8 +21,6 @@ func main() {
 		AllowCredentials: true,
 	})
 
-	gin.SetMode(settings.Config.RunMode)
-
 	r.Use(corsMiddleware)
-	r.Run(":8000")
+	r.Run(":" + settings.Config.Port)
 }

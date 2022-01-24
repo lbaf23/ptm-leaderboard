@@ -16,7 +16,8 @@ functions:
     build_args:
       GO111MODULE: on
     environment:
-      run_mode: release
+      GIN_MODE: release
+      port: 8000
       postgres_db: ptm_leaderboard_db
       postgres_port: 5432
       postgres_host: postgresql.default.svc.cluster.local
