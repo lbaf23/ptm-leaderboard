@@ -1,0 +1,9 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://localhost:31112
+functions:
+  input:
+    lang: python3
+    handler: ./input
+    image: lbaf23/ptm-leaderboard-input:1.0.0

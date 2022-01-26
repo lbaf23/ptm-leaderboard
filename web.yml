@@ -6,6 +6,6 @@ functions:
   leaderboard:
     lang: dockerfile
     handler: ./web
-    image: lbaf23/ptm-leaderboard-web:latest
+    image: lbaf23/ptm-leaderboard-web:1.0.0
     labels:
       com.openfaas.scale.zero: false
