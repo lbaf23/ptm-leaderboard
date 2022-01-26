@@ -9,7 +9,7 @@ functions:
     image: lbaf23/ptm-leaderboard-web:1.0.0
     labels:
       com.openfaas.scale.zero: false
-  server:
+  api:
     lang: dockerfile
     handler: ./api
     image: lbaf23/ptm-leaderboard-api:1.0.0
@@ -25,4 +25,8 @@ functions:
       postgres_sslmode: disable
     secrets:
       - ptm-leaderboard-db-password
+  input:
+    lang: python3
+    handler: ./input
+    image: lbaf23/ptm-leaderboard-input:1.0.0
 
