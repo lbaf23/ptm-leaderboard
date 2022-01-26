@@ -32,3 +32,9 @@ prod
 ```bash
 faas-cli up -f api.yml
 ```
+
+python
+
+```bash
+faas-cli template pull https://github.com/openfaas-incubator/python-flask-template
+```
