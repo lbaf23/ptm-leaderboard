@@ -38,3 +38,7 @@ python
 ```bash
 faas-cli template pull https://github.com/openfaas-incubator/python-flask-template
 ```
+
+```bash
+pipreqs ./ --encoding=utf-8 --force
+```
