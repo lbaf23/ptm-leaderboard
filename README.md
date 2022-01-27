@@ -29,9 +29,25 @@ go run main.go
 
 prod
 
+set password
+
+```bash
+vim ptm-leaderboard-db-password
+```
+
+write db password
+
+
+```bash
+faas-cli secret create ptm-leaderboard-db-password --from-file ptm-leaderboard-db-password
+```
+
+deploy
+
 ```bash
 faas-cli up -f api.yml
 ```
+
 
 python
 
