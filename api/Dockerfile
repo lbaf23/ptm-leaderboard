@@ -17,7 +17,7 @@ RUN mkdir -p /go/src/handler
 WORKDIR /go/src/handler
 COPY . .
 
-ARG GOPROXY=""
+ARG GOPROXY="https://goproxy.cn,direct"
 ARG GOFLAGS=""
 ARG DEBUG=0
 
