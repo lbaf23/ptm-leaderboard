@@ -10,7 +10,7 @@ import (
 )
 
 type config struct {
-	Port       string
+	RunMode    string
 	DBUser     string
 	DBHost     string
 	DBPassword string
@@ -22,15 +22,15 @@ type config struct {
 var Config = &config{}
 
 func Setup() {
-	if os.Getenv("GIN_MODE") == "release" {
-		Config.Port = os.Getenv("port")
+	if os.Getenv("run_mode") == "release" {
+		Config.RunMode = os.Getenv("run_mode")
 		Config.DBUser = os.Getenv("postgres_user")
 		Config.DBHost = os.Getenv("postgres_host")
 		Config.DBPassword = loadSecret("ptm-leaderboard-db-password")
 		Config.DBPort = os.Getenv("postgres_port")
 		Config.DBName = os.Getenv("postgres_db")
 		Config.SSLMode = os.Getenv("postgres_sslmode")
-	} else if os.Getenv("GIN_MODE") == "debug" {
+	} else if os.Getenv("run_mode") == "debug" {
 		loadConfigFile("conf/app.dev.ini")
 	} else {
 		loadConfigFile("conf/app.ini")
@@ -49,7 +49,7 @@ func loadConfigFile(f string) {
 
 	cfg, err = ini.Load(f)
 	if err != nil {
-		log.Fatalf("setting.Setup, fail to parse 'conf/app.ini': %v", err)
+		log.Fatalf("setting.Setup, fail to parse '%s': %v", f, err)
 	}
 	err = cfg.Section("config").MapTo(Config)
 	if err != nil {
