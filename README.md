@@ -17,6 +17,24 @@ faas-cli push -f stack.yml
 faas-cli deploy -f stack.yml
 ```
 
+## database
+
+```bash
+cd database
+```
+
+```bash
+kubectl apply -f db-pv.yaml
+kubectl apply -f db-pvc.yaml
+helm install postgresql bitnami/postgresql \
+--set persistence.existingClaim=postgresql-pv-claim \
+--set volumePermissions.enabled=true
+```
+
+get db password
+```bash
+echo $(kubectl get secret --namespace default postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
+```
 
 ## api
 
