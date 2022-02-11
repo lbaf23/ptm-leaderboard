@@ -1,5 +1,18 @@
-PTM Leaderboard
+# PTM Leaderboard
 ===
+
+## dev
+
+### api
+```bash
+export GIN_MODE=debug
+go run main.go
+```
+
+
+
+
+## prod
 
 ```sh
 faas-cli template pull
@@ -17,7 +30,7 @@ faas-cli push -f stack.yml
 faas-cli deploy -f stack.yml
 ```
 
-## database
+### database
 
 ```bash
 cd database
@@ -36,16 +49,7 @@ get db password
 echo $(kubectl get secret --namespace default postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
 ```
 
-## api
-
-dev
-
-```bash
-export GIN_MODE=debug
-go run main.go
-```
-
-prod
+### api (gin)
 
 set password
 
@@ -67,7 +71,7 @@ faas-cli up -f api.yml
 ```
 
 
-python
+### attack (python)
 
 ```bash
 faas-cli template pull https://github.com/openfaas-incubator/python-flask-template

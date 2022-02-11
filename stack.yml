@@ -24,7 +24,7 @@ functions:
       postgres_sslmode: disable
     secrets:
       - ptm-leaderboard-db-password
-  input:
+  attack:
     lang: python3
     handler: ./input
     image: lbaf23/ptm-leaderboard-input:1.0.0
