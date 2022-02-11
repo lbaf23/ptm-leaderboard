@@ -1,36 +1,31 @@
 # PTM Leaderboard
-===
+
 
 ## dev
 
 ### api
+
 ```bash
 export GIN_MODE=debug
 go run main.go
 ```
 
+### web
+
+```bash
+cd web
+yarn
+yarn start
+```
 
 
 
 ## prod
 
-```sh
-faas-cli template pull
-
-faas-cli up -f stack.yml
-```
-
-or
-
-```sh
-faas-cli build -f stack.yml
-
-faas-cli push -f stack.yml
-
-faas-cli deploy -f stack.yml
-```
 
 ### database
+
+> set database
 
 ```bash
 cd database
@@ -44,39 +39,37 @@ helm install postgresql bitnami/postgresql \
 --set volumePermissions.enabled=true
 ```
 
-get db password
+> print password
+
 ```bash
 echo $(kubectl get secret --namespace default postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
 ```
 
+
 ### api (gin)
 
-set password
+> set password
 
 ```bash
 vim ptm-leaderboard-db-password
 ```
 
-write db password
-
+> write db password
 
 ```bash
 faas-cli secret create ptm-leaderboard-db-password --from-file ptm-leaderboard-db-password
 ```
 
-deploy
-
-```bash
-faas-cli up -f api.yml
-```
-
 
 ### attack (python)
 
-```bash
-faas-cli template pull https://github.com/openfaas-incubator/python-flask-template
-```
 
-```bash
-pipreqs ./ --encoding=utf-8 --force
+
+
+### deploy all functions
+
+```sh
+faas-cli template pull
+
+faas-cli up -f stack.yml
 ```
