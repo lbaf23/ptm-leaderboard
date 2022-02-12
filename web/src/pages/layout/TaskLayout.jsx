@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Layout, PageHeader, Affix, Button} from 'antd';
-import {Route, Routes, Link, Outlet} from 'react-router-dom';
+import {Route, Routes, Link, Outlet, useNavigate} from 'react-router-dom';
 import {LoginOutlined, MenuUnfoldOutlined, MenuFoldOutlined} from "@ant-design/icons";
 import SiderBar from "./component/SiderBar";
 
@@ -21,11 +21,12 @@ function TaskLayout() {
   const onCollapse = () => {
     setCollapsed(!collapsed)
   }
-
+  const navigate = useNavigate()
+  
   return (
     <div className="task-layout">
       <PageHeader
-        onBack={() => {window.history.back()}}
+        onBack={() => {navigate(`${PUBLIC_URL}/tasks`)}}
         title={"Tasks"}
         subTitle=""
       />
