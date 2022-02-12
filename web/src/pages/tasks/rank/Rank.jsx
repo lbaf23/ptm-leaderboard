@@ -1,13 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Button, Table} from "antd";
+import {Button, Table, Card} from "antd";
 import {Link} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
 
 function Rank() {
-  const [rank, setRank] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
   const columns = [
     {
       title: 'Rank',
@@ -42,8 +38,14 @@ function Rank() {
       )
     }
   ]
-  
+
+  const [loading ,setLoading] = useState(true)
+  const [rank, setRank] = useState([])
+  const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(20);
+
   useEffect(()=>{
+    setLoading(false)
     setRank([
       {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
       {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
@@ -55,20 +57,29 @@ function Rank() {
       {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
       {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
       {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
+      {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
+      {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
+      {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
+      {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
+      {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
+      {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
+      {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
     ])
-    setLoading(false)
-    setPage(0);
-    setPageSize(10);
-  })
+  }, [])
+  
   return (
-    <div>
+    <Card
+      bordered={false}
+      hoverable
+    >
       <p style={{fontSize: '20px', textAlign: 'center', fontWeight: 'bold'}}>Rank</p>
       <Table
         dataSource={rank}
         columns={columns}
         loading={loading}
+        pagination={false}
       />
-    </div>
+    </Card>
   )
 }
 

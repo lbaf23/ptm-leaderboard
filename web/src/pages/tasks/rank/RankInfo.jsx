@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {PageHeader} from "antd";
+import {Card, PageHeader} from "antd";
 
 function RankInfo() {
   const [title, setTitle] = useState('');
@@ -12,22 +12,11 @@ function RankInfo() {
     setTitle("title")
     setDate("2020-1-1")
   }, [])
+
   return (
-    <>
-      <PageHeader
-        onBack={() => {window.history.back()}}
-        title={title}
-        subTitle={date}
-      />
-      <div
-        style={{
-          backgroundColor: 'white',
-          padding: '20px',
-        }}
-      >
-        more info
-      </div>
-    </>
+    <Card>
+      INFO
+    </Card>
   )
 }
 

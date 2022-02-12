@@ -1,9 +1,7 @@
-import { Table } from "antd";
+import { Card, Table } from "antd";
 import React,{ useEffect, useState } from "react"
 
 function Record() {
-  const [loading, setLoading] = useState(true);
-  const [records, setRecords] = useState([]);
   const columns = [
     {
       title: 'Time',
@@ -22,7 +20,13 @@ function Record() {
     },
   ]
 
+  const [loading ,setLoading] = useState(true)
+  const [records, setRecords] = useState([])
+  const [page, setPage] = useState(0)
+  const [pageSize, setPageSize] = useState(20);
+
   useEffect(()=>{
+    setLoading(false);
     setRecords([
       {task: 't1', model: 'bert', submitTime: '2020-1-12'},
       {task: 't1', model: 'bert', submitTime: '2020-1-11'},
@@ -36,18 +40,30 @@ function Record() {
       {task: 't1', model: 'bert', submitTime: '2020-1-3'},
       {task: 't1', model: 'bert', submitTime: '2020-1-2'},
       {task: 't1', model: 'bert', submitTime: '2020-1-1'},
+      {task: 't1', model: 'bert', submitTime: '2020-1-1'},
+      {task: 't1', model: 'bert', submitTime: '2020-1-1'},
+      {task: 't1', model: 'bert', submitTime: '2020-1-1'},
+      {task: 't1', model: 'bert', submitTime: '2020-1-1'},
+      {task: 't1', model: 'bert', submitTime: '2020-1-1'},
+      {task: 't1', model: 'bert', submitTime: '2020-1-1'},
+      {task: 't1', model: 'bert', submitTime: '2020-1-1'},
+      {task: 't1', model: 'bert', submitTime: '2020-1-1'},
     ])
-    setLoading(false)
-  },[])
+  }, [])
+
   return (
-    <div>
+    <Card
+      bordered={false}
+      hoverable
+    >
       <p style={{fontSize: '20px', textAlign: 'center', fontWeight: 'bold'}}>My Record</p>
       <Table
         columns={columns}
         dataSource={records}
         loading={loading}
+        pagination={false}
       />
-    </div>
+    </Card>
   )
 }
 

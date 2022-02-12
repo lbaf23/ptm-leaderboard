@@ -1,67 +1,69 @@
 import React, {useEffect, useState} from "react";
 import {Menu} from "antd"
-import {HddOutlined,SendOutlined,TrophyOutlined, HomeOutlined,UserOutlined} from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import {FileTextOutlined, SendOutlined,TrophyOutlined, HomeOutlined,UserOutlined} from "@ant-design/icons";
+import { Link, useLocation } from "react-router-dom";
+
+import './siderbar.css'
 
 const PUBLIC_URL = process.env.PUBLIC_URL
 
-class SiderBar extends React.PureComponent {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selected: 'task'
+function SiderBar() {
+  const [selected, setSelected] = useState('task')
+  const path = useLocation().pathname.split('/')
+
+  useEffect(()=>{
+    if (path.includes('rank')) {
+      setSelected('rank')
+    } else if (path.includes('submit')) {
+      setSelected('submit')
+    } else if (path.includes('record')) {
+      setSelected('record')
     }
+  }, [])
+
+  const changeMenuItem = (e) => {
+    setSelected(e.key)
   }
 
-  changeMenuItem = (e) => {
-    this.setState({
-      selected: e.key
-    })
-  }
-
-  render(){
-    const {selected} = this.state
     return (
       <Menu
         mode="inline"
         theme="light"
-        style={{fontSize: '18px'}}
-        onClick={this.changeMenuItem}
+        onClick={changeMenuItem}
         selectedKeys={[selected]}
       >
         <Menu.Item
           key="task"
-          icon={<HddOutlined style={{fontSize: '20px'}}/>}
+          icon={<FileTextOutlined style={{fontSize: '18px'}}/>}
         >
           <Link to={`${PUBLIC_URL}/tasks/sa`}>
-            Task
+            <span className="sider-title">Task</span>
           </Link>
         </Menu.Item>
         <Menu.Item
           key="rank"
-          icon={<TrophyOutlined style={{fontSize: '20px'}} />} >
+          icon={<TrophyOutlined style={{fontSize: '18px'}} />} >
           <Link to={`${PUBLIC_URL}/tasks/sa/rank`}>
-            Rank
+            <span className="sider-title">Rank</span>
           </Link>
         </Menu.Item>
         <Menu.Item
           key="submit"
-          icon={<SendOutlined style={{fontSize: '20px'}}/>}
+          icon={<SendOutlined style={{fontSize: '18px'}}/>}
         >
           <Link to={`${PUBLIC_URL}/tasks/sa/submit`}>
-            Submit
+          <span className="sider-title">Submit</span>
           </Link>
         </Menu.Item>
         <Menu.Item
           key="record"
-          icon={<UserOutlined style={{fontSize: '20px'}} />} >
+          icon={<UserOutlined style={{fontSize: '18px'}} />} >
           <Link to={`${PUBLIC_URL}/tasks/sa/record`}>
-            Record
+          <span className="sider-title">Record</span>
           </Link>
         </Menu.Item>
       </Menu>
     )
-  }
 }
 
 export default SiderBar;

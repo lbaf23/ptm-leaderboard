@@ -1,22 +1,28 @@
-.header{
-    background-color: white;
+.main-layout{
+    min-height: 100vh;
 }
 
-.header .logo{
-    font-size: 40px;
+.main-layout .header{
+    background-color: white;
+    height: 65px;
+}
+
+.main-layout .header .logo{
+    font-size: 45px;
     font-weight: bold;
     float: left;
 }
 
-.header .menu {
+.main-layout .header .menu {
     margin-left: 40%;
 }
 
-.header-title{
-    font-size: 16px;
-    font-weight: 700;
+.main-layout .header-title{
+    font-size: 18px;
+    font-weight: 500;
 }
 
-.header-icon{
-    font-size: 16px;
+.main-layout .content {
+    padding: 20px;
+    margin-bottom: 30px;
 }

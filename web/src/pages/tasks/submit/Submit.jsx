@@ -10,15 +10,12 @@ const props = {
 
 function Submit() {
   return (
-    <div>
+    <Card
+      bordered={false}
+      hoverable
+    >
       <p style={{fontSize: '20px', textAlign: 'center', fontWeight: 'bold'}}>Submit</p>
-      <Card
-        bordered={false}
-        hoverable
-        style={{
-          textAlign: 'center',
-        }}
-      >
+      <div>
         <Space direction="vertical" size="middle" style={{width: '100%'}}>
           <Input addonBefore="model name"/>
           <Upload {...props}>
@@ -28,8 +25,8 @@ function Submit() {
             submit
           </Button>
         </Space>
-      </Card>
-    </div>
+      </div>
+    </Card>
   )
 }
 
