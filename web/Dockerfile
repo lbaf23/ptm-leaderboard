@@ -3,7 +3,10 @@ FROM --platform=${TARGETPLATFORM:-linux/amd64} node:16-alpine AS build
 
 WORKDIR /root
 
-COPY ./package*.json ./
+COPY ./package.json ./
+
+# set taobao yarn registry
+RUN yarn config set registry https://registry.npm.taobao.org --global
 
 RUN yarn
 COPY . .
