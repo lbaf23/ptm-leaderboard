@@ -91,7 +91,7 @@ function MainLayout() {
                 </Route>
               </Routes>
             </Content>
-            <Footer>
+            <Footer className="footer">
               <FooterBar />
             </Footer>
         </Layout>
