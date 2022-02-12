@@ -44,7 +44,7 @@ function TaskLayout() {
               {collapsed? <MenuUnfoldOutlined className="trigger-icon"/> : <MenuFoldOutlined className="trigger-icon"/>}
             </div>
           </Affix>
-          <Content className="content">
+          <Content className="task-content">
             <Outlet/>
           </Content>
         </Layout>

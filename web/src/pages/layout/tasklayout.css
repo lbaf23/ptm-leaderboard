@@ -3,7 +3,8 @@
     margin: auto;
 }
 
-.task-layout .content{
+.task-layout .task-content{
+    margin-left: 10px;
 }
 
 .task-layout .trigger{

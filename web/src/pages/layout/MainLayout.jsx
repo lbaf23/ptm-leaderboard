@@ -72,10 +72,7 @@ function MainLayout() {
             </Menu.Item>
           </Menu>
         </Header>
-            <Content
-              className="content"
-              
-            >
+            <Content className="main-content">
               <Routes>
                 <Route index element={<Home/>}/>
 
