@@ -19,6 +19,7 @@ function Tasks() {
 
   useEffect(()=>{
     setLoading(false)
+    // TODO get tasks
     setTasks([
       {id: 'sa', title: 'Sentiment Analysis', description: 'Sentiment analysis is the task of classifying the polarity of a given text.'},
       {id: 'ner', title: 'Named Entity Recognition', description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'},
