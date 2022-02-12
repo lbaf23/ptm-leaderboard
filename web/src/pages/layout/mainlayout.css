@@ -1,0 +1,22 @@
+.header{
+    background-color: white;
+}
+
+.header .logo{
+    font-size: 40px;
+    font-weight: bold;
+    float: left;
+}
+
+.header .menu {
+    margin-left: 40%;
+}
+
+.header-title{
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.header-icon{
+    font-size: 16px;
+}

@@ -1,73 +1,92 @@
-import React, {useState} from "react";
-import {Layout} from 'antd';
+import React from "react";
+import {BackTop, Divider, Layout, Menu} from 'antd';
 import {Route, Routes, Link} from 'react-router-dom';
-import {LoginOutlined} from "@ant-design/icons";
+import {LoginOutlined, HddOutlined, HomeOutlined, UserOutlined,EllipsisOutlined} from "@ant-design/icons";
 import Home from '../home/Home';
 import Submit from '../submit/Submit';
-import SiderBar from "./component/SiderBar";
 import Rank from "../rank/Rank";
 import Tasks from "../tasks/Tasks";
 import TaskInfo from "../tasks/TaskInfo";
 import RankInfo from "../rank/RankInfo";
 import Record from "../record/Record";
 
-const {Header, Content, Sider} = Layout;
-const public_url = process.env.PUBLIC_URL
+import './mainlayout.css'
+import FooterBar from "./component/FooterBar";
+import TaskLayout from "./TaskLayout";
 
-function MainLayout() {
-  const [collapsed, setCollapsed] = useState(false);
+const PUBLIC_URL = process.env.PUBLIC_URL
 
-  const onCollapse = () => {
-    setCollapsed(!collapsed)
+const { Header, Content, Footer } = Layout;
+
+
+class MainLayout extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {}
   }
-  return (
-    <Layout style={{height: "100vh"}}>
-      <Header style={{paddingLeft: '20px'}}>
-        <a href={`${public_url}`}>
-          <span style={{color: 'white', fontSize: '40px', fontWeight:'bold'}}>
-            PTMA
+
+  render(){
+    return (
+      <Layout style={{minHeight: "100vh"}}>
+        <BackTop />
+        <Header className="header" >
+          <span className="logo">
+            <a href={PUBLIC_URL}>PTMA</a>
           </span>
-        </a>
-        <Link to="/">
-          <span style={{fontSize: '20px', float: 'right', color: 'white', fontWeight:'bold'}}>
-            <LoginOutlined />&nbsp;Login
-          </span>
-        </Link>
-      </Header>
-      <Layout>
-        <Sider
-          collapsible
-          collapsed={collapsed}
-          onCollapse={onCollapse}
-          breakpoint="lg"
-        >
-          <SiderBar />
-        </Sider>
-        <Layout>
-          <Content
-            style={{
-              padding: '20px',
-              overflow: 'auto',
-            }}
+          <Menu
+            triggerSubMenuAction="click"
+            theme="light"
+            mode="horizontal"
+            overflowedIndicator={<EllipsisOutlined style={{fontSize: '20px'}} />}
+            className="menu"
           >
-            <Routes>
-              <Route exact path={`${public_url}`} element={<Home/>}/>
-              <Route exact path={`${public_url}/submit`} element={<Submit/>}/>
+            <Menu.Item key='1' icon={<HomeOutlined className="header-icon"/>}>
+              <Link to={PUBLIC_URL}>
+                <span className="header-title">Home</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item
+              key='2'
+              icon={<HddOutlined className="header-icon" />} >
+              <Link to={`${PUBLIC_URL}/tasks`}>
+                <span className="header-title">Tasks</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key='3' icon={<LoginOutlined className="header-icon" />}>
+              <span className="header-title">Login</span>
+            </Menu.Item>
+            <Menu.Item key='4' icon={<UserOutlined className="header-icon"/>}>
+              <span className="header-title">Account</span>
+            </Menu.Item>
+          </Menu>
+        </Header>
+            <Content
+              style={{
+                padding: '20px',
+              }}
+            >
+              <Routes>
+                <Route exact path={`${PUBLIC_URL}`} element={<Home/>}/>
+                <Route exact path={`${PUBLIC_URL}/tasks`} element={<Tasks/>}/>
+                <Route path={`${PUBLIC_URL}/tasks/:id`} element={<TaskLayout/>}>
+                  <Route index element={<TaskInfo/>}/>
 
-              <Route exact path={`${public_url}/rank`} element={<Rank/>}/>
-              <Route path={`${public_url}/rank/:id`} element={<RankInfo/>}/>
+                  <Route exact path="submit" element={<Submit/>}/>
+                  <Route exact path="rank" element={<Rank/>}/>
+                  <Route path="rank/:id" element={<RankInfo/>}/>
 
-              <Route exact path={`${public_url}/tasks`} element={<Tasks/>}/>
-              <Route path={`${public_url}/tasks/:id`} element={<TaskInfo/>}/>
+                  <Route path="record" element={<Record/>}/>
+                  <Route path="record/:id" element={<TaskInfo/>}/>
+                </Route>
+              </Routes>
+            </Content>
+            <Footer>
+              <FooterBar />
+            </Footer>
 
-              <Route path={`${public_url}/record`} element={<Record/>}/>
-              <Route path={`${public_url}/record/:id`} element={<TaskInfo/>}/>
-            </Routes>
-          </Content>
         </Layout>
-      </Layout>
-    </Layout>
-  )
+    )
+  }
 }
 
 export default MainLayout;

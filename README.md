@@ -39,16 +39,31 @@ helm install postgresql bitnami/postgresql \
 --set volumePermissions.enabled=true
 ```
 
-> print password
+> print db password
 
 ```bash
 echo $(kubectl get secret --namespace default postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
 ```
 
 
+### web
+
+> set casdoor key
+
+```bash
+vim ptm-leaderboard-casdoorconf
+```
+
+> write key
+```bash
+faas-cli secret create ptm-leaderboard-casdoorconf --from-file ptm-leaderboard-casdoorconf
+```
+
+
+
 ### api (gin)
 
-> set password
+> set db password
 
 ```bash
 vim ptm-leaderboard-db-password

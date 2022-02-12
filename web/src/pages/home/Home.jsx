@@ -20,12 +20,10 @@ function Home() {
     <Card
       bordered={false}
       hoverable
-      style={{
-        textAlign: 'center',
-      }}
+      className="card"
     >
       <h1 className="title">{title}</h1>
-      <Image src={img} preview={false}/>
+      <Image src={img} preview={false} className="image"/>
       <p className="content">{content}</p>
       <p className="bt-content">
         <Button>PAPER</Button>&nbsp;&nbsp;&nbsp;

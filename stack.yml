@@ -26,6 +26,6 @@ functions:
       - ptm-leaderboard-db-password
   attack:
     lang: python3
-    handler: ./input
-    image: lbaf23/ptm-leaderboard-input:1.0.0
+    handler: ./attack
+    image: lbaf23/ptm-leaderboard-attack:1.0.0
 

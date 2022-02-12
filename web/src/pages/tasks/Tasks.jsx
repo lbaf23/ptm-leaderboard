@@ -1,62 +1,82 @@
-import {Button, Card, Space} from "antd";
-import React, {useEffect, useState} from "react";
-import {ArrowRightOutlined} from "@ant-design/icons"
+import {Button, Card, Col, Row, Image, Tag, Divider} from "antd";
+import React from "react";
+import {ArrowRightOutlined, TeamOutlined, EyeOutlined} from "@ant-design/icons"
 import {Link} from "react-router-dom";
 
-const columns = [
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: 'Metric',
-    dataIndex: 'metric',
-    key: 'metric'
-  },
-  {
-    title: 'More Info',
-    dataIndex: 'id',
-    key: 'more info',
-    render: id => (
-      <Link to={id}>
-        <Button type="link" icon={<ArrowRightOutlined />} size="large" />
-      </Link>
+import './tasks.css'
+
+const topColResponsiveProps = {
+  xs: 24,
+  sm: 24,
+  md: 12,
+  lg: 12,
+  xl: 8,
+};
+
+class Tasks extends React.PureComponent {
+  constructor(props) {
+    super(props)
+    this.state = {
+      loading: false,
+      tasks: [
+        {id: 'sa', title: 'Sentiment Analysis', description: 'Sentiment analysis is the task of classifying the polarity of a given text.'},
+        {id: 'ner', title: 'Named Entity Recognition', description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'},
+        {id: 'ner', title: 'Named Entity Recognition', description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'},
+        {id: 'ner', title: 'Named Entity Recognition', description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'},
+        {id: 'ner', title: 'Named Entity Recognition', description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'},
+        {id: 'ner', title: 'Named Entity Recognition', description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'},
+        {id: 'ner', title: 'Named Entity Recognition', description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'},
+        {id: 'ner', title: 'Named Entity Recognition', description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'},
+      ]
+    }
+  }
+  
+  render(){
+    const {tasks} = this.state;
+    return (
+      <div className="mainContent">
+        <Divider className="divider" orientation="left">English</Divider>
+        <Row gutter={[20, 20]}>
+          {
+            tasks.map((item, index) => (
+              <Col key={index.toString()}  {...topColResponsiveProps}>
+                <Link to={item.id}>
+                  <Card
+                    hoverable
+                    bordered={false}
+                    style={{
+                      borderRadius: '10px',
+                      flexGrow: 1
+                    }}
+                  >
+                  <div className="card-content">
+                    <div className="card-title">
+                      <span>
+                        <Image
+                        src={require(`../../assets/tasks/${item.id}.jpg`)}
+                        preview={false}
+                        width={90}
+                        height={90}
+                        style={{
+                          borderRadius: '5px'
+                        }}
+                        />
+                      </span>
+                      <span className="task-item-title">{item.title}</span>
+                    </div>
+                    <div className="task-item-description">
+                      {item.description}
+                    </div>
+                  </div>
+                  </Card>
+                </Link>
+              </Col>
+            ))
+          }
+        </Row>
+      </div>
     )
   }
-]
-
-function Tasks() {
-  const [loading, setLoading] = useState(true);
-  const [tasks, setTasks] = useState([])
-  useEffect(()=>{
-    // TODO get task list
-    setTasks([
-      {id: '1', title: 'Aspect-Based Sentiment Analysis', metric: 'Accuracy'},
-      {id: '2', title: 'Coreference Resolution', metric: 'Accuracy'},
-      {id: '3', title: 'Dependency Parsing', metric: 'Accuracy'},
-      {id: '4', title: 'Machine Reading Comprehension', metric: 'Accuracy'},
-    ])
-    setLoading(false);
-  },[])
-  return (
-    <div>
-      <p style={{fontSize: '20px', textAlign: 'center', fontWeight: 'bold'}}>Tasks</p>
-      {tasks.map((item, index) => (
-        <Link to={item.id}>
-          <Card
-            loading={loading}
-            title={item.title}
-            hoverable
-            style={{
-              marginTop: '20px'
-            }}
-          >
-          </Card>
-        </Link>
-      ))}
-    </div>
-  )
 }
 
 export default Tasks;
