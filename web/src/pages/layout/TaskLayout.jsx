@@ -31,7 +31,8 @@ function TaskLayout() {
       />
       <Layout >
         <Affix offsetTop={10}>
-          <Sider
+          <div>
+            <Sider
               theme="light"
               collapsible
               trigger={null}
@@ -41,13 +42,14 @@ function TaskLayout() {
               <SiderBar />
             </Sider>
             <div className="trigger" onClick={onCollapse}>
-              {collapsed? <MenuUnfoldOutlined className="trigger-icon"/> : <MenuFoldOutlined className="trigger-icon"/>}
+                {collapsed? <MenuUnfoldOutlined className="trigger-icon"/> : <MenuFoldOutlined className="trigger-icon"/>}
             </div>
-          </Affix>
-          <Content className="task-content">
-            <Outlet/>
-          </Content>
-        </Layout>
+          </div>
+        </Affix>
+        <Content className="task-content">
+          <Outlet/>
+        </Content>
+      </Layout>
     </div>
   )
 }
