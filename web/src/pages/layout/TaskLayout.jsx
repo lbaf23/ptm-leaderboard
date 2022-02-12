@@ -27,7 +27,7 @@ function TaskLayout() {
       <PageHeader
         onBack={() => {window.history.back()}}
         title={"Tasks"}
-        subTitle={"SA"}
+        subTitle=""
       />
       <Layout >
         <Affix offsetTop={10}>
