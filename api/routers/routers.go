@@ -6,11 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitRouter(mode string) *gin.Engine {
-	gin.SetMode(mode)
-	router := gin.New()
+func Init(r *gin.Engine) {
+	authGroup := r.Group("/auth")
+	authGroup.Use()
+	{
+		authGroup.POST("/login", controllers.Login)
+		authGroup.POST("/logout", controllers.Logout)
+	}
 
-	recordGroup := router.Group("/record/:id")
+	recordGroup := r.Group("/record/:id")
 	recordGroup.Use()
 	{
 		recordGroup.GET("/", controllers.GetRecord)
@@ -18,5 +22,10 @@ func InitRouter(mode string) *gin.Engine {
 		recordGroup.DELETE("/", controllers.DeleteRecord)
 	}
 
-	return router
+	r.GET("/tasklist", controllers.GetTaskList)
+	taskGroup := r.Group("/task")
+	taskGroup.Use()
+	{
+		taskGroup.GET("/", controllers.GetTask)
+	}
 }

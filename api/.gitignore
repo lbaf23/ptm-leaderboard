@@ -1,6 +1,10 @@
-/conf/app.dev.ini
+/conf/app.release.ini
+/conf/app.debug.ini
 
 /main
 
 .idea
 .vscode
+
+# casdoor public key
+/controller/token_jwt_key.pem

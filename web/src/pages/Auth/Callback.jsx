@@ -3,9 +3,10 @@ import {Button, Spin, Result, Card} from "antd";
 import {useLocation, useSearchParams} from "react-router-dom";
 
 import './callback.css'
+import AuthBackend from "../../backend/AuthBackend";
 
 function Callback() {
-  const search = useSearchParams()
+  const [params] = useSearchParams()
   const [msg, setMsg] = useState('');
 
   useEffect(()=>{
@@ -13,8 +14,15 @@ function Callback() {
   }, [])
 
   const login = () => {
-    console.log(search)
-
+    const code = params.get('code')
+    const state = params.get("state")
+    AuthBackend.login(code, state)
+    .then((res)=>{
+      console.log(res)
+    })
+    .catch(err=>{
+      console.log(err)
+    })
   }
   return (
     <div className="callback">

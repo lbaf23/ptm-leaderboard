@@ -7,7 +7,6 @@ import (
 )
 
 func GetRecord(c *gin.Context) {
-
 	c.JSON(http.StatusOK, gin.H{"msg": "ok"})
 }
 

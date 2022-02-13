@@ -16,14 +16,7 @@ functions:
     build_args:
       GO111MODULE: on
     environment:
-      run_mode: release
-      postgres_db: ptm_leaderboard_db
-      postgres_port: 5432
-      postgres_host: postgresql.default.svc.cluster.local
-      postgres_user: postgres
-      postgres_sslmode: disable
-    secrets:
-      - ptm-leaderboard-db-password
+      RunMode: release
   attack:
     lang: python3
     handler: ./attack

@@ -1,9 +1,9 @@
 package models
 
 import (
-	"api/settings"
+	"api/conf"
 	"fmt"
-	"log"
+	"time"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -18,29 +18,29 @@ type Model struct {
 	DeletedOn  int `json:"deleted_on"`
 }
 
-// Setup initializes the database instance
-func Setup() {
+func Init() {
 	var err error
 
-	connStr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=Asia/ShangHai",
-		settings.Config.DBHost,
-		settings.Config.DBUser,
-		settings.Config.DBPassword,
-		settings.Config.DBName,
-		settings.Config.DBPort,
-		settings.Config.SSLMode)
+	connStr := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s TimeZone=%s",
+		conf.Config.DBHost,
+		conf.Config.DBUser,
+		conf.Config.DBPassword,
+		conf.Config.DBName,
+		conf.Config.DBPort,
+		conf.Config.SSLMode,
+		conf.Config.TimeZone,
+	)
 
-	db, err = gorm.Open(postgres.Open(connStr))
+	db, err := gorm.Open(postgres.Open(connStr))
 
-	if err != nil {
-		log.Fatalf("models.Setup err: %v", err)
-	}
-	innerDB, err := db.DB()
 	if err != nil {
 		panic(err)
 	}
-	innerDB.SetConnMaxLifetime(7200)
-	innerDB.SetMaxIdleConns(5)
-	innerDB.SetMaxOpenConns(50)
-
+	sqlDB, err := db.DB()
+	if err != nil {
+		panic(err)
+	}
+	sqlDB.SetConnMaxLifetime(time.Hour)
+	sqlDB.SetMaxIdleConns(5)
+	sqlDB.SetMaxOpenConns(100)
 }

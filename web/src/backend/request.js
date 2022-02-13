@@ -1,10 +1,10 @@
 import axios from 'axios'
 import {message} from 'antd'
 
-const BASE_URL = process.env.BASE_URL
+const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL
 
 function getServerUrl() {
-  return BASE_URL
+  return REACT_APP_BASE_URL
 }
 
 const request = axios.create({

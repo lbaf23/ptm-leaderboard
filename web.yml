@@ -9,6 +9,4 @@ functions:
     image: lbaf23/ptm-leaderboard-web:1.0.0
     labels:
       com.openfaas.scale.zero: false
-    environment:
-      PUBLIC_URL: /function/leaderboard
-      BASIC_URL: /function
+

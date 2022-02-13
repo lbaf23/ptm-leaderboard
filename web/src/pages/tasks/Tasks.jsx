@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 
 import './tasks.css'
 import TaskList from "./component/TaskList";
+import TaskBackend from "../../backend/TaskBackend";
 
 
 
@@ -14,6 +15,13 @@ function Tasks() {
 
   useEffect(() => {
     setLoading(false)
+    TaskBackend.getTaskList()
+    .then(res=>{
+
+    })
+    .catch(err=>{
+      
+    })
     // TODO get tasks
     setTasks([
       {

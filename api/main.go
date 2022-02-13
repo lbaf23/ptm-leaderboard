@@ -1,26 +1,31 @@
 package main
 
 import (
+	"api/conf"
+	"api/controllers"
 	"api/models"
 	"api/routers"
-	"api/settings"
+	"fmt"
 
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 )
 
-func init() {
-	settings.Setup()
-	models.Setup()
-}
-
 func main() {
-	r := routers.InitRouter(settings.Config.RunMode)
+	conf.Init()
+	gin.SetMode(conf.Config.RunMode)
+	r := gin.Default()
+
 	corsMiddleware := cors.New(cors.Config{
-		AllowAllOrigins:  true,
-		AllowHeaders:     []string{"*"},
+		AllowOrigins:     []string{conf.Config.AllowOrigin},
 		AllowCredentials: true,
 	})
-
 	r.Use(corsMiddleware)
-	r.Run(":8000")
+
+	routers.Init(r)
+	models.Init()
+	controllers.InitCasdoor()
+
+	server := fmt.Sprintf(":%s", conf.Config.HttpPort)
+	r.Run(server)
 }
