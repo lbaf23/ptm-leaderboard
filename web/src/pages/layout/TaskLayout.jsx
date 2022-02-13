@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
-import {Layout, PageHeader, Affix, Button} from 'antd';
-import {Route, Routes, Link, Outlet, useNavigate} from 'react-router-dom';
-import {LoginOutlined, MenuUnfoldOutlined, MenuFoldOutlined} from "@ant-design/icons";
+import {Affix, Layout, PageHeader} from 'antd';
+import {Outlet, useNavigate} from 'react-router-dom';
+import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
 import SiderBar from "./component/SiderBar";
 
 
@@ -13,7 +13,7 @@ const PUBLIC_URL = process.env.PUBLIC_URL
 function TaskLayout() {
   const [collapsed, setCollapsed] = useState(false)
 
-  useEffect(()=>{
+  useEffect(() => {
 
   }, [])
 
@@ -22,15 +22,17 @@ function TaskLayout() {
     setCollapsed(!collapsed)
   }
   const navigate = useNavigate()
-  
+
   return (
     <div className="task-layout">
       <PageHeader
-        onBack={() => {navigate(`${PUBLIC_URL}/tasks`)}}
+        onBack={() => {
+          navigate(`${PUBLIC_URL}/tasks`)
+        }}
         title={"Tasks"}
         subTitle=""
       />
-      <Layout >
+      <Layout>
         <Affix offsetTop={10}>
           <div>
             <Sider
@@ -40,10 +42,11 @@ function TaskLayout() {
               collapsed={collapsed}
               breakpoint="lg"
             >
-              <SiderBar />
+              <SiderBar/>
             </Sider>
             <div className="trigger" onClick={onCollapse}>
-                {collapsed? <MenuUnfoldOutlined className="trigger-icon"/> : <MenuFoldOutlined className="trigger-icon"/>}
+              {collapsed ? <MenuUnfoldOutlined className="trigger-icon"/> :
+                <MenuFoldOutlined className="trigger-icon"/>}
             </div>
           </div>
         </Affix>

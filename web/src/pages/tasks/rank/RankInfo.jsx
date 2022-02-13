@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {Card, PageHeader} from "antd";
+import {Card} from "antd";
 
 function RankInfo() {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
-  useEffect(()=>{
+  useEffect(() => {
     let params = window.location.pathname.split("/");
     let id = params[2];
     // TODO get rank more info

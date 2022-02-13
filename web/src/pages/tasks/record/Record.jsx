@@ -1,5 +1,5 @@
-import { Card, Table } from "antd";
-import React,{ useEffect, useState } from "react"
+import {Card, Table} from "antd";
+import React, {useEffect, useState} from "react"
 
 function Record() {
   const columns = [
@@ -20,12 +20,12 @@ function Record() {
     },
   ]
 
-  const [loading ,setLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
   const [records, setRecords] = useState([])
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(20);
 
-  useEffect(()=>{
+  useEffect(() => {
     setLoading(false);
     setRecords([
       {task: 't1', model: 'bert', submitTime: '2020-1-12'},

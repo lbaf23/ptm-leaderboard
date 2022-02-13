@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Table, Card} from "antd";
+import {Button, Card, Table} from "antd";
 import {Link} from "react-router-dom";
 import {ArrowRightOutlined} from "@ant-design/icons";
 
@@ -9,7 +9,7 @@ function Rank() {
       title: 'Rank',
       key: 'rank',
       render: (text, record, index) => {
-        return `${page*pageSize + index +1}`
+        return `${page * pageSize + index + 1}`
       }
     },
     {
@@ -33,18 +33,18 @@ function Rank() {
       key: 'more info',
       render: id => (
         <Link to={id}>
-          <Button type="link" icon={<ArrowRightOutlined />} size="large" />
+          <Button type="link" icon={<ArrowRightOutlined/>} size="large"/>
         </Link>
       )
     }
   ]
 
-  const [loading ,setLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
   const [rank, setRank] = useState([])
   const [page, setPage] = useState(0)
   const [pageSize, setPageSize] = useState(20);
 
-  useEffect(()=>{
+  useEffect(() => {
     setLoading(false)
     setRank([
       {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
@@ -66,7 +66,7 @@ function Rank() {
       {id: '1', name: 'lbaf23', model: 'bert', score: '90.1'},
     ])
   }, [])
-  
+
   return (
     <Card
       bordered={false}

@@ -1,22 +1,22 @@
-.mainContent{
+.mainContent {
     max-width: 1200px;
     margin: auto;
 }
 
-.mainContent .divider{
+.mainContent .divider {
     font-size: 25px;
 }
 
-.mainContent .card-content{
+.mainContent .card-content {
     display: flex;
     flex-direction: column;
 }
 
-.mainContent .card-content .card-title{
+.mainContent .card-content .card-title {
     display: flex;
 }
 
-.mainContent .card-content .card-title .task-item-title{
+.mainContent .card-content .card-title .task-item-title {
     font-size: 20px;
     word-wrap: break-word;
     word-break: normal;
@@ -24,7 +24,7 @@
     font-weight: bold;
 }
 
-.mainContent .card-content .task-item-description{
+.mainContent .card-content .task-item-description {
     margin-top: 10px;
     color: gray;
     height: 50px;

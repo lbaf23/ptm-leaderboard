@@ -1,12 +1,12 @@
-import React, { useEffect,useState } from "react";
-import { PageHeader } from "antd";
+import React, {useEffect, useState} from "react";
+import {PageHeader} from "antd";
 
-function RecordInfo(){
+function RecordInfo() {
   const [title, setTitle] = useState('')
 
-  useEffect(()=>{
+  useEffect(() => {
     setTitle('title')
-  },[])
+  }, [])
 
   return (
     <div>

@@ -1,17 +1,17 @@
-.task-layout{
+.task-layout {
     max-width: 1200px;
     margin: auto;
 }
 
-.task-layout .task-content{
+.task-layout .task-content {
     margin-left: 10px;
 }
 
-.task-layout .trigger{
+.task-layout .trigger {
     cursor: pointer;
 }
 
-.task-layout .trigger .trigger-icon{
+.task-layout .trigger .trigger-icon {
     font-size: 20px;
     margin: 10px
 }

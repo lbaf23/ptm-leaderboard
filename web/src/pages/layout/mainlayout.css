@@ -1,13 +1,13 @@
-.main-layout{
+.main-layout {
     min-height: 100vh;
 }
 
-.main-layout .header{
+.main-layout .header {
     background-color: white;
     height: 65px;
 }
 
-.main-layout .header .logo{
+.main-layout .header .logo {
     font-size: 45px;
     font-weight: bold;
     float: left;
@@ -17,7 +17,7 @@
     margin-left: 40%;
 }
 
-.main-layout .header-title{
+.main-layout .header-title {
     font-size: 18px;
     font-weight: 500;
 }

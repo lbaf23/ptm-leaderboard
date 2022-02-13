@@ -1,17 +1,17 @@
-.footer-bar{
+.footer-bar {
 }
 
-.footer-bar .title{
+.footer-bar .title {
     font-family: 'Times New Roman', Times, serif;
 }
 
-.footer-bar .right{
+.footer-bar .right {
     float: right;
     color: gray;
     font-family: 'Times New Roman', Times, serif;
 }
 
-.footer-bar .right .right-span{
+.footer-bar .right .right-span {
     cursor: pointer;
     margin-right: 30px;
     font-family: 'Times New Roman', Times, serif;
