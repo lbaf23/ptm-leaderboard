@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Affix, Layout, PageHeader} from 'antd';
 import {Outlet, useNavigate} from 'react-router-dom';
-import {MenuFoldOutlined, MenuUnfoldOutlined} from "@ant-design/icons";
+import {LeftOutlined, RightOutlined} from "@ant-design/icons";
 import SiderBar from "./component/SiderBar";
 
 
@@ -14,9 +14,11 @@ function TaskLayout() {
   const [collapsed, setCollapsed] = useState(false)
 
   useEffect(() => {
-
+    return destroy;
   }, [])
 
+  const destroy = () => {
+  }
 
   const onCollapse = () => {
     setCollapsed(!collapsed)
@@ -37,16 +39,14 @@ function TaskLayout() {
           <div>
             <Sider
               theme="light"
-              collapsible
               trigger={null}
               collapsed={collapsed}
-              breakpoint="lg"
             >
               <SiderBar/>
             </Sider>
             <div className="trigger" onClick={onCollapse}>
-              {collapsed ? <MenuUnfoldOutlined className="trigger-icon"/> :
-                <MenuFoldOutlined className="trigger-icon"/>}
+              {collapsed ? <RightOutlined className="trigger-icon"/> :
+                <LeftOutlined className="trigger-icon"/>}
             </div>
           </div>
         </Affix>
