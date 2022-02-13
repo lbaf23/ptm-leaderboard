@@ -80,6 +80,36 @@ faas-cli secret create ptm-leaderboard-db-password --from-file ptm-leaderboard-d
 
 
 
+### casdoor
+
+```bash
+git clone https://github.com/casdoor/casdoor.git
+cd web && yarn && yarn build
+
+cd conf && vim app.conf
+
+# edit dbname = 
+#   leave it empty
+# edit dataSourceName = "user=postgres password=password host=localhost port=5432 dbname=casdoor sslmode=disable"
+# edit driverName = postgres
+# edit runmode = prod
+
+cd ..
+
+cd object && vim adapter.go
+
+# uncomment import
+#   _ "github.com/lib/pq"
+
+cd ..
+
+go mod tidy
+
+go build main.go
+./main
+```
+
+
 
 ### deploy all functions
 
