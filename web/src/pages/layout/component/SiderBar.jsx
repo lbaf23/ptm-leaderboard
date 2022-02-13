@@ -36,14 +36,14 @@ function SiderBar() {
         key="task"
         icon={<FileTextOutlined style={{fontSize: '18px'}}/>}
       >
-        <Link to={`${PUBLIC_URL}/tasks/sa`}>
+        <Link to="">
           <span className="sider-title">Task</span>
         </Link>
       </Menu.Item>
       <Menu.Item
         key="rank"
         icon={<TrophyOutlined style={{fontSize: '18px'}}/>}>
-        <Link to={`${PUBLIC_URL}/tasks/sa/rank`}>
+        <Link to="rank">
           <span className="sider-title">Rank</span>
         </Link>
       </Menu.Item>
@@ -51,14 +51,14 @@ function SiderBar() {
         key="submit"
         icon={<SendOutlined style={{fontSize: '18px'}}/>}
       >
-        <Link to={`${PUBLIC_URL}/tasks/sa/submit`}>
+        <Link to="submit">
           <span className="sider-title">Submit</span>
         </Link>
       </Menu.Item>
       <Menu.Item
         key="record"
         icon={<UserOutlined style={{fontSize: '18px'}}/>}>
-        <Link to={`${PUBLIC_URL}/tasks/sa/record`}>
+        <Link to="record">
           <span className="sider-title">Record</span>
         </Link>
       </Menu.Item>

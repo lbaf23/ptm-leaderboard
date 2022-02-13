@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {BackTop, Layout, Menu, Dropdown, Avatar} from 'antd';
-import {Link, Route, Routes, useLocation, useSearchParams} from 'react-router-dom';
+import {Link, Outlet, Route, Routes, useLocation, useSearchParams} from 'react-router-dom';
 import {
   EllipsisOutlined,
   HddOutlined,
@@ -77,14 +77,14 @@ function MainLayout() {
       onClick={handleMenuChange}
     >
       <Menu.Item key='' icon={<HomeOutlined style={{fontSize: '18px'}}/>}>
-        <Link to={PUBLIC_URL}>
+        <Link to="">
           <span className="header-title">Home</span>
         </Link>
       </Menu.Item>
       <Menu.Item
         key='tasks'
         icon={<HddOutlined style={{fontSize: '18px'}}/>}>
-        <Link to={`${PUBLIC_URL}/tasks`}>
+        <Link to="tasks">
           <span className="header-title">Tasks</span>
         </Link>
       </Menu.Item>
@@ -118,7 +118,6 @@ function MainLayout() {
           <a href={PUBLIC_URL}>PTMA</a>
         </div>
 
-
         {mainMenu}
         <div>
           {account === null
@@ -138,25 +137,7 @@ function MainLayout() {
 
       </Header>
       <Content className="main-content">
-        <Routes>
-          <Route index element={<Home/>}/>
-
-          <Route exact path={`${PUBLIC_URL}/callback`} element={<Callback />}/>
-
-          <Route exact path={`${PUBLIC_URL}`} element={<Home/>}/>
-          <Route exact path={`${PUBLIC_URL}/tasks`} element={<Tasks/>}/>
-          <Route path={`${PUBLIC_URL}/tasks/:id`} element={<TaskLayout/>}>
-            <Route index element={<TaskInfo/>}/>
-
-            <Route exact path="submit" element={<Submit/>}/>
-
-            <Route exact path="rank" element={<Rank/>}/>
-            <Route path="rank/:id" element={<RankInfo/>}/>
-
-            <Route path="record" element={<Record/>}/>
-            <Route path="record/:id" element={<TaskInfo/>}/>
-          </Route>
-        </Routes>
+        <Outlet />
       </Content>
       <Footer className="footer">
         <FooterBar/>
