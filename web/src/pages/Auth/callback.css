@@ -1,0 +1,15 @@
+.callback{
+    padding: 20px;
+    height: 100vh;
+    background-color: rgb(235, 235, 235);
+}
+
+.callback .card {
+    margin: auto;
+    max-width: 1200px;
+}
+
+.callback .card .title{
+    font-weight: bold;
+    font-size: 25px;
+}
