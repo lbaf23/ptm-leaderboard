@@ -6,20 +6,30 @@ import (
 	"api/models"
 	"api/routers"
 	"fmt"
+	"net/http"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
+
+func corsMiddleware(c *gin.Context) {
+	method := c.Request.Method
+	origin := c.Request.Header.Get("Origin")
+	if origin != "" {
+		c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
+		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, UPDATE")
+		c.Header("Access-Control-Allow-Credentials", "true")
+	}
+	if method == "OPTIONS" {
+		c.JSON(http.StatusOK, "Options Request!")
+	}
+	c.Next()
+}
 
 func main() {
 	conf.Init()
 	gin.SetMode(conf.Config.RunMode)
 	r := gin.Default()
 
-	corsMiddleware := cors.New(cors.Config{
-		AllowOrigins:     []string{conf.Config.AllowOrigin},
-		AllowCredentials: true,
-	})
 	r.Use(corsMiddleware)
 
 	routers.Init(r)

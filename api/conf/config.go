@@ -34,15 +34,13 @@ func Init() {
 	if os.Getenv("RunMode") == "release" {
 		err := loadConfigFile("conf/app.release.ini")
 		if err != nil {
-			panic(err)
+			loadConfigFile("conf/app.ini")
 		}
-	} else if os.Getenv("RunMode") == "debug" {
+	} else {
 		err := loadConfigFile("conf/app.debug.ini")
 		if err != nil {
 			loadConfigFile("conf/app.ini")
 		}
-	} else {
-		loadConfigFile("conf/app.ini")
 	}
 }
 

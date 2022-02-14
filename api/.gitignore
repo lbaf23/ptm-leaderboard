@@ -7,4 +7,4 @@
 .vscode
 
 # casdoor public key
-/controller/token_jwt_key.pem
+/controllers/token_jwt_key.pem

@@ -11,4 +11,3 @@ functions:
       GO111MODULE: on
     environment:
       RunMode: release
-
