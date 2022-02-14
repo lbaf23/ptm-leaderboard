@@ -5,35 +5,32 @@ import (
 	"api/controllers"
 	"api/models"
 	"api/routers"
+	"encoding/gob"
 	"fmt"
-	"net/http"
 
+	"github.com/casdoor/casdoor-go-sdk/auth"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/postgres"
 	"github.com/gin-gonic/gin"
 )
-
-func corsMiddleware(c *gin.Context) {
-	method := c.Request.Method
-	origin := c.Request.Header.Get("Origin")
-	if origin != "" {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
-		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, UPDATE")
-		c.Header("Access-Control-Allow-Credentials", "true")
-	}
-	if method == "OPTIONS" {
-		c.JSON(http.StatusOK, "Options Request!")
-	}
-	c.Next()
-}
 
 func main() {
 	conf.Init()
 	gin.SetMode(conf.Config.RunMode)
 	r := gin.Default()
+	models.Init()
 
-	r.Use(corsMiddleware)
+	gob.Register(auth.Claims{})
+
+	store, err := postgres.NewStore(models.SQLDB, []byte("secret"))
+	if err != nil {
+		panic(err)
+	}
+	r.Use(sessions.Sessions("ptm-leaderboard", store))
+
+	r.Use(routers.CorsMiddleware())
 
 	routers.Init(r)
-	models.Init()
 	controllers.InitCasdoor()
 
 	server := fmt.Sprintf(":%s", conf.Config.HttpPort)

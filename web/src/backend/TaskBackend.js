@@ -4,13 +4,13 @@ import qs from 'qs'
 const TaskBackend = {
   getTaskList() {
     return request({
-      url: '/tasklist',
+      url: '/tasklist/',
       method: 'get',
     })
   },
   getTask(taskId) {
     return request({
-      url: `/task/${taskId}`,
+      url: `/task/${taskId}/`,
       method: 'get',
     })
   },

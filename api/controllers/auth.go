@@ -3,10 +3,10 @@ package controllers
 import (
 	"api/conf"
 	_ "embed"
-	"fmt"
 	"net/http"
 
 	"github.com/casdoor/casdoor-go-sdk/auth"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -27,12 +27,8 @@ func Login(c *gin.Context) {
 	code := c.PostForm("code")
 	state := c.PostForm("state")
 
-	fmt.Println(code, state)
-
 	token, err := auth.GetOAuthToken(code, state)
 	if err != nil {
-		fmt.Println(err)
-
 		res.Code = 403
 		res.Message = err.Error()
 		c.JSON(http.StatusOK, &res)
@@ -40,15 +36,25 @@ func Login(c *gin.Context) {
 	}
 	claims, err := auth.ParseJwtToken(token.AccessToken)
 	if err != nil {
-		fmt.Println(err)
 		res.Code = 403
 		res.Message = err.Error()
 		c.JSON(http.StatusOK, &res)
 		return
 	}
 
-	claims.AccessToken = token.AccessToken
-	// c.setSessionUser(claims)
+	// claims.AccessToken = token.AccessToken
+
+	session := sessions.Default(c)
+	session.Set("user", claims)
+	err = session.Save()
+
+	if err != nil {
+		res.Code = 403
+		res.Message = err.Error()
+		c.JSON(http.StatusOK, res)
+		return
+	}
+
 	res.Code = 200
 	res.Message = "login succeed"
 	res.Data = claims
@@ -58,8 +64,36 @@ func Login(c *gin.Context) {
 
 func Logout(c *gin.Context) {
 	var res Response
-	// c.setSessionUser(nil)
+	session := sessions.Default(c)
+
+	session.Clear()
+	err := session.Save()
+
+	if err != nil {
+		res.Code = 500
+		res.Message = err.Error()
+		c.JSON(http.StatusOK, &res)
+		return
+	}
+
 	res.Code = 200
 	res.Message = "logout"
+	c.JSON(http.StatusOK, &res)
+}
+
+func GetAccount(c *gin.Context) {
+	var res Response
+	session := sessions.Default(c)
+
+	user := session.Get("user")
+
+	if user == nil {
+		res.Code = 404
+		res.Message = "can't find the account"
+		c.JSON(http.StatusOK, &res)
+		return
+	}
+	res.Code = 200
+	res.Data = user
 	c.JSON(http.StatusOK, &res)
 }

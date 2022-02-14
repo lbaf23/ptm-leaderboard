@@ -5,6 +5,8 @@ import {useLocation, useSearchParams} from "react-router-dom";
 import './callback.css'
 import AuthBackend from "../../backend/AuthBackend";
 
+const PUBLIC_URL = process.env.PUBLIC_URL
+
 function Callback() {
   const [params] = useSearchParams()
   const [msg, setMsg] = useState('');
@@ -18,7 +20,11 @@ function Callback() {
     const state = params.get("state")
     AuthBackend.login(code, state)
     .then((res)=>{
-      console.log(res)
+      if(res.data.code === 200) {
+        window.location.href = `${PUBLIC_URL}/home`
+      } else {
+        setMsg(res.data.message);
+      }
     })
     .catch(err=>{
       console.log(err)

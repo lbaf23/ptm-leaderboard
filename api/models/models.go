@@ -2,6 +2,7 @@ package models
 
 import (
 	"api/conf"
+	"database/sql"
 	"fmt"
 	"time"
 
@@ -10,6 +11,7 @@ import (
 )
 
 var db *gorm.DB
+var SQLDB *sql.DB
 
 type Model struct {
 	ID         int `gorm:"primary_key" json:"id"`
@@ -31,16 +33,16 @@ func Init() {
 		conf.Config.TimeZone,
 	)
 
-	db, err := gorm.Open(postgres.Open(connStr))
+	db, err = gorm.Open(postgres.Open(connStr))
 
 	if err != nil {
 		panic(err)
 	}
-	sqlDB, err := db.DB()
+	SQLDB, err = db.DB()
 	if err != nil {
 		panic(err)
 	}
-	sqlDB.SetConnMaxLifetime(time.Hour)
-	sqlDB.SetMaxIdleConns(5)
-	sqlDB.SetMaxOpenConns(100)
+	SQLDB.SetConnMaxLifetime(time.Hour)
+	SQLDB.SetMaxIdleConns(5)
+	SQLDB.SetMaxOpenConns(100)
 }

@@ -45,11 +45,11 @@ function getUserProfileUrl(userName, account) {
 }
 
 function getMyProfileUrl(account) {
-  let param = "";
-  if (account !== undefined && account !== null) {
-    param = `?access_token=${account.accessToken}`;
-  }
-  return `${trim(authConfig.serverUrl)}/account${param}`;
+  // let param = "";
+  //if (account !== undefined && account !== null) {
+  //  param = `?access_token=${account.accessToken}`;
+  //}
+  return `${trim(authConfig.serverUrl)}/account`;
 }
 
 function trim(str, ch) {

@@ -38,12 +38,20 @@ function MainLayout() {
   const [account ,setAccount] = useState(null)
 
   const path = useLocation().pathname.split('/')
-  const params = useSearchParams()
 
   useEffect(() => {
     if (path.includes('tasks')) {
       setSelected('tasks')
     }
+    AuthBackend.getAccount()
+    .then(res=>{
+      if(res.data.code === 200) {
+        setAccount(res.data.data)
+      }
+    })
+    .catch(err=>{
+      console.log(err)
+    })
   }, [])
 
   const handleMenuChange = (e) => {
@@ -88,12 +96,6 @@ function MainLayout() {
           <span className="header-title">Tasks</span>
         </Link>
       </Menu.Item>
-{/*      <Menu.Item key='login' icon={<LoginOutlined style={{fontSize: '18px'}}/>}>
-        <span className="header-title">Login</span>
-      </Menu.Item>
-      <Menu.Item key='account' icon={<UserOutlined style={{fontSize: '18px'}}/>}>
-        <span className="header-title">Account</span>
-      </Menu.Item>*/}
     </Menu>
   )
 
@@ -128,8 +130,8 @@ function MainLayout() {
             :
             <Dropdown overlay={accountMenu} placement="bottomRight" trigger="click">
               <div style={{cursor: 'pointer'}}>
-                {/*<Avatar size="large" src={account.avatar} />&nbsp;*/}
-                <span>{account.name}</span>
+                <Avatar size="large" src={account.avatar} />
+                <span style={{fontSize: '16px', marginLeft: '10px'}}>{account.name}</span>
               </div>
             </Dropdown>
           }

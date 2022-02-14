@@ -12,20 +12,47 @@ func Init(r *gin.Engine) {
 	{
 		authGroup.POST("/login", controllers.Login)
 		authGroup.POST("/logout", controllers.Logout)
+		authGroup.GET("/account", controllers.GetAccount)
+	}
+
+	rankListGroup := r.Group("/ranklist")
+	rankListGroup.Use(AuthMiddleware())
+	{
+		rankListGroup.GET("/", controllers.GetRankList)
+	}
+	rankGroup := r.Group("/rank/:id")
+	rankGroup.Use()
+	{
+		rankGroup.GET("/", controllers.GetRecord)
+		rankGroup.POST("/", controllers.CreateRecord)
+		rankGroup.DELETE("/", controllers.DeleteRecord)
+	}
+
+	taskListGroup := r.Group("/tasklist")
+	taskListGroup.Use()
+	{
+		taskListGroup.GET("/", controllers.GetTaskList)
+	}
+
+	taskGroup := r.Group("/task")
+	taskGroup.Use(AuthMiddleware())
+	{
+		taskGroup.GET("/", controllers.GetTask)
+	}
+
+	submitGroup := r.Group("/submit")
+	submitGroup.Use(AuthMiddleware())
+	{
+		submitGroup.GET("/", controllers.GetRecord)
+		submitGroup.POST("/", controllers.CreateRecord)
+		submitGroup.DELETE("/", controllers.DeleteRecord)
 	}
 
 	recordGroup := r.Group("/record/:id")
-	recordGroup.Use()
+	recordGroup.Use(AuthMiddleware())
 	{
 		recordGroup.GET("/", controllers.GetRecord)
 		recordGroup.POST("/", controllers.CreateRecord)
 		recordGroup.DELETE("/", controllers.DeleteRecord)
-	}
-
-	r.GET("/tasklist", controllers.GetTaskList)
-	taskGroup := r.Group("/task")
-	taskGroup.Use()
-	{
-		taskGroup.GET("/", controllers.GetTask)
 	}
 }
