@@ -5,21 +5,16 @@
 .main-layout .header {
     background-color: white;
     height: 65px;
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
+
 }
 
 .main-layout .header .logo {
     font-size: 45px;
     font-weight: bold;
-    float: left;
+    padding-right: 10%;
 }
 
 .main-layout .header .main-menu {
-    margin-left: 20%;
-    flex-grow: 1;
-    flex-shrink: 1;
 }
 
 .main-layout .header-title {

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {BackTop, Layout, Menu, Dropdown, Avatar} from 'antd';
+import {BackTop, Layout, Menu, Dropdown, Avatar, Row, Col} from 'antd';
 import {Link, Outlet, Route, Routes, useLocation, useSearchParams} from 'react-router-dom';
 import {
   EllipsisOutlined,
@@ -101,13 +101,11 @@ function MainLayout() {
 
   const accountMenu = (
     <Menu style={{width: '150px', padding: '5px'}} onClick={handleMenuClick}>
-      <Menu.Item key='account'>
-        <SettingOutlined/>&nbsp;&nbsp;
-        account
+      <Menu.Item key='account' icon={<SettingOutlined/>}>
+        Account
       </Menu.Item>
-      <Menu.Item key='logout'>
-        <LogoutOutlined/>&nbsp;&nbsp;
-        logout
+      <Menu.Item key='logout' icon={<LogoutOutlined/>}>
+        Logout
       </Menu.Item>
     </Menu>
   )
@@ -116,27 +114,34 @@ function MainLayout() {
     <Layout className="main-layout">
       <BackTop/>
       <Header className="header">
-        <div className="logo">
-          <a href={PUBLIC_URL}>PTMA</a>
-        </div>
-
-        {mainMenu}
-        <div>
-          {account === null
-            ?
-            <a href={Auth.getAuthorizeUrl()}>
-              login
-            </a>
-            :
-            <Dropdown overlay={accountMenu} placement="bottomRight" trigger="click">
-              <div style={{cursor: 'pointer'}}>
-                <Avatar size="large" src={account.avatar} />
-                <span style={{fontSize: '16px', marginLeft: '10px'}}>{account.name}</span>
+        <Row wrap={false}>
+          <Col flex="200px">
+            <div className="logo">
+              <a href={`${PUBLIC_URL}/home`}>PTMA</a>
+            </div>
+          </Col>
+          <Col flex="auto">
+            {mainMenu}
+          </Col>
+          <Col flex="80px">
+            {account === null
+              ?
+              <div style={{fontWeight: '500', fontSize: '18px'}}>
+                <a href={Auth.getAuthorizeUrl()}>
+                  <LoginOutlined/>
+                  <span style={{marginLeft: '10px'}}>Login</span>
+                </a>
               </div>
-            </Dropdown>
-          }
-        </div>
-
+              :
+              <Dropdown overlay={accountMenu} placement="bottomRight" trigger="click">
+                <div style={{cursor: 'pointer'}}>
+                  <Avatar src={account.avatar} />
+                  <span style={{fontSize: '16px', marginLeft: '5px'}}>{account.name}</span>
+                </div>
+              </Dropdown>
+            }
+          </Col>
+        </Row>
       </Header>
       <Content className="main-content">
         <Outlet />
