@@ -1,0 +1,3 @@
+INSERT INTO public.tasks (id, title, icon, description, type) VALUES ('sa', 'Sentiment Analysis', null, 'Sentiment analysis is the task of classifying the polarity of a given text.', 'english');
+INSERT INTO public.tasks (id, title, icon, description, type) VALUES ('ner', 'Named Entity Recognition', 'ner', 'Named entity recognition is the task of tagging entities in text with their corresponding type.', 'english');
+INSERT INTO public.tasks (id, title, icon, description, type) VALUES ('cws', 'Chinese Word Segmentation', null, 'Chinese Word Segmentation is the task of segmenting the correct words in a specific context.', 'chinese');

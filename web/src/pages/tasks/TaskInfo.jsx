@@ -1,25 +1,30 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Divider, Tabs} from "antd";
+import {Button, Card, Divider} from "antd";
 import {DownloadOutlined} from '@ant-design/icons'
 import {useParams} from "react-router-dom";
 
 import './taskinfo.css'
-
-const {TabPane} = Tabs;
+import TaskBackend from "../../backend/TaskBackend";
 
 
 function TaskInfo() {
   const params = useParams();
+  const [loading, setLoading] = useState(true)
   const [task, setTask] = useState({})
   const [dataSet, setDataSet] = useState([])
 
   useEffect(() => {
-    // get task (id:params.id)
-    setTask({
-      id: 'sa',
-      title: 'Sentiment Analysis',
-      description: 'Sentiment analysis is the task of classifying the polarity of a given text.',
+    TaskBackend.getTask(params.id)
+    .then(res=>{
+      setLoading(false)
+      if(res.data.code === 200) {
+        setTask(res.data.task)
+      }
     })
+    .catch(err=>{})
+  }, [params.id])
+
+  useEffect(()=>{
     setDataSet([
       {
         id: '1',
@@ -39,11 +44,10 @@ function TaskInfo() {
         description: 'The Yelp Review dataset consists of more than 500,000 Yelp reviews. There is both a binary and a fine-grained (five-class) version of the dataset. Models are evaluated based on error (1 - Accuracy; lower is better).'
       },
     ])
-    console.log(params.id)
   }, [])
 
   return (
-    <Card hoverable className="task-card">
+    <Card hoverable className="task-card" loading={loading}>
       <div className="task-title">{task.title}</div>
       <div className="task-description">{task.description}</div>
       <div className="dataset">Dataset</div>

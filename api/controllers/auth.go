@@ -22,8 +22,13 @@ func InitCasdoor() {
 //go:embed token_jwt_key.pem
 var JwtPublicKey string
 
+type UserResponse struct {
+	Response
+	Account auth.Claims `json:"account"`
+}
+
 func Login(c *gin.Context) {
-	var res Response
+	var res UserResponse
 	code := c.PostForm("code")
 	state := c.PostForm("state")
 
@@ -57,7 +62,7 @@ func Login(c *gin.Context) {
 
 	res.Code = 200
 	res.Message = "login succeed"
-	res.Data = claims
+	res.Account = *claims
 
 	c.JSON(http.StatusOK, res)
 }
@@ -82,7 +87,7 @@ func Logout(c *gin.Context) {
 }
 
 func GetAccount(c *gin.Context) {
-	var res Response
+	var res UserResponse
 	session := sessions.Default(c)
 
 	user := session.Get("user")
@@ -91,9 +96,9 @@ func GetAccount(c *gin.Context) {
 		res.Code = 404
 		res.Message = "can't find the account"
 		c.JSON(http.StatusOK, &res)
-		return
+	} else {
+		res.Code = 200
+		res.Account = user.(auth.Claims)
+		c.JSON(http.StatusOK, &res)
 	}
-	res.Code = 200
-	res.Data = user
-	c.JSON(http.StatusOK, &res)
 }

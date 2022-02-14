@@ -13,13 +13,6 @@ import (
 var db *gorm.DB
 var SQLDB *sql.DB
 
-type Model struct {
-	ID         int `gorm:"primary_key" json:"id"`
-	CreatedOn  int `json:"created_on"`
-	ModifiedOn int `json:"modified_on"`
-	DeletedOn  int `json:"deleted_on"`
-}
-
 func Init() {
 	var err error
 
@@ -45,4 +38,6 @@ func Init() {
 	SQLDB.SetConnMaxLifetime(time.Hour)
 	SQLDB.SetMaxIdleConns(5)
 	SQLDB.SetMaxOpenConns(100)
+
+	db.AutoMigrate(&Task{})
 }

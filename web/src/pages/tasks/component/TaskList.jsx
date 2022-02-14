@@ -20,6 +20,7 @@ function TaskList(obj) {
               <Card
                 hoverable
                 bordered={false}
+                loading={obj.loading}
                 style={{
                   borderRadius: '10px',
                   flexGrow: 1

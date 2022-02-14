@@ -29,7 +29,7 @@ function TaskLayout() {
     <div className="task-layout">
       <PageHeader
         onBack={() => {
-          navigate(`${PUBLIC_URL}/tasks`)
+          navigate(`${PUBLIC_URL}/home/tasks`)
         }}
         title={"Tasks"}
         subTitle=""

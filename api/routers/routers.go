@@ -28,14 +28,14 @@ func Init(r *gin.Engine) {
 		rankGroup.DELETE("/", controllers.DeleteRecord)
 	}
 
-	taskListGroup := r.Group("/tasklist")
+	taskListGroup := r.Group("/tasklist/:type")
 	taskListGroup.Use()
 	{
 		taskListGroup.GET("/", controllers.GetTaskList)
 	}
 
-	taskGroup := r.Group("/task")
-	taskGroup.Use(AuthMiddleware())
+	taskGroup := r.Group("/task/:id")
+	taskGroup.Use()
 	{
 		taskGroup.GET("/", controllers.GetTask)
 	}
@@ -43,9 +43,7 @@ func Init(r *gin.Engine) {
 	submitGroup := r.Group("/submit")
 	submitGroup.Use(AuthMiddleware())
 	{
-		submitGroup.GET("/", controllers.GetRecord)
 		submitGroup.POST("/", controllers.CreateRecord)
-		submitGroup.DELETE("/", controllers.DeleteRecord)
 	}
 
 	recordGroup := r.Group("/record/:id")

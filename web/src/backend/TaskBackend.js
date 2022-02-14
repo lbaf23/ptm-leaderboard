@@ -2,9 +2,9 @@ import request from './request'
 import qs from 'qs'
 
 const TaskBackend = {
-  getTaskList() {
+  getTaskList(type) {
     return request({
-      url: '/tasklist/',
+      url: `/tasklist/${type}/`,
       method: 'get',
     })
   },

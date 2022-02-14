@@ -10,79 +10,43 @@ import TaskBackend from "../../backend/TaskBackend";
 
 function Tasks() {
   const [loading, setLoading] = useState(true)
+  const [zhLoading, setZhLoading] = useState(true)
+
   const [tasks, setTasks] = useState([])
   const [zhTasks, setZhTasks] = useState([])
 
   useEffect(() => {
-    setLoading(false)
-    TaskBackend.getTaskList()
+    TaskBackend.getTaskList("english")
     .then(res=>{
-
+      setLoading(false)
+      if(res.data.code === 200) {
+        setTasks(res.data.taskList)
+      } else {
+        setTasks([])
+      }
     })
     .catch(err=>{
-      
     })
-    // TODO get tasks
-    setTasks([
-      {
-        id: 'sa',
-        title: 'Sentiment Analysis',
-        description: 'Sentiment analysis is the task of classifying the polarity of a given text.'
-      },
-      {
-        id: 'ner',
-        title: 'Named Entity Recognition',
-        description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'
-      },
-      {
-        id: 'ner',
-        title: 'Named Entity Recognition',
-        description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'
-      },
-      {
-        id: 'ner',
-        title: 'Named Entity Recognition',
-        description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'
-      },
-      {
-        id: 'ner',
-        title: 'Named Entity Recognition',
-        description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'
-      },
-      {
-        id: 'ner',
-        title: 'Named Entity Recognition',
-        description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'
-      },
-      {
-        id: 'ner',
-        title: 'Named Entity Recognition',
-        description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'
-      },
-      {
-        id: 'ner',
-        title: 'Named Entity Recognition',
-        description: 'Named entity recognition is the task of tagging entities in text with their corresponding type.'
-      },
-    ])
-
-    setZhTasks([
-      {
-        id: 'cws',
-        title: 'Chinese Word Segmentation',
-        description: 'Chinese Word Segmentation is the task of segmenting the correct words in a specific context.'
+    TaskBackend.getTaskList("chinese")
+    .then(res=>{
+      setZhLoading(false)
+      if(res.data.code === 200) {
+        setZhTasks(res.data.taskList)
+      } else {
+        setZhTasks([])
       }
-    ])
+    })
+    .catch(err=>{})     
   }, [])
 
   return (
     <div className="mainContent">
 
       <Divider className="divider" orientation="left">English</Divider>
-      <TaskList list={tasks} />
+      <TaskList loading={loading} list={tasks} />
 
       <Divider className="divider" orientation="left">Chinese</Divider>
-      <TaskList list={zhTasks} />
+      <TaskList loading={zhLoading} list={zhTasks} />
     </div>
   )
 }
