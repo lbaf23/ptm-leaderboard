@@ -52,11 +52,16 @@ func Init(r *gin.Engine) {
 		submitGroup.POST("/", controllers.CreateRecord)
 	}
 
+	recordListGroup := r.Group("/recordlist")
+	recordListGroup.Use(AuthMiddleware())
+	{
+		recordListGroup.GET("/", controllers.GetUserRecords)
+	}
+
 	recordGroup := r.Group("/record/:id")
 	recordGroup.Use(AuthMiddleware())
 	{
 		recordGroup.GET("/", controllers.GetRecord)
-		recordGroup.POST("/", controllers.CreateRecord)
 		recordGroup.DELETE("/", controllers.DeleteRecord)
 	}
 }

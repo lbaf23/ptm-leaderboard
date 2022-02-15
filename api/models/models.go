@@ -42,4 +42,6 @@ func Init() {
 	db.AutoMigrate(&Task{})
 	db.AutoMigrate(&DataSet{})
 	db.AutoMigrate(&Transformation{})
+
+	db.AutoMigrate(&Record{})
 }

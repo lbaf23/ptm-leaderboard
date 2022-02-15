@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	"github.com/casdoor/casdoor-go-sdk/auth"
-	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
@@ -49,9 +48,7 @@ func Login(c *gin.Context) {
 
 	// claims.AccessToken = token.AccessToken
 
-	session := sessions.Default(c)
-	session.Set("user", claims)
-	err = session.Save()
+	err = SetUser(c, claims)
 
 	if err != nil {
 		res.Code = 403
@@ -59,7 +56,6 @@ func Login(c *gin.Context) {
 		c.JSON(http.StatusOK, res)
 		return
 	}
-
 	res.Code = 200
 	res.Message = "login succeed"
 	res.Account = *claims
@@ -69,18 +65,13 @@ func Login(c *gin.Context) {
 
 func Logout(c *gin.Context) {
 	var res Response
-	session := sessions.Default(c)
-
-	session.Clear()
-	err := session.Save()
-
+	err := DeleteUser(c)
 	if err != nil {
 		res.Code = 500
 		res.Message = err.Error()
 		c.JSON(http.StatusOK, &res)
 		return
 	}
-
 	res.Code = 200
 	res.Message = "logout"
 	c.JSON(http.StatusOK, &res)
@@ -88,17 +79,13 @@ func Logout(c *gin.Context) {
 
 func GetAccount(c *gin.Context) {
 	var res UserResponse
-	session := sessions.Default(c)
-
-	user := session.Get("user")
-
-	if user == nil {
+	user, err := GetUser(c)
+	if err != nil {
 		res.Code = 404
-		res.Message = "can't find the account"
-		c.JSON(http.StatusOK, &res)
+		res.Message = err.Error()
 	} else {
 		res.Code = 200
-		res.Account = user.(auth.Claims)
-		c.JSON(http.StatusOK, &res)
+		res.Account = user
 	}
+	c.JSON(http.StatusOK, &res)
 }
