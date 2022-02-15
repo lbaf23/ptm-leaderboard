@@ -132,7 +132,7 @@ function MainLayout() {
           <Col flex="80px">
             {account === null
               ?
-              <div onClick={userLogin} style={{fontWeight: '500', fontSize: '18px'}}>
+              <div onClick={userLogin} className="login">
                 <LoginOutlined/>
                 <span style={{marginLeft: '10px'}}>Login</span>
               </div>

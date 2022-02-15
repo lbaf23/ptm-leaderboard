@@ -39,7 +39,7 @@ function TaskInfo() {
     <Card hoverable className="task-card" loading={loading}>
       <div className="task-title">{task.title}</div>
       <div className="task-description">{task.description}</div>
-      <div className="dataset">Dataset</div>
+      <div className="dataset">DataSet</div>
       {
         dataSet.map((item, index) => (
           <div className="dataset-card" key={index}>

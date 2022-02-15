@@ -14,7 +14,13 @@
     padding-right: 10%;
 }
 
-.main-layout .header .main-menu {
+.main-layout .header .login {
+    font-weight: 500;
+    font-size: 18px;
+    cursor: pointer;
+}
+.main-layout .header .login:hover {
+    color: rgb(91, 91, 199);
 }
 
 .main-layout .header-title {
