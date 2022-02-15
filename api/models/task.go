@@ -1,21 +1,23 @@
 package models
 
 type Task struct {
-	Id          string `json:"id" gorm:"primaryKey"`
-	Title       string `json:"title"`
-	Icon        string `json:"icon"`
-	Description string `json:"description"`
-	Type        string `json:"type" gorm:"index"`
+	ID          string    `json:"id" gorm:"primary_key" gorm:"column:id"`
+	Title       string    `json:"title" gorm:"column:title"`
+	Description string    `json:"description" gorm:"column:description"`
+	Type        string    `json:"type" gorm:"index" gorm:"column:type"`
+	DataSets    []DataSet `json:"datasets" gorm:"foreignKey:TaskRefer"`
 }
 
-func GetTaskById(id string) (task Task, err error) {
+func (Task) TableName() string {
+	return "task"
+}
+
+func GetTaskById(id string) (task Task) {
 	db.Where("id = ?", id).First(&task)
-	err = nil
 	return
 }
 
-func GetTaskList(t string) (task []Task, err error) {
+func GetTaskList(t string) (task []Task) {
 	db.Where("type = ?", t).Find(&task)
-	err = nil
 	return
 }

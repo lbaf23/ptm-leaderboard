@@ -15,14 +15,9 @@ type TaskResponse struct {
 func GetTask(c *gin.Context) {
 	var res TaskResponse
 	id := c.Param("id")
-	task, err := models.GetTaskById(id)
-	if err != nil {
-		res.Code = 500
-		res.Message = err.Error()
-	} else {
-		res.Code = 200
-		res.Task = task
-	}
+	task := models.GetTaskById(id)
+	res.Code = 200
+	res.Task = task
 	c.JSON(http.StatusOK, &res)
 }
 
@@ -34,13 +29,8 @@ type TaskListResponse struct {
 func GetTaskList(c *gin.Context) {
 	var res TaskListResponse
 	t := c.Param("type")
-	tasks, err := models.GetTaskList(t)
-	if err != nil {
-		res.Code = 500
-		res.Message = err.Error()
-	} else {
-		res.Code = 200
-		res.TaskList = tasks
-	}
+	tasks := models.GetTaskList(t)
+	res.Code = 200
+	res.TaskList = tasks
 	c.JSON(http.StatusOK, &res)
 }

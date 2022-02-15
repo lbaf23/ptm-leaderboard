@@ -5,6 +5,7 @@ import {useParams} from "react-router-dom";
 
 import './taskinfo.css'
 import TaskBackend from "../../backend/TaskBackend";
+import DataSetBackend from "../../backend/DataSetBackend";
 
 
 function TaskInfo() {
@@ -25,26 +26,14 @@ function TaskInfo() {
   }, [params.id])
 
   useEffect(()=>{
-    setDataSet([
-      {
-        id: '1',
-        title: 'IMDB',
-        transformations: [
-          {id: '1', title: 'Task Specific Transformations', url: ''},
-          {id: '2', title: 'Universal Transformations', url: ''}
-        ],
-        description: 'The IMDb dataset is a binary sentiment analysis dataset consisting of 50,000 reviews from the Internet Movie Database (IMDb) labeled as positive or negative. The dataset contains an even number of positive and negative reviews. Only highly polarizing reviews are considered. A negative review has a score ≤ 4 out of 10, and a positive review has a score ≥ 7 out of 10. No more than 30 reviews are included per movie. Models are evaluated based on Accuracy.'
-      },
-      {
-        id: '2',
-        title: 'Yelp-Binary',
-        transformations: [
-          {id: '1', title: 'Task Specific Transformations', url: ''},
-        ],
-        description: 'The Yelp Review dataset consists of more than 500,000 Yelp reviews. There is both a binary and a fine-grained (five-class) version of the dataset. Models are evaluated based on error (1 - Accuracy; lower is better).'
-      },
-    ])
-  }, [])
+    DataSetBackend.getTaskDataSets(params.id)
+    .then(res=>{
+      if(res.data.code === 200) {
+        setDataSet(res.data.datasets)
+      }
+    })
+    .catch(err=>{})
+  }, [params.id])
 
   return (
     <Card hoverable className="task-card" loading={loading}>
@@ -53,7 +42,7 @@ function TaskInfo() {
       <div className="dataset">Dataset</div>
       {
         dataSet.map((item, index) => (
-          <div className="dataset-card" index={index}>
+          <div className="dataset-card" key={index}>
             <Divider orientation="left">
               <span className="dataset-title">{item.title}</span>
             </Divider>
@@ -64,7 +53,7 @@ function TaskInfo() {
 
             <div className="trans">
               {item.transformations.map((subItem, subIndex) => (
-                <div className="trans-card" index={subIndex}>
+                <div className="trans-card" key={subIndex}>
                   <span className="trans-title">{subItem.title}</span>
                   <span className="download-bt">
                     <Button type="link" icon={<DownloadOutlined style={{fontSize: '18px'}}/>}/>

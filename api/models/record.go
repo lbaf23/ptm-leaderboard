@@ -7,5 +7,10 @@ import (
 type Record struct {
 	gorm.Model
 
-	RecordID int `json:"record_id" gorm:"index"`
+	TaskId string `json:"taskId" gorm:"column:task_id"`
+	UserId string `json:"userId" gorm:"column:user_id"`
+}
+
+func (Record) TableName() string {
+	return "record"
 }

@@ -40,4 +40,6 @@ func Init() {
 	SQLDB.SetMaxOpenConns(100)
 
 	db.AutoMigrate(&Task{})
+	db.AutoMigrate(&DataSet{})
+	db.AutoMigrate(&Transformation{})
 }
