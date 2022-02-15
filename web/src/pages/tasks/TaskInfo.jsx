@@ -23,7 +23,7 @@ function TaskInfo() {
       }
     })
     .catch(err=>{})
-  }, [params.id])
+  }, [])
 
   useEffect(()=>{
     DataSetBackend.getTaskDataSets(params.id)
@@ -33,7 +33,7 @@ function TaskInfo() {
       }
     })
     .catch(err=>{})
-  }, [params.id])
+  }, [])
 
   return (
     <Card hoverable className="task-card" loading={loading}>

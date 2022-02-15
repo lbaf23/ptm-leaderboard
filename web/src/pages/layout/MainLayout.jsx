@@ -52,7 +52,7 @@ function MainLayout() {
     .catch(err=>{
       console.log(err)
     })
-  }, [path])
+  }, [])
 
   const handleMenuChange = (e) => {
     setSelected(e.key)
