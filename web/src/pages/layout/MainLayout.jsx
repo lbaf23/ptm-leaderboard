@@ -46,13 +46,13 @@ function MainLayout() {
     AuthBackend.getAccount()
     .then(res=>{
       if(res.data.code === 200) {
-        setAccount(res.data.data)
+        setAccount(res.data.account)
       }
     })
     .catch(err=>{
       console.log(err)
     })
-  }, [])
+  }, [path])
 
   const handleMenuChange = (e) => {
     setSelected(e.key)
@@ -72,6 +72,12 @@ function MainLayout() {
           console.log(e)
         })
     }
+  }
+
+  const userLogin = () => {
+    const url = window.location.href
+    localStorage.setItem("url", url)
+    window.location.href = Auth.getAuthorizeUrl()
   }
 
   const mainMenu = (
@@ -126,11 +132,9 @@ function MainLayout() {
           <Col flex="80px">
             {account === null
               ?
-              <div style={{fontWeight: '500', fontSize: '18px'}}>
-                <a href={Auth.getAuthorizeUrl()}>
-                  <LoginOutlined/>
-                  <span style={{marginLeft: '10px'}}>Login</span>
-                </a>
+              <div onClick={userLogin} style={{fontWeight: '500', fontSize: '18px'}}>
+                <LoginOutlined/>
+                <span style={{marginLeft: '10px'}}>Login</span>
               </div>
               :
               <Dropdown overlay={accountMenu} placement="bottomRight" trigger="click">
