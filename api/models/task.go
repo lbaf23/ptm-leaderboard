@@ -6,7 +6,7 @@ type Task struct {
 	Description string `json:"description" gorm:"column:description"`
 	Type        string `json:"type" gorm:"index" gorm:"column:type"`
 
-	Transformation string `json:"transformation" gorm:"column:transformation"`
+	Content string `json:"content" gorm:"column:content"`
 }
 
 func (Task) TableName() string {
