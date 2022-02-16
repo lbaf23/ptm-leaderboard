@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"api/models"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -28,6 +27,8 @@ func GetUserRecords(c *gin.Context) {
 	}
 
 	taskId := c.Query("taskId")
+	orderBy := c.Query("orderBy")
+	orderType := c.Query("orderType")
 	page, err := strconv.ParseInt(c.Query("page"), 10, 32)
 	pageSize, err := strconv.ParseInt(c.Query("pageSize"), 10, 32)
 	if err != nil {
@@ -37,8 +38,7 @@ func GetUserRecords(c *gin.Context) {
 		return
 	}
 	res.Code = 200
-	fmt.Println(page, pageSize)
-	res.Total, res.Records = models.GetUserRecords(user.Id, taskId, int(page), int(pageSize))
+	res.Total, res.Records = models.GetUserRecords(user.Id, taskId, int(page), int(pageSize), orderBy, orderType)
 	c.JSON(http.StatusOK, &res)
 }
 
