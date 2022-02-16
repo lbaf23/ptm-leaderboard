@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {Drawer, Pagination} from "antd";
+import {Divider, Drawer, Pagination, Tag, Card} from "antd";
 
 import RankBackend from "../../../../backend/RankBackend";
 
@@ -92,10 +92,13 @@ function RankList(obj) {
         }}
       />
       <Pagination style={{marginTop: '20px', float: 'right'}} current={page} total={total} pageSize={pageSize}/>
-      <Drawer title={<div style={{fontSize: '30px'}}>Score:&nbsp;&nbsp;{item.score}</div>} visible={showD} onClose={closeD}>
+      <Drawer title={<div style={{fontSize: '26px'}}>Score:&nbsp;&nbsp;{item.score}</div>} visible={showD} onClose={closeD}>
         <div>
-          <h2>User:&nbsp;&nbsp;{item.userName}</h2>
-          <h2>Model:&nbsp;&nbsp;{item.modelName}</h2>
+          <div style={{fontSize: '18px', fontWeight: '600'}}>
+            <span>{item.userName}</span>
+            <Divider type="vertical" style={{borderWidth: '3px', height: '20px', borderColor: '#c9c9c9'}}/>
+            <span>{item.modelName}</span>
+          </div>
 
           <Table
             dataSource={item.result}
@@ -104,7 +107,7 @@ function RankList(obj) {
               {title: 'score', dataIndex: 'score', key: 'score'}
             ]}
             pagination={false}
-            style={{overflow: 'auto'}}
+            style={{overflow: 'auto', marginTop: '20px'}}
           />
         </div>
       </Drawer>
