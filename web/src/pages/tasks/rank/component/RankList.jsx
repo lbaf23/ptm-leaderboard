@@ -92,11 +92,10 @@ function RankList(obj) {
         }}
       />
       <Pagination style={{marginTop: '20px', float: 'right'}} current={page} total={total} pageSize={pageSize}/>
-      <Drawer title={item.userName} visible={showD} onClose={closeD}>
+      <Drawer title={<div style={{fontSize: '30px'}}>Score:&nbsp;&nbsp;{item.score}</div>} visible={showD} onClose={closeD}>
         <div>
-          <h1>Score:&nbsp;&nbsp;{item.score}</h1>
+          <h2>User:&nbsp;&nbsp;{item.userName}</h2>
           <h2>Model:&nbsp;&nbsp;{item.modelName}</h2>
-
 
           <Table
             dataSource={item.result}

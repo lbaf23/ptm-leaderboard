@@ -23,19 +23,22 @@ func GetUserRecords(c *gin.Context) {
 	if err != nil {
 		res.Code = 404
 		res.Message = err.Error()
-	} else {
-		taskId := c.Query("taskId")
-		page, err := strconv.ParseInt(c.Query("page"), 10, 32)
-		pageSize, err := strconv.ParseInt(c.Query("pageSize"), 10, 32)
-		if err != nil {
-			res.Code = 500
-			res.Message = err.Error()
-		} else {
-			res.Code = 200
-			fmt.Println(page, pageSize)
-			res.Total, res.Records = models.GetUserRecords(user.Id, taskId, int(page), int(pageSize))
-		}
+		c.JSON(http.StatusOK, &res)
+		return
 	}
+
+	taskId := c.Query("taskId")
+	page, err := strconv.ParseInt(c.Query("page"), 10, 32)
+	pageSize, err := strconv.ParseInt(c.Query("pageSize"), 10, 32)
+	if err != nil {
+		res.Code = 500
+		res.Message = err.Error()
+		c.JSON(http.StatusOK, &res)
+		return
+	}
+	res.Code = 200
+	fmt.Println(page, pageSize)
+	res.Total, res.Records = models.GetUserRecords(user.Id, taskId, int(page), int(pageSize))
 	c.JSON(http.StatusOK, &res)
 }
 

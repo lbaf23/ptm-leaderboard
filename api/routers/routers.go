@@ -38,12 +38,6 @@ func Init(r *gin.Engine) {
 		taskGroup.GET("/", controllers.GetTask)
 	}
 
-	datasetGroup := r.Group("/dataset")
-	datasetGroup.Use()
-	{
-		datasetGroup.GET("/", controllers.GetTaskDataSets)
-	}
-
 	submitGroup := r.Group("/submit")
 	submitGroup.Use(AuthMiddleware())
 	{
