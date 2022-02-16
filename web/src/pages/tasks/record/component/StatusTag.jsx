@@ -4,7 +4,7 @@ import {LoadingOutlined} from "@ant-design/icons"
 function StatusTag(obj) {
   return (
     <Tag style={{fontSize: '14px', fontWeight: '500'}}>
-      {obj.status === 'loading' ?
+      {obj.status === 'running' ?
         <span style={{color: 'gray'}}>{obj.status}&nbsp;<LoadingOutlined /></span> :
         <>
           {obj.status === 'succeed' ?

@@ -41,7 +41,6 @@ function RankList(obj) {
       {trans: 'AddSum-Person', score: 90},
       {trans: 'DoubleDenial', score: 90}
     ]
-
     setItem(i)
     setShowD(true)
     console.log(item)

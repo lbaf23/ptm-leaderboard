@@ -60,15 +60,15 @@ function RecordList() {
       dataIndex: 'startedAt',
       key: 'startedAt',
       render: (time) => (
-        <div>{utils.TimeFilter(time)}</div>
+        <>{utils.TimeFilter(time)}</>
       )
     },
     {
       title: 'Running Time',
       dataIndex: 'runningTime',
       key: 'runningTime',
-      render: (time) => (
-        <div>{utils.TimeFilter(time)}</div>
+      render: (time, item) => (
+        <>{item.status !== 'running' ? utils.TimeFilter(time) : "--"}</>
       )
     },
     {
@@ -87,7 +87,15 @@ function RecordList() {
   ]
 
   const handleClick = (item) => {
-    setItem(item)
+    let i = item;
+    i.result = [
+      {trans: 'SwapSpecialEnt-Movie', score: 90},
+      {trans: 'SwapSpecialEnt-Person', score: 90},
+      {trans: 'AddSum-Movie', score: 90},
+      {trans: 'AddSum-Person', score: 90},
+      {trans: 'DoubleDenial', score: 90}
+    ]
+    setItem(i)
     setShowInfo(true)
     console.log(item)
   }
@@ -114,14 +122,38 @@ function RecordList() {
       <Pagination style={{marginTop: '20px', float: 'right'}} current={page} total={total} pageSize={pageSize}/>
       <Drawer title={
         <div style={{fontSize: '26px'}}>
-          Score:&nbsp;&nbsp;{item.loading ? "-" : <>{item.score}</>}
+          Score:&nbsp;&nbsp;{item.status === 'running' ? "-" : <>{item.score}</>}
           <span style={{float: 'right'}}>
             <StatusTag status={item.status} />
           </span>
         </div>
       } visible={showInfo} onClose={handleClose}>
-        <div>SubmitTime:&nbsp;&nbsp;{item.createdAt}</div>
-        <div>FinishedTime:&nbsp;&nbsp;{item.finishedAt}</div>
+        <h2>{item.modelName}</h2>
+        <div>Start Time:&nbsp;&nbsp;{utils.TimeFilter(item.startedAt)}</div>
+
+        {item.status !== 'running' ?
+          <>
+            <div>Finished Time:&nbsp;&nbsp;{utils.TimeFilter(item.finishedAt)}</div>
+            <div>Running Time:&nbsp;{item.runningTime}</div>
+          </> : null
+        }
+
+        <a href={item.fileUrl}><Button icon={<DownloadOutlined />}>Download File</Button></a>
+        {item.status === 'succeed' ?
+          <>
+            <div>Result:</div>
+            <Table
+              dataSource={item.result}
+              columns={[
+                {title: 'transformation', dataIndex: 'trans', key: 'trans'},
+                {title: 'score', dataIndex: 'score', key: 'score'}
+              ]}
+              pagination={false}
+              style={{overflow: 'auto', marginTop: '20px'}}
+            />
+          </> : null
+        }
+        <div>message:&nbsp;{item.message}</div>
       </Drawer>
     </>
   )
