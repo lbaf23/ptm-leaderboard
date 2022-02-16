@@ -5,7 +5,6 @@ import {useParams} from "react-router-dom";
 
 import './taskinfo.css'
 import TaskBackend from "../../backend/TaskBackend";
-import DataSetBackend from "../../backend/DataSetBackend";
 
 
 function TaskInfo() {
@@ -16,13 +15,14 @@ function TaskInfo() {
 
   useEffect(() => {
     TaskBackend.getTask(params.id)
-    .then(res=>{
-      setLoading(false)
-      if(res.data.code === 200) {
-        setTask(res.data.task)
-      }
-    })
-    .catch(err=>{})
+      .then(res => {
+        setLoading(false)
+        if (res.data.code === 200) {
+          setTask(res.data.task)
+        }
+      })
+      .catch(err => {
+      })
   }, [])
 
   return (

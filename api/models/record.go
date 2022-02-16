@@ -27,7 +27,7 @@ func GetUserRecords(userId string, taskId string, page int, pageSize int) (total
 	db.Where("task_id = ?", taskId).
 		Where("user_id = ?", userId).
 		Limit(pageSize).
-		Offset(page * pageSize).
+		Offset((page - 1) * pageSize).
 		Order("created_at desc").
 		Find(&records)
 	db.

@@ -15,16 +15,16 @@ func (Rank) TableName() string {
 	return "rank"
 }
 
-func GetRankList(taskId string, page int, pageSize int) (count int64, ranks []Rank) {
+func GetRankList(taskId string, page int, pageSize int) (total int64, ranks []Rank) {
 	db.
 		Where("task_id = ?", taskId).
 		Order("score desc").
 		Limit(pageSize).
-		Offset(page * pageSize).
+		Offset((page - 1) * pageSize).
 		Find(&ranks)
 	db.
 		Model(Rank{}).
 		Where("task_id = ?", taskId).
-		Count(&count)
+		Count(&total)
 	return
 }

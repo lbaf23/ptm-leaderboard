@@ -11,7 +11,7 @@ import (
 type RankListResponse struct {
 	Response
 	Ranks []models.Rank `json:"ranks"`
-	Count int64         `json:"count"`
+	Total int64         `json:"total"`
 }
 
 func GetRankList(c *gin.Context) {
@@ -27,7 +27,7 @@ func GetRankList(c *gin.Context) {
 		return
 	}
 	res.Code = 200
-	res.Count, res.Ranks = models.GetRankList(taskId, int(page), int(pageSize))
+	res.Total, res.Ranks = models.GetRankList(taskId, int(page), int(pageSize))
 	c.JSON(http.StatusOK, &res)
 }
 

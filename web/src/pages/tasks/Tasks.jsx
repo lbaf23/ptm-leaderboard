@@ -1,11 +1,9 @@
-import {Card, Col, Divider, Image, Row} from "antd";
+import {Divider} from "antd";
 import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
 
 import './tasks.css'
 import TaskList from "./component/TaskList";
 import TaskBackend from "../../backend/TaskBackend";
-
 
 
 function Tasks() {
@@ -17,36 +15,37 @@ function Tasks() {
 
   useEffect(() => {
     TaskBackend.getTaskList("english")
-    .then(res=>{
-      setLoading(false)
-      if(res.data.code === 200) {
-        setTasks(res.data.taskList)
-      } else {
-        setTasks([])
-      }
-    })
-    .catch(err=>{
-    })
+      .then(res => {
+        setLoading(false)
+        if (res.data.code === 200) {
+          setTasks(res.data.taskList)
+        } else {
+          setTasks([])
+        }
+      })
+      .catch(err => {
+      })
     TaskBackend.getTaskList("chinese")
-    .then(res=>{
-      setZhLoading(false)
-      if(res.data.code === 200) {
-        setZhTasks(res.data.taskList)
-      } else {
-        setZhTasks([])
-      }
-    })
-    .catch(err=>{})     
+      .then(res => {
+        setZhLoading(false)
+        if (res.data.code === 200) {
+          setZhTasks(res.data.taskList)
+        } else {
+          setZhTasks([])
+        }
+      })
+      .catch(err => {
+      })
   }, [])
 
   return (
     <div className="mainContent">
 
       <Divider className="divider" orientation="left">English</Divider>
-      <TaskList loading={loading} list={tasks} />
+      <TaskList loading={loading} list={tasks}/>
 
       <Divider className="divider" orientation="left">Chinese</Divider>
-      <TaskList loading={zhLoading} list={zhTasks} />
+      <TaskList loading={zhLoading} list={zhTasks}/>
     </div>
   )
 }

@@ -1,10 +1,12 @@
 package models
 
 type Task struct {
-	ID          string `json:"id" gorm:"primary_key" gorm:"column:id"`
+	Id          string `json:"id" gorm:"primary_key" gorm:"column:id"`
 	Title       string `json:"title" gorm:"column:title"`
 	Description string `json:"description" gorm:"column:description"`
 	Type        string `json:"type" gorm:"index" gorm:"column:type"`
+
+	Transformation string `json:"transformation" gorm:"column:transformation"`
 }
 
 func (Task) TableName() string {
@@ -17,6 +19,8 @@ func GetTaskById(id string) (task Task) {
 }
 
 func GetTaskList(t string) (task []Task) {
-	db.Where("type = ?", t).Find(&task)
+	db.Where("type = ?", t).
+		Select([]string{"id", "title", "description", "type"}).
+		Find(&task)
 	return
 }

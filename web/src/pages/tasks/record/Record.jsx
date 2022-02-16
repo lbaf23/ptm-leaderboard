@@ -1,7 +1,6 @@
-import {Card, Table} from "antd";
-import React, {useEffect, useState} from "react"
+import {Card} from "antd";
+import React from "react"
 import RecordList from "./component/RecordList";
-
 
 
 function Record() {
@@ -12,7 +11,7 @@ function Record() {
       hoverable
     >
       <p style={{fontSize: '20px', textAlign: 'center', fontWeight: 'bold'}}>My Record</p>
-      <RecordList />
+      <RecordList/>
     </Card>
   )
 }
