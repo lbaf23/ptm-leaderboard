@@ -6,7 +6,6 @@ import TaskLayout from "./TaskLayout";
 import TaskInfo from "../tasks/TaskInfo";
 import Submit from "../tasks/submit/Submit";
 import Rank from "../tasks/rank/Rank";
-import RankInfo from "../tasks/rank/RankInfo";
 import Record from "../tasks/record/Record";
 import MainLayout from "./MainLayout";
 import { useEffect } from "react";
@@ -34,7 +33,6 @@ function RoutesLayout() {
             <Route index element={<TaskInfo/>}/>
             <Route exact path="submit" element={<Submit/>}/>
             <Route exact path="rank" element={<Rank/>}/>
-            <Route path="rank/:id" element={<RankInfo/>}/>
             <Route path="record" element={<Record/>}/>
             <Route path="record/:id" element={<TaskInfo/>}/>
           </Route>

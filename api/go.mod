@@ -7,6 +7,7 @@ require (
 	github.com/gin-contrib/sessions v0.0.4
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-ini/ini v1.66.3
+	github.com/lib/pq v1.10.3
 	gorm.io/driver/postgres v1.2.3
 	gorm.io/gorm v1.22.5
 )

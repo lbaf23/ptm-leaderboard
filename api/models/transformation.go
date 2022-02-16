@@ -1,13 +1,17 @@
 package models
 
-type Transformation struct {
-	ID           string `json:"id" gorm:"primary_key;column:id"`
-	DataSetRefer string `gorm:"primary_key;column:data_set_refer"`
+import "github.com/lib/pq"
 
-	Title string `json:"title" gorm:"column:title"`
-	Url   string `json:"url" gorm:"column:url"`
+type Trans struct {
+	Id        string `json:"id" gorm:"primary_key;column:id"`
+	TaskRefer string `json:"taskRefer" gorm:"primary_key;column:task_refer"`
+
+	Title       string         `json:"title" gorm:"column:title"`
+	RankColumns pq.StringArray `json:"rankColumns" gorm:"type:text[];column:rank_columns"`
+
+	DataSets []DataSet `json:"dataSets" gorm:"foreign_key:"`
 }
 
-func (Transformation) TableName() string {
-	return "transformation"
+func (Trans) TableName() string {
+	return "trans"
 }

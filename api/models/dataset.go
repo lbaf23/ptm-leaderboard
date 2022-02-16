@@ -1,11 +1,10 @@
 package models
 
 type DataSet struct {
-	ID              string           `json:"id" gorm:"primary_key;column:id"`
-	Title           string           `json:"title" gorm:"column:title"`
-	Description     string           `json:"description" gorm:"column:description"`
-	TaskRefer       string           `json:"taskRefer" gorm:"column:task_refer"`
-	Transformations []Transformation `json:"transformations" gorm:"foreignKey:DataSetRefer"`
+	ID          string `json:"id" gorm:"primary_key;column:id"`
+	Title       string `json:"title" gorm:"column:title"`
+	Description string `json:"description" gorm:"column:description"`
+	TransRefer  string `json:"taskRefer" gorm:"column:task_refer"`
 }
 
 func (DataSet) TableName() string {

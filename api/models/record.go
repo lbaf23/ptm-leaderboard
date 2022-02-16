@@ -7,9 +7,16 @@ import (
 type Record struct {
 	Id        uint      `json:"id" gorm:"primary_key;column:id"`
 	CreatedAt time.Time `json:"createdAt" gorm:"column:created_at"`
-	TaskId    string    `json:"taskId" gorm:"column:task_id"`
-	UserId    string    `json:"userId" gorm:"column:user_id"`
-	Loading   bool      `json:"loading" gorm:"column:loading"`
+
+	TaskId string `json:"taskId" gorm:"column:task_id"`
+	UserId string `json:"userId" gorm:"column:user_id"`
+
+	Loading bool `json:"loading" gorm:"column:loading"`
+
+	File string `json:"file" gorm:"column:file"`
+
+	Result string  `json:"result" gorm:"column:result"`
+	Score  float32 `json:"score" gorm:"column:score"`
 }
 
 func (Record) TableName() string {

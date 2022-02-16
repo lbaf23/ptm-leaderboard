@@ -10,13 +10,6 @@ import {
   SettingOutlined,
   UserOutlined
 } from "@ant-design/icons";
-import Home from '../home/Home';
-import Submit from '../tasks/submit/Submit';
-import Rank from "../tasks/rank/Rank";
-import Tasks from "../tasks/Tasks";
-import TaskInfo from "../tasks/TaskInfo";
-import RankInfo from "../tasks/rank/RankInfo";
-import Record from "../tasks/record/Record";
 
 import FooterBar from "./component/FooterBar";
 import TaskLayout from "./TaskLayout";

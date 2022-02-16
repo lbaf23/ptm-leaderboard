@@ -16,16 +16,14 @@ func Init(r *gin.Engine) {
 	}
 
 	rankListGroup := r.Group("/ranklist")
-	rankListGroup.Use(AuthMiddleware())
+	rankListGroup.Use()
 	{
 		rankListGroup.GET("/", controllers.GetRankList)
 	}
 	rankGroup := r.Group("/rank/:id")
 	rankGroup.Use()
 	{
-		rankGroup.GET("/", controllers.GetRecord)
-		rankGroup.POST("/", controllers.CreateRecord)
-		rankGroup.DELETE("/", controllers.DeleteRecord)
+		rankGroup.GET("/", controllers.GetRank)
 	}
 
 	taskListGroup := r.Group("/tasklist/:type")

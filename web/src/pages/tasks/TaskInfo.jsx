@@ -25,16 +25,6 @@ function TaskInfo() {
     .catch(err=>{})
   }, [])
 
-  useEffect(()=>{
-    DataSetBackend.getTaskDataSets(params.id)
-    .then(res=>{
-      if(res.data.code === 200) {
-        setDataSet(res.data.datasets)
-      }
-    })
-    .catch(err=>{})
-  }, [])
-
   return (
     <Card hoverable className="task-card" loading={loading}>
       <div className="task-title">{task.title}</div>

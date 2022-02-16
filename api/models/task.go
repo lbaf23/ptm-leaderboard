@@ -1,11 +1,10 @@
 package models
 
 type Task struct {
-	ID          string    `json:"id" gorm:"primary_key" gorm:"column:id"`
-	Title       string    `json:"title" gorm:"column:title"`
-	Description string    `json:"description" gorm:"column:description"`
-	Type        string    `json:"type" gorm:"index" gorm:"column:type"`
-	DataSets    []DataSet `json:"datasets" gorm:"foreignKey:TaskRefer"`
+	ID          string `json:"id" gorm:"primary_key" gorm:"column:id"`
+	Title       string `json:"title" gorm:"column:title"`
+	Description string `json:"description" gorm:"column:description"`
+	Type        string `json:"type" gorm:"index" gorm:"column:type"`
 }
 
 func (Task) TableName() string {
