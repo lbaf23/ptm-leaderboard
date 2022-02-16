@@ -113,7 +113,7 @@ function MainLayout() {
     <Layout className="main-layout">
       <BackTop/>
       <Header className="header">
-        <Row wrap={false}>
+        <Row wrap={false} justify="space-between">
           <Col flex="200px">
             <div className="logo">
               <a href={`${PUBLIC_URL}/home`}>PTMA</a>
@@ -122,7 +122,7 @@ function MainLayout() {
           <Col flex="auto">
             {mainMenu}
           </Col>
-          <Col flex="80px">
+          <Col flex="auto">
             {account === null
               ?
               <div onClick={userLogin} className="login">
@@ -131,7 +131,7 @@ function MainLayout() {
               </div>
               :
               <Dropdown overlay={accountMenu} placement="bottomRight" trigger="click">
-                <div style={{cursor: 'pointer'}}>
+                <div style={{cursor: 'pointer', float: 'right'}}>
                   <Avatar src={account.avatar} />
                   <span style={{fontSize: '16px', marginLeft: '5px'}}>{account.name}</span>
                 </div>
