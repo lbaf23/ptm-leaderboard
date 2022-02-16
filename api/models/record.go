@@ -16,6 +16,7 @@ type Record struct {
 
 	Loading bool   `json:"loading" gorm:"column:loading"`
 	Status  string `json:"status" gorm:"column:status"`
+	Message string `json:"message" gorm:"column:message"`
 
 	FileUrl string `json:"fileUrl" gorm:"column:file_url"`
 

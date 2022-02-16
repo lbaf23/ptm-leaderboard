@@ -1,9 +1,11 @@
-import {Drawer, Pagination, Table, Tag} from "antd";
+import {Button, Drawer, Pagination, Table, Tag} from "antd";
+import {DownloadOutlined} from "@ant-design/icons"
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import RecordBackend from "../../../../backend/RecordBackend";
 
 import utils from '../../../utils/Utils'
+import StatusTag from "./StatusTag";
 
 function RecordList() {
   const params = useParams()
@@ -17,10 +19,13 @@ function RecordList() {
   const [showInfo, setShowInfo] = useState(false)
   const [records, setRecords] = useState([])
 
+  const [orderBy, setOrderBy] = useState('started_at')
+  const [orderType, setOrderType] = useState('desc')
+
   const [item, setItem] = useState({})
 
   useEffect(() => {
-    RecordBackend.getRecordList(params.id, page, pageSize)
+    RecordBackend.getRecordList(params.id, page, pageSize, orderBy, orderType)
       .then(res => {
         setLoading(false)
         if (res.data.code === 200) {
@@ -32,30 +37,52 @@ function RecordList() {
       })
   }, [])
 
+  const stopPop = (e) => {
+    e.stopPropagation()
+  }
+
   const columns = [
-    {
-      title: 'Time',
-      dataIndex: 'createdAt',
-      key: 'time',
-      render: (time) => (
-        <div>{utils.TimeFilter(time)}</div>
-      )
-    },
-    {
-      title: 'Model',
-      dataIndex: 'modelName',
-      key: 'model',
-    },
     {
       title: 'Score',
       dataIndex: 'score',
       key: 'score',
     },
-
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (item) => (
+        <StatusTag status={item}/>
+      )
+    },
+    {
+      title: 'Start Time',
+      dataIndex: 'startedAt',
+      key: 'startedAt',
+      render: (time) => (
+        <div>{utils.TimeFilter(time)}</div>
+      )
+    },
+    {
+      title: 'Running Time',
+      dataIndex: 'runningTime',
+      key: 'runningTime',
+      render: (time) => (
+        <div>{utils.TimeFilter(time)}</div>
+      )
+    },
+    {
+      title: 'Model Name',
+      dataIndex: 'modelName',
+      key: 'modelName',
+    },
     {
       title: 'File',
-      dataIndex: 'file',
-      key: 'file',
+      dataIndex: 'fileUrl',
+      key: 'fileUrl',
+      render: (item) => (
+        <a href={item} onClick={stopPop}><Button type="link" icon={<DownloadOutlined />} /></a>
+      )
     },
   ]
 
@@ -86,9 +113,11 @@ function RecordList() {
       />
       <Pagination style={{marginTop: '20px', float: 'right'}} current={page} total={total} pageSize={pageSize}/>
       <Drawer title={
-        <div style={{fontSize: '30px'}}>
-          Score:&nbsp;&nbsp;{item.score}
-          <Tag>finished</Tag>
+        <div style={{fontSize: '26px'}}>
+          Score:&nbsp;&nbsp;{item.loading ? "-" : <>{item.score}</>}
+          <span style={{float: 'right'}}>
+            <StatusTag status={item.status} />
+          </span>
         </div>
       } visible={showInfo} onClose={handleClose}>
         <div>SubmitTime:&nbsp;&nbsp;{item.createdAt}</div>
