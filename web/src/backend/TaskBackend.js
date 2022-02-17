@@ -14,6 +14,13 @@ const TaskBackend = {
       method: 'get',
     })
   },
+  updateTaskContent(taskId, content) {
+    return request({
+      url: `/task/${taskId}/`,
+      method: 'post',
+      data: qs.stringify({content: content})
+    })
+  }
 }
 
 

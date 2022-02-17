@@ -13,44 +13,6 @@
     margin-top: 20px;
 }
 
-.task-card .dataset {
-    font-size: 34px;
-    margin-top: 30px;
-    text-align: center;
-}
-
-.task-card .dataset-card {
-    margin-top: 20px;
-    padding-bottom: 40px;
-}
-
-.task-card .dataset-card .dataset-title {
-    font-size: 30px;
-
-}
-
-.task-card .dataset-card .dataset-description {
-    font-size: 16px;
-}
-
-.task-card .dataset-card .dataset-trans {
-    margin-top: 20px;
-    font-size: 20px;
-    font-weight: 600;
-}
-
-.task-card .dataset-card .trans {
-    margin-top: 20px;
-}
-
-.task-card .dataset-card .trans .trans-card {
-    margin-top: 10px;
-}
-
-.task-card .dataset-card .trans .trans-card .trans-title {
-    font-size: 18px;
-}
-
-.task-card .dataset-card .trans .trans-card .download-bt {
-    margin-left: 20px;
+.task-card .task-content {
+    margin-bottom: 20px;
 }
