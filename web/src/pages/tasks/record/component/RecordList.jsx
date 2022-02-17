@@ -19,7 +19,7 @@ function RecordList() {
   const [showInfo, setShowInfo] = useState(false)
   const [records, setRecords] = useState([])
 
-  const [orderBy, setOrderBy] = useState('started_at')
+  const [orderBy, setOrderBy] = useState('submitted_at')
   const [orderType, setOrderType] = useState('desc')
 
   const [item, setItem] = useState({})
@@ -56,9 +56,9 @@ function RecordList() {
       )
     },
     {
-      title: 'Start Time',
-      dataIndex: 'startedAt',
-      key: 'startedAt',
+      title: 'Submit',
+      dataIndex: 'submittedAt',
+      key: 'submittedAt',
       render: (time) => (
         <>{utils.TimeFilter(time)}</>
       )
@@ -68,7 +68,7 @@ function RecordList() {
       dataIndex: 'runningTime',
       key: 'runningTime',
       render: (time, item) => (
-        <>{item.status !== 'running' ? utils.TimeFilter(time) : "--"}</>
+        <>{utils.TimeFilter(time)}</>
       )
     },
     {
@@ -131,12 +131,8 @@ function RecordList() {
         <h2>{item.modelName}</h2>
         <div>Start Time:&nbsp;&nbsp;{utils.TimeFilter(item.startedAt)}</div>
 
-        {item.status !== 'running' ?
-          <>
-            <div>Finished Time:&nbsp;&nbsp;{utils.TimeFilter(item.finishedAt)}</div>
-            <div>Running Time:&nbsp;{item.runningTime}</div>
-          </> : null
-        }
+        <div>Finished Time:&nbsp;&nbsp;{utils.TimeFilter(item.finishedAt)}</div>
+        <div>Running Time:&nbsp;{item.runningTime}</div>
 
         <a href={item.fileUrl}><Button icon={<DownloadOutlined />}>Download File</Button></a>
         {item.status === 'succeed' ?
