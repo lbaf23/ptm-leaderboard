@@ -17,6 +17,8 @@ function RecordList() {
   const [loading, setLoading] = useState(true)
 
   const [showInfo, setShowInfo] = useState(false)
+  const [drawerLoading, setDrawerLoading] = useState(false)
+
   const [records, setRecords] = useState([])
 
   const [orderBy, setOrderBy] = useState('submitted_at')
@@ -87,17 +89,22 @@ function RecordList() {
   ]
 
   const handleClick = (item) => {
-    let i = item;
-    i.result = [
-      {trans: 'SwapSpecialEnt-Movie', score: 90},
-      {trans: 'SwapSpecialEnt-Person', score: 90},
-      {trans: 'AddSum-Movie', score: 90},
-      {trans: 'AddSum-Person', score: 90},
-      {trans: 'DoubleDenial', score: 90}
-    ]
-    setItem(i)
     setShowInfo(true)
-    console.log(item)
+    setDrawerLoading(true)
+    RecordBackend.getRecord(item.id).
+    then(res=>{
+      let i = res.data.record;
+      i.result = [
+        {trans: 'SwapSpecialEnt-Movie', score: 90},
+        {trans: 'SwapSpecialEnt-Person', score: 90},
+        {trans: 'AddSum-Movie', score: 90},
+        {trans: 'AddSum-Person', score: 90},
+        {trans: 'DoubleDenial', score: 90}
+      ]
+      setItem(i)
+      setDrawerLoading(false)
+    })
+      .catch(err=>{})
   }
 
   const handleClose = () => {
@@ -122,12 +129,12 @@ function RecordList() {
       <Pagination style={{marginTop: '20px', float: 'right'}} current={page} total={total} pageSize={pageSize}/>
       <Drawer title={
         <div style={{fontSize: '26px'}}>
-          Score:&nbsp;&nbsp;{item.status === 'running' ? "-" : <>{item.score}</>}
+          Score:&nbsp;&nbsp;{item.score}
           <span style={{float: 'right'}}>
             <StatusTag status={item.status} />
           </span>
         </div>
-      } visible={showInfo} onClose={handleClose}>
+      } visible={showInfo} onClose={handleClose} >
         <h2>{item.modelName}</h2>
         <div>Start Time:&nbsp;&nbsp;{utils.TimeFilter(item.startedAt)}</div>
 

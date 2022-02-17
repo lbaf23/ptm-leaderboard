@@ -14,6 +14,12 @@ const RecordBackend = {
         orderType: orderType
       }
     })
+  },
+  getRecord(id) {
+    return request({
+      url: `/record/${id}/`,
+      method: 'get',
+    })
   }
 }
 
