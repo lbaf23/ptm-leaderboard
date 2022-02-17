@@ -1,21 +1,19 @@
 import React, {useEffect, useState} from "react";
 import {BackTop, Layout, Menu, Dropdown, Avatar, Row, Col} from 'antd';
-import {Link, Outlet, Route, Routes, useLocation, useSearchParams} from 'react-router-dom';
+import {Link, Route, Routes, useLocation} from 'react-router-dom';
 import {
   EllipsisOutlined,
   HddOutlined,
   HomeOutlined,
   LoginOutlined,
   LogoutOutlined,
-  SettingOutlined,
-  UserOutlined
+  SettingOutlined
 } from "@ant-design/icons";
 
 import FooterBar from "./component/FooterBar";
 import TaskLayout from "./TaskLayout";
-import Callback from "../Auth/Callback"
 
-import Auth from '../Auth/Auth'
+import {getAuthorizeUrl, getMyProfileUrl} from '../Auth/Auth'
 
 import './mainlayout.css'
 import AuthBackend from "../../backend/AuthBackend";
@@ -39,6 +37,7 @@ function MainLayout() {
   const path = useLocation().pathname.split('/')
 
   useEffect(() => {
+    console.log("main use effect")
     if (path.includes('tasks')) {
       setSelected('tasks')
     }
@@ -59,7 +58,7 @@ function MainLayout() {
 
   const handleMenuClick = (e) => {
     if (e.key === 'account') {
-      window.open(Auth.getMyProfileUrl(account))
+      window.open(getMyProfileUrl(account))
     } else if (e.key === 'logout') {
       AuthBackend.logout()
         .then((res)=>{
@@ -76,7 +75,7 @@ function MainLayout() {
   const userLogin = () => {
     const url = window.location.href
     localStorage.setItem("url", url)
-    window.location.href = Auth.getAuthorizeUrl()
+    window.location.href = getAuthorizeUrl()
   }
 
   const mainMenu = (

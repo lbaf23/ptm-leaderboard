@@ -46,9 +46,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	// claims.AccessToken = token.AccessToken
-
-	err = SetUser(c, claims)
+	claims.AccessToken = token.AccessToken
 
 	if err != nil {
 		res.Code = 403
@@ -59,19 +57,11 @@ func Login(c *gin.Context) {
 	res.Code = 200
 	res.Message = "login succeed"
 	res.Account = *claims
-
 	c.JSON(http.StatusOK, res)
 }
 
 func Logout(c *gin.Context) {
 	var res Response
-	err := DeleteUser(c)
-	if err != nil {
-		res.Code = 500
-		res.Message = err.Error()
-		c.JSON(http.StatusOK, &res)
-		return
-	}
 	res.Code = 200
 	res.Message = "logout"
 	c.JSON(http.StatusOK, &res)
@@ -79,13 +69,13 @@ func Logout(c *gin.Context) {
 
 func GetAccount(c *gin.Context) {
 	var res UserResponse
-	user, err := GetUser(c)
+	claims, err := auth.ParseJwtToken(c.Query("token"))
 	if err != nil {
 		res.Code = 404
 		res.Message = err.Error()
 	} else {
 		res.Code = 200
-		res.Account = user
+		res.Account = *claims
 	}
 	c.JSON(http.StatusOK, &res)
 }

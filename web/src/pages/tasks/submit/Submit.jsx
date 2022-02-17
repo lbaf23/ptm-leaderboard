@@ -4,28 +4,15 @@ import {UploadOutlined} from "@ant-design/icons"
 import CasdoorBackend from "../../../backend/CasdoorBackend";
 import {useParams} from "react-router-dom";
 
-
-// owner=ptm-leaderboard
-// user=user1
-// application=app-built-in
-// tag=avatar
-// parent=CropperDiv
-// fullFilePath=avatar%2Fptm-leaderboard%2Fuser1.jpeg
-// provider=
-
 function Submit(obj) {
-
-  console.log(obj.account)
   const params = useParams();
 
   const [loading, setLoading] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [modelName, setModelName] = useState('')
   const [fileList, setFileList] = useState([])
 
   useEffect(()=>{
-    CasdoorBackend.getUser()
-      .then(res=>{console.log(res.data)})
-      .catch(err=>{console.log(err)})
   },[])
 
   const preCheck = () => {
@@ -51,19 +38,25 @@ function Submit(obj) {
   }
 
   const onUploadFile = (f) =>{
+    setUploading(true)
     const file = f.file
+    console.log(file)
     const index = file.name.lastIndexOf('.');
+    const ftype = file.name.substring(index)
     if (index === -1) {
-      message.error('invalid file type');
+      message.error('invalid file type, need .zip file');
+      setUploading(false)
       return
     }
     if (file.size > 1024 * 1024 * 1024) {
       message.error('file size should be smaller than 1GB');
+      setUploading(false)
       return
     }
     let filePath = `/ptm-leaderboard/${obj.account.name}/${params.id}/${file.name}`
     CasdoorBackend.uploadFile(obj.account.owner, obj.account.name, "ptm-leaderboard", "models", "admin", filePath, file)
       .then(res=>{
+        setUploading(false)
         if (res.data.status === 'ok') {
           console.log(res.data.data)
           setFileList([
@@ -77,6 +70,7 @@ function Submit(obj) {
   }
   const props = {
     name: 'file',
+    accept: '.zip',
     multiple: false,
     customRequest: onUploadFile,
     fileList: fileList,
@@ -93,10 +87,10 @@ function Submit(obj) {
         <Space direction="vertical" size="middle" style={{width: '100%'}}>
           <Input addonBefore="Model Name" onChange={inputModelName} value={modelName}/>
           <Upload {...props}>
-            <Button icon={<UploadOutlined/>}>Upload model file</Button>
+            <Button loading={uploading} icon={<UploadOutlined/>}>Upload ZIP File</Button>
           </Upload>
           <Button loading={loading} onClick={handleSubmit}>
-            submit
+            Submit
           </Button>
         </Space>
       </div>

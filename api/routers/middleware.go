@@ -3,7 +3,7 @@ package routers
 import (
 	"net/http"
 
-	"github.com/gin-contrib/sessions"
+	"github.com/casdoor/casdoor-go-sdk/auth"
 	"github.com/gin-gonic/gin"
 )
 
@@ -31,11 +31,13 @@ func AuthMiddleware() gin.HandlerFunc {
 			c.Next()
 		}
 
-		user := sessions.Default(c).Get("user")
-		if user == nil {
+		token := c.Query("token")
+		claims, err := auth.ParseJwtToken(token)
+		if err != nil {
 			c.Abort()
 			c.JSON(http.StatusOK, gin.H{"code": 403, "message": "please login first"})
 		} else {
+			c.Set("userId", claims.Id)
 			c.Next()
 		}
 	}

@@ -1,8 +1,6 @@
 import axios from 'axios'
 import {message} from 'antd'
 
-import auth from '../pages/Auth/Auth'
-
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL
 
 function getServerUrl() {
@@ -12,17 +10,13 @@ function getServerUrl() {
 export const request = axios.create({
   baseURL: getServerUrl(),
   timeout: 10000,
-  withCredentials: true
+  withCredentials: true,
 })
 
 export const casdoorRequest = axios.create({
-  baseURL: auth.authConfig.serverUrl,
+  baseURL: process.env.REACT_APP_CASDOOR_ENDPOINT,
   timeout: 10000,
   withCredentials: true
-})
-
-casdoorRequest.interceptors.response.use(res=>{
-  return res
 })
 
 request.interceptors.response.use(res=>{

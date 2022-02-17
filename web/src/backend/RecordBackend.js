@@ -1,5 +1,4 @@
 import {request} from './request'
-import qs from 'qs'
 
 const RecordBackend = {
   getRecordList(taskId, page, pageSize, orderBy, orderType) {
@@ -11,7 +10,8 @@ const RecordBackend = {
         page: page,
         pageSize: pageSize,
         orderBy: orderBy,
-        orderType: orderType
+        orderType: orderType,
+        token: localStorage.getItem("token")
       }
     })
   },
@@ -19,9 +19,11 @@ const RecordBackend = {
     return request({
       url: `/record/${id}/`,
       method: 'get',
+      params: {
+        token: localStorage.getItem("token")
+      }
     })
   }
 }
-
 
 export default RecordBackend

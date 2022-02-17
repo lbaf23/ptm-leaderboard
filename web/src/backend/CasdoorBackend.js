@@ -3,12 +3,6 @@ import qs from 'qs'
 import app from "../App";
 
 const AuthBackend = {
-  getUser() {
-    return casdoorRequest({
-      url: '/api/get-user?id=ptm-leaderboard/user1',
-      method: 'get',
-    })
-  },
   uploadFile(owner, user, application, tag, parent, fullFilePath, file, provider="" ) {
     const formData = new FormData();
     formData.append("file", file)
@@ -39,6 +33,5 @@ const AuthBackend = {
     })
   }
 }
-
 
 export default AuthBackend

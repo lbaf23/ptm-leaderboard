@@ -9,8 +9,6 @@ import (
 	"fmt"
 
 	"github.com/casdoor/casdoor-go-sdk/auth"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/postgres"
 	"github.com/gin-gonic/gin"
 )
 
@@ -21,12 +19,6 @@ func main() {
 	models.Init()
 
 	gob.Register(auth.Claims{})
-
-	store, err := postgres.NewStore(models.SQLDB, []byte("secret"))
-	if err != nil {
-		panic(err)
-	}
-	r.Use(sessions.Sessions("ptm-leaderboard", store))
 
 	r.Use(routers.CorsMiddleware())
 

@@ -1,7 +1,6 @@
 import {request} from './request'
 import qs from 'qs'
 
-
 const AuthBackend = {
   login(code, state) {
     return request({
@@ -19,10 +18,12 @@ const AuthBackend = {
   getAccount() {
     return request({
       url: '/auth/account',
-      method: 'get'
+      method: 'get',
+      params: {
+        token: localStorage.getItem("token")
+      }
     })
   }
 }
-
 
 export default AuthBackend

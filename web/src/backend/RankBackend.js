@@ -7,13 +7,12 @@ const RankBackend = {
       url: `/ranklist/`,
       method: 'get',
       params: {
-          taskId: taskId,
-          page: page,
-          pageSize: pageSize
+        taskId: taskId,
+        page: page,
+        pageSize: pageSize
       }
     })
   }
 }
-
 
 export default RankBackend

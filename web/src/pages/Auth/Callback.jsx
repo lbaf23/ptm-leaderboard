@@ -21,7 +21,7 @@ function Callback() {
     AuthBackend.login(code, state)
     .then((res)=>{
       if(res.data.code === 200) {
-        localStorage.setItem("token", res.data.token)
+        localStorage.setItem("token", res.data.account.accessToken)
         const url = localStorage.getItem("url")
         if (url === "" || url === undefined || url === null) {
           window.location.href = `${PUBLIC_URL}/home`

@@ -2979,6 +2979,11 @@ capture-stack-trace@^1.0.0:
   resolved "https://registry.npmmirror.com/capture-stack-trace/-/capture-stack-trace-1.0.1.tgz#a6c0bbe1f38f3aa0b92238ecb6ff42c344d4135d"
   integrity sha512-mYQLZnx5Qt1JgB1WEiMCf2647plpGeQ2NMR/5L0HNZzGQo4fuSPnK+wjfPnKZV0aiJDgzmWqqkV/g7JD+DW0qw==
 
+casdoor-js-sdk@^0.2.5:
+  version "0.2.5"
+  resolved "https://registry.npmmirror.com/casdoor-js-sdk/-/casdoor-js-sdk-0.2.5.tgz#a60024336756843fe4156c71b502496691a74b8f"
+  integrity sha512-OLwlZXY3vnuf/DcC+VOy2KyFHpsO47fVvJuop5aVkbh8BceTFmJq/3+uth00sOH6QSeJ1FXgQPnlBnkAIFAEbQ==
+
 case-sensitive-paths-webpack-plugin@^2.4.0:
   version "2.4.0"
   resolved "https://registry.npmmirror.com/case-sensitive-paths-webpack-plugin/download/case-sensitive-paths-webpack-plugin-2.4.0.tgz#db64066c6422eed2e08cc14b986ca43796dbc6d4"

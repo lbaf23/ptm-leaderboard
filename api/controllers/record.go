@@ -18,13 +18,8 @@ func GetUserRecords(c *gin.Context) {
 	var (
 		res RecordListResponse
 	)
-	user, err := GetUser(c)
-	if err != nil {
-		res.Code = 404
-		res.Message = err.Error()
-		c.JSON(http.StatusOK, &res)
-		return
-	}
+
+	userId := c.GetString("userId")
 
 	taskId := c.Query("taskId")
 	orderBy := c.Query("orderBy")
@@ -38,7 +33,7 @@ func GetUserRecords(c *gin.Context) {
 		return
 	}
 	res.Code = 200
-	res.Total, res.Records = models.GetUserRecords(user.Id, taskId, int(page), int(pageSize), orderBy, orderType)
+	res.Total, res.Records = models.GetUserRecords(userId, taskId, int(page), int(pageSize), orderBy, orderType)
 	c.JSON(http.StatusOK, &res)
 }
 
