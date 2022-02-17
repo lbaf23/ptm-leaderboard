@@ -10,7 +10,9 @@ import './tasklayout.css'
 const {Content, Sider} = Layout;
 const PUBLIC_URL = process.env.PUBLIC_URL
 
-function TaskLayout() {
+function TaskLayout(obj) {
+  console.log(obj.account)
+
   const [collapsed, setCollapsed] = useState(false)
 
   useEffect(() => {

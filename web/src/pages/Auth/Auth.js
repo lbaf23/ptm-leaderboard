@@ -74,4 +74,5 @@ export default {
   getAuthorizeUrl,
   getMyProfileUrl,
   getUser,
+  authConfig
 }

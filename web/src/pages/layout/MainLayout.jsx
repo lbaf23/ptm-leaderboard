@@ -141,7 +141,7 @@ function MainLayout() {
         </Row>
       </Header>
       <Content className="main-content">
-        <Outlet />
+        <Outlet account={account} />
       </Content>
       <Footer className="footer">
         <FooterBar/>
