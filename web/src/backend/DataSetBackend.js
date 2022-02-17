@@ -1,8 +1,8 @@
-import {request} from './request'
+import {apiRequest} from './request'
 
 const DataSetBackend = {
   getTaskDataSets(taskId) {
-    return request({
+    return apiRequest({
       url: `/dataset/?taskId=${taskId}`,
       method: 'get',
     })

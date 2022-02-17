@@ -1,21 +1,21 @@
-import {request} from './request'
+import {apiRequest} from './request'
 import qs from 'qs'
 
 const TaskBackend = {
   getTaskList(type) {
-    return request({
+    return apiRequest({
       url: `/tasklist/${type}/`,
       method: 'get',
     })
   },
   getTask(taskId) {
-    return request({
+    return apiRequest({
       url: `/task/${taskId}/`,
       method: 'get',
     })
   },
   updateTaskContent(taskId, content) {
-    return request({
+    return apiRequest({
       url: `/task/${taskId}/`,
       method: 'post',
       data: qs.stringify({content: content})

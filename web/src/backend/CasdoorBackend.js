@@ -1,6 +1,5 @@
 import {casdoorRequest} from './request'
 import qs from 'qs'
-import app from "../App";
 
 const AuthBackend = {
   uploadFile(owner, user, application, tag, parent, fullFilePath, file, provider="" ) {

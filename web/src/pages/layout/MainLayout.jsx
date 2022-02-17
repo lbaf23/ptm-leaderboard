@@ -37,7 +37,6 @@ function MainLayout() {
   const path = useLocation().pathname.split('/')
 
   useEffect(() => {
-    console.log("main use effect")
     if (path.includes('tasks')) {
       setSelected('tasks')
     }

@@ -2,24 +2,30 @@ import axios from 'axios'
 import {message} from 'antd'
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL
+const REACT_APP_ATTACK_URL = process.env.REACT_APP_ATTACK_URL
+const REACT_APP_CASDOOR_ENDPOINT = process.env.REACT_APP_CASDOOR_ENDPOINT
 
-function getServerUrl() {
-  return REACT_APP_BASE_URL
-}
-
-export const request = axios.create({
-  baseURL: getServerUrl(),
+export const apiRequest = axios.create({
+  baseURL: REACT_APP_BASE_URL,
   timeout: 10000,
-  withCredentials: true,
+})
+
+export const attackRequest = axios.create({
+  baseURL: REACT_APP_ATTACK_URL,
+  timeout: 10000
 })
 
 export const casdoorRequest = axios.create({
-  baseURL: process.env.REACT_APP_CASDOOR_ENDPOINT,
+  baseURL: REACT_APP_CASDOOR_ENDPOINT,
   timeout: 10000,
   withCredentials: true
 })
 
-request.interceptors.response.use(res=>{
+apiRequest.interceptors.response.use(res=>authMiddleware(res))
+
+attackRequest.interceptors.response.use(res=>authMiddleware(res))
+
+function authMiddleware(res) {
   if (res.data.code === 401) {
     message.error(res.data.message);
   } else if (res.data.code === 403) {
@@ -28,4 +34,4 @@ request.interceptors.response.use(res=>{
     res.headers["Access-Control-Allow-Origin"] =  "*"
     return res
   }
-})
+}

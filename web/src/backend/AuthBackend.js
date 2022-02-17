@@ -1,22 +1,22 @@
-import {request} from './request'
+import {apiRequest} from './request'
 import qs from 'qs'
 
 const AuthBackend = {
   login(code, state) {
-    return request({
+    return apiRequest({
       url: '/auth/login',
       method: 'post',
       data: qs.stringify({code: code, state: state}),
     })
   },
   logout() {
-    return request({
+    return apiRequest({
       url: '/auth/logout',
       method: 'post',
     })
   },
   getAccount() {
-    return request({
+    return apiRequest({
       url: '/auth/account',
       method: 'get',
       params: {

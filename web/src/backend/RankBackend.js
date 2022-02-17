@@ -1,9 +1,9 @@
-import {request} from './request'
+import {apiRequest} from './request'
 import qs from 'qs'
 
 const RankBackend = {
   getRankList(taskId, page, pageSize) {
-    return request({
+    return apiRequest({
       url: `/ranklist/`,
       method: 'get',
       params: {

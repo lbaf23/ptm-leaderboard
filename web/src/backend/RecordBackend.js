@@ -1,8 +1,8 @@
-import {request} from './request'
+import {apiRequest} from './request'
 
 const RecordBackend = {
   getRecordList(taskId, page, pageSize, orderBy, orderType) {
-    return request({
+    return apiRequest({
       url: `/recordlist/`,
       method: 'get',
       params: {
@@ -16,7 +16,7 @@ const RecordBackend = {
     })
   },
   getRecord(id) {
-    return request({
+    return apiRequest({
       url: `/record/${id}/`,
       method: 'get',
       params: {
