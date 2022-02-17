@@ -1,18 +1,32 @@
-import React, {useState} from "react";
-import {Button, Card, Input, message, Space, Upload} from "antd";
+import React, {useEffect, useState} from "react";
+import {Button, Card, Cascader, Input, message, Space, Upload} from "antd";
 import {UploadOutlined} from "@ant-design/icons"
 import CasdoorBackend from "../../../backend/CasdoorBackend";
 import {useParams} from "react-router-dom";
 
 
-function Submit(obj) {
-  console.log(obj.account)
+// owner=ptm-leaderboard
+// user=user1
+// application=app-built-in
+// tag=avatar
+// parent=CropperDiv
+// fullFilePath=avatar%2Fptm-leaderboard%2Fuser1.jpeg
+// provider=
 
+function Submit(obj) {
+
+  console.log(obj.account)
   const params = useParams();
 
   const [loading, setLoading] = useState(false)
   const [modelName, setModelName] = useState('')
   const [fileList, setFileList] = useState([])
+
+  useEffect(()=>{
+    CasdoorBackend.getUser()
+      .then(res=>{console.log(res.data)})
+      .catch(err=>{console.log(err)})
+  },[])
 
   const preCheck = () => {
     if (modelName === '') {
@@ -40,18 +54,23 @@ function Submit(obj) {
     const file = f.file
     const index = file.name.lastIndexOf('.');
     if (index === -1) {
-      message.error('不能识别文件类型');
+      message.error('invalid file type');
       return
     }
     if (file.size > 1024 * 1024 * 1024) {
-      message.error('文件不能大于1GB');
+      message.error('file size should be smaller than 1GB');
       return
     }
-    let filePath = `/ptm-leaderboard/${1}/${params.id}/${file.name}`
-    CasdoorBackend.uploadFile("admin", "ptm-leaderboard", "admin", filePath, file)
+    let filePath = `/ptm-leaderboard/${obj.account.name}/${params.id}/${file.name}`
+    CasdoorBackend.uploadFile(obj.account.owner, obj.account.name, "ptm-leaderboard", "models", "admin", filePath, file)
       .then(res=>{
         if (res.data.status === 'ok') {
-          console(filePath, file.name, res.data.data)
+          console.log(res.data.data)
+          setFileList([
+            {name: file.name, url: res.data.data}
+          ])
+        } else {
+          message.error(res.data.msg)
         }
       })
       .catch(e=>{console.log(e)})

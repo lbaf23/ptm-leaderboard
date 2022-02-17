@@ -1,21 +1,31 @@
 import {casdoorRequest} from './request'
 import qs from 'qs'
+import app from "../App";
 
 const AuthBackend = {
-  uploadFile(owner, tag, parent, fullFulePath, file, provider="" ) {
+  getUser() {
     return casdoorRequest({
-      url: '/api/upload-resource/',
+      url: '/api/get-user?id=ptm-leaderboard/user1',
+      method: 'get',
+    })
+  },
+  uploadFile(owner, user, application, tag, parent, fullFilePath, file, provider="" ) {
+    const formData = new FormData();
+    formData.append("file", file)
+    return casdoorRequest({
+      url: '/api/upload-resource',
       method: 'post',
-      data: qs.stringify({
-        file: file
-      }),
       params: {
         owner: owner,
+        user: user,
+        application: application,
         tag: tag,
-        parent: parent,
-        fullFulePath: fullFulePath,
-        provider: provider
-      }
+        parent: "admin",
+        fullFilePath: fullFilePath,
+        provider: provider,
+      },
+      data: formData,
+      withCredentials: true
     })
   },
   deleteFile(data, provider="") {

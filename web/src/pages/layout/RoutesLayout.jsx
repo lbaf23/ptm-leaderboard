@@ -26,17 +26,7 @@ function RoutesLayout() {
       <Route path={PUBLIC_URL}>
         <Route index element={<Redirect to="home"/>} />
 
-        <Route path="home" element={<MainLayout/>}>
-          <Route index element={<Home/>} />
-          <Route path="tasks" element={<Tasks/>}/>
-          <Route path="tasks/:id" element={<TaskLayout/>}>
-            <Route index element={<TaskInfo/>}/>
-            <Route exact path="submit" element={<Submit/>}/>
-            <Route exact path="rank" element={<Rank/>}/>
-            <Route path="record" element={<Record/>}/>
-            <Route path="record/:id" element={<TaskInfo/>}/>
-          </Route>
-        </Route>
+        <Route path="home/*" element={<MainLayout/>}/>
 
         <Route exact path={`${PUBLIC_URL}/callback`} element={<Callback />}/>
       </Route>

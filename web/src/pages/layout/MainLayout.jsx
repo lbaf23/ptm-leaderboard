@@ -19,6 +19,12 @@ import Auth from '../Auth/Auth'
 
 import './mainlayout.css'
 import AuthBackend from "../../backend/AuthBackend";
+import Home from "../home/Home";
+import Tasks from "../tasks/Tasks";
+import TaskInfo from "../tasks/TaskInfo";
+import Submit from "../tasks/submit/Submit";
+import Rank from "../tasks/rank/Rank";
+import Record from "../tasks/record/Record";
 
 
 const PUBLIC_URL = process.env.PUBLIC_URL
@@ -141,7 +147,19 @@ function MainLayout() {
         </Row>
       </Header>
       <Content className="main-content">
-        <Outlet account={account} />
+
+        <Routes>
+          <Route index element={<Home/>} />
+          <Route path="tasks" element={<Tasks/>}/>
+          <Route path="tasks/:id" element={<TaskLayout/>}>
+            <Route index element={<TaskInfo/>}/>
+            <Route exact path="submit" element={<Submit account={account}/>}/>
+            <Route exact path="rank" element={<Rank/>}/>
+            <Route path="record" element={<Record/>}/>
+            <Route path="record/:id" element={<TaskInfo/>}/>
+          </Route>
+        </Routes>
+
       </Content>
       <Footer className="footer">
         <FooterBar/>

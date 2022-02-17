@@ -49,7 +49,8 @@ function getMyProfileUrl(account) {
   //if (account !== undefined && account !== null) {
   //  param = `?access_token=${account.accessToken}`;
   //}
-  return `${trim(authConfig.serverUrl)}/account`;
+  const t = localStorage.getItem("token")
+  return `${trim(authConfig.serverUrl)}/account?access_token=${t}`;
 }
 
 function trim(str, ch) {
