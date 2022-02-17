@@ -36,6 +36,8 @@ func Init(r *gin.Engine) {
 	taskGroup.Use()
 	{
 		taskGroup.GET("/", controllers.GetTask)
+		updateTaskRouter := taskGroup.POST("/", controllers.UpdateTask)
+		updateTaskRouter.Use(AuthMiddleware())
 	}
 
 	submitGroup := r.Group("/submit")

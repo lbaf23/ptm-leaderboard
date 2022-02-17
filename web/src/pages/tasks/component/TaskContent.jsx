@@ -1,6 +1,6 @@
 import {Button} from "antd";
 import {EditOutlined, SaveOutlined} from "@ant-design/icons";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import MDEditor from '@uiw/react-md-editor';
 import TaskBackend from "../../../backend/TaskBackend";
 
@@ -8,7 +8,11 @@ function TaskContent(obj) {
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
 
-  const [content, setContent] = useState(obj.task.content)
+  const [content, setContent] = useState('')
+
+  useEffect(()=>{
+    setContent(obj.task.content)
+  }, [obj.task])
 
   const handleEdit = () => {
     setEditing(true)

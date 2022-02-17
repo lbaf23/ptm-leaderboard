@@ -57,10 +57,17 @@ func GetRecord(c *gin.Context) {
 	if err != nil {
 		res.Code = 500
 		res.Message = err.Error()
-	} else {
-		res.Code = 200
-		res.Record = models.GetRecordById(uint(id))
+		c.JSON(http.StatusOK, &res)
+		return
 	}
+	res.Record, err = models.GetRecordById(uint(id))
+	if err != nil {
+		res.Code = 500
+		res.Message = err.Error()
+		c.JSON(http.StatusOK, &res)
+		return
+	}
+	res.Code = 200
 	c.JSON(http.StatusOK, &res)
 }
 

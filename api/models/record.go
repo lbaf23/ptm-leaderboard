@@ -45,7 +45,8 @@ func GetUserRecords(userId string, taskId string, page int, pageSize int, orderB
 	return
 }
 
-func GetRecordById(id uint) (record Record) {
-	db.Where("id = ?", id).Take(&record)
+func GetRecordById(id uint) (record Record, err error) {
+	tx := db.Where("id = ?", id).Take(&record)
+	err = tx.Error
 	return
 }
