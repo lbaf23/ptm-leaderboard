@@ -59,10 +59,11 @@ function MainLayout() {
     if (e.key === 'account') {
       window.open(getMyProfileUrl(account))
     } else if (e.key === 'logout') {
+      localStorage.setItem("token", "")
       AuthBackend.logout()
         .then((res)=>{
           if (res.data.code === 200) {
-            setAccount(null)
+            window.location.reload()
           }
         })
         .catch((e) => {
