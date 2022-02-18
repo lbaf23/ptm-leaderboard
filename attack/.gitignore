@@ -1,0 +1,5 @@
+/config/app.debug.ini
+/config/app.release.ini
+/config/__pycache__
+
+/attack/__pycache__
