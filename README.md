@@ -5,12 +5,16 @@
 
 ### api
 
+run gin 
+
 ```bash
-export GIN_MODE=debug
+cd api
 go run main.go
 ```
 
 ### web
+
+run front end
 
 ```bash
 cd web
