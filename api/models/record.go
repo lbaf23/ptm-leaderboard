@@ -6,7 +6,7 @@ import (
 )
 
 type Record struct {
-	Id uint `json:"id" gorm:"primary_key;column:id"`
+	Id uint `json:"id" gorm:"primary_key;AUTO_INCREMENT;not null;column:id"`
 
 	SubmittedAt time.Time `json:"submittedAt" gorm:"column:submitted_at"`
 	StartedAt   time.Time `json:"startedAt" gorm:"column:started_at"`
@@ -49,5 +49,12 @@ func GetUserRecords(userId string, taskId string, page int, pageSize int, orderB
 func GetRecordById(id uint) (record Record, err error) {
 	tx := db.Where("id = ?", id).Take(&record)
 	err = tx.Error
+	return
+}
+
+func CreateRecord(record Record) (id uint, err error) {
+	tx := db.Create(&record)
+	err = tx.Error
+	id = record.Id
 	return
 }

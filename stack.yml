@@ -18,7 +18,7 @@ functions:
     environment:
       RunMode: release
   attack:
-    lang: python3
+    lang: dockerfile
     handler: ./attack
     image: lbaf23/ptm-leaderboard-attack:1.0.0
 

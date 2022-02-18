@@ -10,11 +10,6 @@ export const apiRequest = axios.create({
   timeout: 10000,
 })
 
-export const attackRequest = axios.create({
-  baseURL: REACT_APP_ATTACK_URL,
-  timeout: 10000
-})
-
 export const casdoorRequest = axios.create({
   baseURL: REACT_APP_CASDOOR_ENDPOINT,
   timeout: 10000,
@@ -22,8 +17,6 @@ export const casdoorRequest = axios.create({
 })
 
 apiRequest.interceptors.response.use(res=>authMiddleware(res))
-
-attackRequest.interceptors.response.use(res=>authMiddleware(res))
 
 function authMiddleware(res) {
   if (res.data.code === 401) {

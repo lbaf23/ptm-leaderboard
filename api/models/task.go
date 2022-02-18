@@ -1,10 +1,10 @@
 package models
 
 type Task struct {
-	Id          string `json:"id" gorm:"primary_key" gorm:"column:id"`
+	Id          string `json:"id" gorm:"primary_key;column:id"`
 	Title       string `json:"title" gorm:"column:title"`
 	Description string `json:"description" gorm:"column:description"`
-	Type        string `json:"type" gorm:"index" gorm:"column:type"`
+	Type        string `json:"type" gorm:"index;column:type"`
 
 	Content string `json:"content" gorm:"column:content"`
 }

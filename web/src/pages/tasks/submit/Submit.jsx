@@ -3,6 +3,7 @@ import {Button, Card, Cascader, Input, message, Space, Upload} from "antd";
 import {UploadOutlined} from "@ant-design/icons"
 import CasdoorBackend from "../../../backend/CasdoorBackend";
 import {useParams} from "react-router-dom";
+import SubmitBackend from "../../../backend/SubmitBackend";
 
 function Submit(obj) {
   const params = useParams();
@@ -13,6 +14,7 @@ function Submit(obj) {
   const [fileList, setFileList] = useState([])
 
   useEffect(()=>{
+
   },[])
 
   const preCheck = () => {
@@ -20,11 +22,27 @@ function Submit(obj) {
       message.error("Model Name is empty")
       return false
     }
+    if (fileList.length === 0) {
+      message.error("Upload zip file")
+      return false
+    }
     return true
   }
   const handleSubmit = () => {
     if (preCheck()){
       setLoading(true)
+      SubmitBackend.submitModel(modelName, fileList[0].url, params.id)
+        .then(res=>{
+          setLoading(false)
+          if(res.data.code === 200) {
+            message.success(res.data.message)
+            setFileList([])
+            setModelName('')
+          } else {
+            message.error(res.data.message)
+          }
+        })
+        .catch(err=>{})
     }
   }
 
