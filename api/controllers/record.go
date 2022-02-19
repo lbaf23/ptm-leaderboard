@@ -25,12 +25,12 @@ func GetUserRecords(c *gin.Context) {
 	orderBy := c.Query("orderBy")
 	orderType := c.Query("orderType")
 	page, err := strconv.ParseInt(c.Query("page"), 10, 32)
+	if err != nil {
+		page = 1
+	}
 	pageSize, err := strconv.ParseInt(c.Query("pageSize"), 10, 32)
 	if err != nil {
-		res.Code = 500
-		res.Message = err.Error()
-		c.JSON(http.StatusOK, &res)
-		return
+		pageSize = 20
 	}
 	res.Code = 200
 	res.Total, res.Records = models.GetUserRecords(userId, taskId, int(page), int(pageSize), orderBy, orderType)
