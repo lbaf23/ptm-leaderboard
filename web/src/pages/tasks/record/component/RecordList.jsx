@@ -70,7 +70,7 @@ function RecordList() {
       dataIndex: 'runningTime',
       key: 'runningTime',
       render: (time, item) => (
-        <>{utils.TimeFilter(time)}</>
+        <>{time}&nbsp;s</>
       )
     },
     {
@@ -91,16 +91,10 @@ function RecordList() {
   const handleClick = (item) => {
     setShowInfo(true)
     setDrawerLoading(true)
-    RecordBackend.getRecord(item.id).
-    then(res=>{
+    RecordBackend.getRecord(item.id)
+    .then(res=>{
       let i = res.data.record;
-      i.result = [
-        {trans: 'SwapSpecialEnt-Movie', score: 90},
-        {trans: 'SwapSpecialEnt-Person', score: 90},
-        {trans: 'AddSum-Movie', score: 90},
-        {trans: 'AddSum-Person', score: 90},
-        {trans: 'DoubleDenial', score: 90}
-      ]
+      i.result = JSON.parse(i.result)
       setItem(i)
       setDrawerLoading(false)
     })
@@ -139,7 +133,7 @@ function RecordList() {
         <div>Start Time:&nbsp;&nbsp;{utils.TimeFilter(item.startedAt)}</div>
 
         <div>Finished Time:&nbsp;&nbsp;{utils.TimeFilter(item.finishedAt)}</div>
-        <div>Running Time:&nbsp;{item.runningTime}</div>
+        <div>Running Time:&nbsp;{item.runningTime}&nbsp;s</div>
 
         <a href={item.fileUrl}><Button icon={<DownloadOutlined />}>Download File</Button></a>
         {item.status === 'succeed' ?
