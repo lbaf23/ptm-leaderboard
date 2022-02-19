@@ -2,9 +2,9 @@ package controllers
 
 import (
 	"api/conf"
+	"bytes"
 	"fmt"
 	"net/http"
-	"net/url"
 )
 
 type Response struct {
@@ -12,7 +12,8 @@ type Response struct {
 	Message string `json:"message"`
 }
 
-func DoPost(route string, payload url.Values) (resp *http.Response, err error) {
-	resp, err = http.PostForm(fmt.Sprintf("%s%s", conf.Config.AttackBaseUrl, route), payload)
+func DoPost(route string, buf *bytes.Buffer) (resp *http.Response, err error) {
+	url := fmt.Sprintf("%s%s", conf.Config.AttackBaseUrl, route)
+	resp, err = http.Post(url, "application/json", buf)
 	return
 }

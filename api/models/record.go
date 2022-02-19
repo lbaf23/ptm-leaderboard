@@ -11,7 +11,7 @@ type Record struct {
 	SubmittedAt time.Time `json:"submittedAt" gorm:"column:submitted_at"`
 	StartedAt   time.Time `json:"startedAt" gorm:"column:started_at"`
 	FinishedAt  time.Time `json:"finishedAt" gorm:"column:finished_at"`
-	RunningTime time.Time `json:"runningTime" gorm:"column:running_time"`
+	RunningTime uint      `json:"runningTime" gorm:"column:running_time"`
 
 	TaskId string `json:"taskId" gorm:"column:task_id"`
 	UserId string `json:"userId" gorm:"column:user_id"`

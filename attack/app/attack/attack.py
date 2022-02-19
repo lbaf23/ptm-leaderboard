@@ -1,11 +1,13 @@
 import datetime
 import time
 from app.models import update_result, update_record_started_time
+from flask import current_app
 
 
 def start_attack(db, record_id, file_url, task_id, user_id):
     print('worker!')
     print(db)
+    print(current_app)
 
     start = datetime.datetime.now()
     update_record_started_time(record_id, start)

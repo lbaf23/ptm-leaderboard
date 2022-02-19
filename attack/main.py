@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import cross_origin
 from waitress import serve
 from app.config import config, init_config
 from app.controllers import init_routers

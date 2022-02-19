@@ -8,11 +8,13 @@ executor = ThreadPoolExecutor(1)
 
 submit_blueprint = Blueprint("submit", __name__, url_prefix='/submit')
 
-@submit_blueprint.route("/", methods=['POST'])
-@cross_origin
+
+@submit_blueprint.route('/', methods=['POST'])
+@cross_origin()
 def submit():
-    #data = request.form.to_dict()
-    """
+    data = request.form.to_dict()
+
+    print(db)
     executor.submit(
         start_attack,
         db,
@@ -21,5 +23,5 @@ def submit():
         data.get('userId'),
         data.get('fileUrl')
     )
-    """
+
     return {"code": 202}

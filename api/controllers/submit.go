@@ -2,13 +2,21 @@ package controllers
 
 import (
 	"api/models"
-	"fmt"
+	"bytes"
+	"encoding/json"
 	"net/http"
-	"net/url"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
+
+type SubmitAttack struct {
+	Id        uint   `json:"id"`
+	FileUrl   string `json:"fileUrl"`
+	UserId    string `json:"userId"`
+	TaskId    string `json:"taskId"`
+	ModelName string `json:"modelName"`
+}
 
 func CreateSubmit(c *gin.Context) {
 	var res Response
@@ -34,13 +42,18 @@ func CreateSubmit(c *gin.Context) {
 		c.JSON(http.StatusOK, &res)
 		return
 	}
-	payload := url.Values{
-		"id":      {fmt.Sprint(id)},
-		"fileUrl": {fileUrl},
-		"userId":  {taskId},
-		"taskId":  {taskId},
+
+	body := &SubmitAttack{
+		Id:        id,
+		FileUrl:   fileUrl,
+		UserId:    userId,
+		TaskId:    taskId,
+		ModelName: modelName,
 	}
-	_, err = DoPost("/", payload)
+	buf := new(bytes.Buffer)
+	json.NewEncoder(buf).Encode(body)
+	_, err = DoPost("/", buf)
+
 	if err != nil {
 		res.Code = 500
 		res.Message = err.Error()
