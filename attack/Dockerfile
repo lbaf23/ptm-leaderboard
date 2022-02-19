@@ -16,7 +16,7 @@ ENV PATH=$PATH:/home/app/.local/bin
 
 WORKDIR /home/app/
 
-COPY app.py             .
+COPY main.py             .
 COPY requirements.txt   .
 
 USER root
@@ -28,7 +28,7 @@ WORKDIR /home/app/
 RUN chown -R app:app *
 USER app
 
-ENV fprocess="python app.py"
+ENV fprocess="python main.py"
 
 ENV upstream_url="http://127.0.0.1:8009"
 ENV mode="http"
