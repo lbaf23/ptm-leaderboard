@@ -33,6 +33,7 @@ func CreateSubmit(c *gin.Context) {
 		Status:      "pending",
 		ModelName:   modelName,
 		FileUrl:     fileUrl,
+		Result:      "[]",
 	}
 
 	id, err := models.CreateRecord(record)
