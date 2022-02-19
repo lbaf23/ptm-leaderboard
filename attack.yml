@@ -6,4 +6,4 @@ functions:
   attack:
     lang: dockerfile
     handler: ./attack
-    image: lbaf23/attack:latest
+    image: lbaf23/ptm-leaderboard-attack:1.0.0
