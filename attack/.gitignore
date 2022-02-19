@@ -1,11 +1,6 @@
-__pycache__
-/app/config/app.debug.ini
-/app/config/app.release.ini
-
-/app/config/__pycache__
-/app/attack/__pycache__
-/app/controllers/__pycache__
-/app/models/__pycache__
-
 .idea
 .vscode
+
+
+/config/app.debug.ini
+/config/app.release.ini

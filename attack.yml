@@ -4,6 +4,10 @@ provider:
   gateway: http://localhost:31112
 functions:
   attack:
-    lang: dockerfile
+    lang: python3
     handler: ./attack
     image: lbaf23/ptm-leaderboard-attack:1.0.0
+    environment:
+      run_mode: release
+      write_debug: true
+      combine_output: false
