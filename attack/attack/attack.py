@@ -79,7 +79,8 @@ def update_attack_result(db, id, task_id, user_id, user_name, finished_at, runni
                 score,
                 result
             )
-        elif res <= score:
+            cursor.execute(sql)
+        elif res[0] <= score:
             sql = """
                 update rank set
                     score = '%s', 
