@@ -1,12 +1,5 @@
 import {Route, Routes, useNavigate} from "react-router-dom";
-import Home from "../home/Home";
-import Callback from "../Auth/Callback";
-import Tasks from "../tasks/Tasks";
-import TaskLayout from "./TaskLayout";
-import TaskInfo from "../tasks/TaskInfo";
-import Submit from "../tasks/submit/Submit";
-import Rank from "../tasks/rank/Rank";
-import Record from "../tasks/record/Record";
+import Callback from "../auth/Callback";
 import MainLayout from "./MainLayout";
 import { useEffect } from "react";
 
