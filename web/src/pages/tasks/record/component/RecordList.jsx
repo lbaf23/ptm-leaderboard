@@ -1,4 +1,4 @@
-import {Button, Drawer, Pagination, Table, Tag} from "antd";
+import {Button, Divider, Drawer, Pagination, Table, Tag, Row, Col} from "antd";
 import {DownloadOutlined} from "@ant-design/icons"
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
@@ -131,16 +131,32 @@ function RecordList() {
           </span>
         </div>
       } visible={showInfo} onClose={handleClose} >
-        <h2>{item.modelName}</h2>
-        <div>Start Time:&nbsp;&nbsp;{utils.TimeFilter(item.startedAt)}</div>
 
-        <div>Finished Time:&nbsp;&nbsp;{utils.TimeFilter(item.finishedAt)}</div>
-        <div>Running Time:&nbsp;{item.runningTime}&nbsp;s</div>
+        <div>
+          <span style={{fontSize: '20px', fontWeight: '500'}}>{item.modelName}</span>
+          <span style={{marginLeft: '20px'}}>
+            <a href={item.fileUrl}><Button icon={<DownloadOutlined />}>Download File</Button></a>
+          </span>
+        </div>
 
-        <a href={item.fileUrl}><Button icon={<DownloadOutlined />}>Download File</Button></a>
+
+        <Divider />
+        <Row>
+          <Col span={8}>
+            <div>Started At</div>
+            <div>Finished At</div>
+            <div>Running Time</div>
+          </Col>
+          <Col>
+            <div>{utils.TimeFilter(item.startedAt)}</div>
+            <div>{utils.TimeFilter(item.finishedAt)}</div>
+            <div>{item.runningTime}&nbsp;s</div>
+          </Col>
+        </Row>
+
+        <Divider />
         {item.status === 'succeed' ?
           <>
-            <div>Result:</div>
             <Table
               dataSource={item.result}
               columns={[
