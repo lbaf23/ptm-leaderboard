@@ -10,9 +10,9 @@ func Init(r *gin.Engine) {
 	authGroup := r.Group("/auth")
 	authGroup.Use()
 	{
-		authGroup.POST("/login", controllers.Login)
-		authGroup.POST("/logout", controllers.Logout)
-		authGroup.GET("/account", controllers.GetAccount)
+		authGroup.POST("/login/", controllers.Login)
+		authGroup.POST("/logout/", controllers.Logout)
+		authGroup.GET("/account/", controllers.GetAccount)
 	}
 
 	rankListGroup := r.Group("/ranklist")
@@ -43,7 +43,7 @@ func Init(r *gin.Engine) {
 	submitGroup := r.Group("/submit")
 	submitGroup.Use(AuthMiddleware())
 	{
-		submitGroup.POST("/", controllers.CreateRecord)
+		submitGroup.POST("/", controllers.CreateSubmit)
 	}
 
 	recordListGroup := r.Group("/recordlist")

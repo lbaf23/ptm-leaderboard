@@ -26,6 +26,8 @@ type config struct {
 	CasdoorClientSecret string
 	CasdoorOrganization string
 	ApplicationName     string
+
+	AttackBaseUrl string
 }
 
 var Config = &config{}

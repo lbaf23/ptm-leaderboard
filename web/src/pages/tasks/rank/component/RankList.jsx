@@ -34,16 +34,9 @@ function RankList(obj) {
 
   const handleClick = (item) => {
     let i = item;
-    i.result = [
-      {trans: 'SwapSpecialEnt-Movie', score: 90},
-      {trans: 'SwapSpecialEnt-Person', score: 90},
-      {trans: 'AddSum-Movie', score: 90},
-      {trans: 'AddSum-Person', score: 90},
-      {trans: 'DoubleDenial', score: 90}
-    ]
+    i.result = JSON.parse(i.result)
     setItem(i)
     setShowD(true)
-    console.log(item)
   }
 
   const closeD = () => {

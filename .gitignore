@@ -1,5 +1,4 @@
-template
-build
-
 .idea
 .vscode
+
+build
