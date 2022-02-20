@@ -34,7 +34,9 @@ function RankList(obj) {
 
   const handleClick = (item) => {
     let i = item;
-    i.result = JSON.parse(i.result)
+    if (typeof(i.result) == "string") {
+      i.result = JSON.parse(i.result)
+    }
     setItem(i)
     setShowD(true)
   }

@@ -94,7 +94,9 @@ function RecordList() {
     RecordBackend.getRecord(item.id)
     .then(res=>{
       let i = res.data.record;
-      i.result = JSON.parse(i.result)
+      if (typeof(i.result) == "string") {
+        i.result = JSON.parse(i.result)
+      }
       setItem(i)
       setDrawerLoading(false)
     })
