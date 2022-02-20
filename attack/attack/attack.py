@@ -3,7 +3,7 @@ import time
 import datetime
 
 
-def start_attack(config, db, id, task_id, user_id, file_url, model_name):
+def start_attack(config, db, id, task_id, user_id, user_name, file_url, model_name):
     started_at = datetime.datetime.now()
     update_record_start_time(db, id, started_at)
 
@@ -26,7 +26,7 @@ def start_attack(config, db, id, task_id, user_id, file_url, model_name):
     print("score: %s" % score)
 
     str_result = json.dumps(result)
-    update_attack_result(db, id, task_id, user_id, finished_at, running_time, score, str_result, model_name)
+    update_attack_result(db, id, task_id, user_id, user_name, finished_at, running_time, score, str_result, model_name)
 
 
 def update_record_start_time(db, id, started_at):
@@ -43,7 +43,7 @@ def update_record_start_time(db, id, started_at):
     return b
 
 
-def update_attack_result(db, id, task_id, user_id, finished_at, running_time, score, result, model_name):
+def update_attack_result(db, id, task_id, user_id, user_name, finished_at, running_time, score, result, model_name):
     conn, cursor = db.get_connect()
     try:
         sql = """
@@ -64,9 +64,22 @@ def update_attack_result(db, id, task_id, user_id, finished_at, running_time, sc
 
         sql = "select score from rank where task_id = '%s' and user_id = '%s'" % (task_id, user_id)
         cursor.execute(sql)
-        res = cursor.fetchone()[0]
+        res = cursor.fetchone()
 
-        if res <= score:
+        if len(res) == 0:
+            sql = """
+                insert into 
+                rank(task_id, user_id, user_name, model_name, score, result)
+                values('%s', '%s', '%s', '%s', '%s', '%s')
+            """ & (
+                task_id,
+                user_id,
+                user_name,
+                model_name,
+                score,
+                result
+            )
+        elif res <= score:
             sql = """
                 update rank set
                     score = '%s', 

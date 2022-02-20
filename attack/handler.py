@@ -15,6 +15,7 @@ def handle(req):
         data.get('id'),
         data.get('taskId'),
         data.get('userId'),
+        data.get('userName'),
         data.get('fileUrl'),
         data.get('modelName')
     )

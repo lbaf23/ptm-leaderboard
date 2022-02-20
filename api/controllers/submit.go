@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/casdoor/casdoor-go-sdk/auth"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,6 +15,7 @@ type SubmitAttack struct {
 	Id        uint   `json:"id"`
 	FileUrl   string `json:"fileUrl"`
 	UserId    string `json:"userId"`
+	UserName  string `json:"userName"`
 	TaskId    string `json:"taskId"`
 	ModelName string `json:"modelName"`
 }
@@ -21,7 +23,11 @@ type SubmitAttack struct {
 func CreateSubmit(c *gin.Context) {
 	var res Response
 
+	token := c.Query("token")
+	claims, _ := auth.ParseJwtToken(token)
+
 	userId := c.GetString("userId")
+	userName := claims.Name
 	modelName := c.PostForm("modelName")
 	fileUrl := c.PostForm("fileUrl")
 	taskId := c.PostForm("taskId")
@@ -48,6 +54,7 @@ func CreateSubmit(c *gin.Context) {
 		Id:        id,
 		FileUrl:   fileUrl,
 		UserId:    userId,
+		UserName:  userName,
 		TaskId:    taskId,
 		ModelName: modelName,
 	}
