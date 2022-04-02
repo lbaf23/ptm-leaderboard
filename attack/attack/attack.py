@@ -1,13 +1,14 @@
 import json
 import time
 import datetime
+import random
 
 
-def start_attack(config, db, id, task_id, user_id, user_name, file_url, model_name):
+def start_attack(config, db, rid, task_id, user_id, user_name, file_url, model_name):
     started_at = datetime.datetime.now()
-    update_record_start_time(db, id, started_at)
+    update_record_start_time(db, rid, started_at)
 
-    time.sleep(65)
+    time.sleep(5)
 
     # TODO generate attack score and result    file_url
 
@@ -18,7 +19,7 @@ def start_attack(config, db, id, task_id, user_id, user_name, file_url, model_na
         {'trans': 'AddSum-Person', 'score': 90},
         {'trans': 'DoubleDenial', 'score': 90},
     ]
-    score = 91
+    score = random.randint(50, 100)
 
     finished_at = datetime.datetime.now()
     running_time = (finished_at - started_at).seconds
@@ -26,24 +27,24 @@ def start_attack(config, db, id, task_id, user_id, user_name, file_url, model_na
     print("score: %s" % score)
 
     str_result = json.dumps(result)
-    update_attack_result(db, id, task_id, user_id, user_name, finished_at, running_time, score, str_result, model_name)
+    update_attack_result(db, rid, task_id, user_id, user_name, finished_at, running_time, score, str_result, model_name)
 
 
-def update_record_start_time(db, id, started_at):
+def update_record_start_time(db, rid, started_at):
     sql = """
         update record set
             started_at = '%s',
             status = 'running'
         where id = '%s'""" % (
             started_at,
-            id
+            rid
         )
 
     _, b = db.execute(sql)
     return b
 
 
-def update_attack_result(db, id, task_id, user_id, user_name, finished_at, running_time, score, result, model_name):
+def update_attack_result(db, rid, task_id, user_id, user_name, finished_at, running_time, score, result, model_name):
     conn, cursor = db.get_connect()
     try:
         sql = """
@@ -58,20 +59,23 @@ def update_attack_result(db, id, task_id, user_id, user_name, finished_at, runni
                 running_time,
                 score,
                 result,
-                id
+                rid
             )
+
+        print(sql)
+
         cursor.execute(sql)
 
         sql = "select score from rank where task_id = '%s' and user_id = '%s'" % (task_id, user_id)
         cursor.execute(sql)
         res = cursor.fetchone()
 
-        if len(res) == 0:
+        if res == None:
             sql = """
                 insert into 
                 rank(task_id, user_id, user_name, model_name, score, result)
                 values('%s', '%s', '%s', '%s', '%s', '%s')
-            """ & (
+            """ % (
                 task_id,
                 user_id,
                 user_name,
@@ -80,7 +84,7 @@ def update_attack_result(db, id, task_id, user_id, user_name, finished_at, runni
                 result
             )
             cursor.execute(sql)
-        elif res[0] <= score:
+        else:
             sql = """
                 update rank set
                     score = '%s', 

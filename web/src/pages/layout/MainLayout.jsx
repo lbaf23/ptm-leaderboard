@@ -13,7 +13,7 @@ import {
 import FooterBar from "./component/FooterBar";
 import TaskLayout from "./TaskLayout";
 
-import {getAuthorizeUrl, getMyProfileUrl} from '../auth/Auth'
+import {getAuthorizeUrl, getMyProfileUrl} from '../Auth/Auth'
 
 import './mainlayout.css'
 import AuthBackend from "../../backend/AuthBackend";

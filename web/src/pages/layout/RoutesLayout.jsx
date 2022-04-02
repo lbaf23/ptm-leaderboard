@@ -1,5 +1,5 @@
 import {Route, Routes, useNavigate} from "react-router-dom";
-import Callback from "../auth/Callback";
+import Callback from "../Auth/Callback";
 import MainLayout from "./MainLayout";
 import { useEffect } from "react";
 
