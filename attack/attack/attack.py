@@ -62,8 +62,6 @@ def update_attack_result(db, rid, task_id, user_id, user_name, finished_at, runn
                 rid
             )
 
-        print(sql)
-
         cursor.execute(sql)
 
         sql = "select score from rank where task_id = '%s' and user_id = '%s'" % (task_id, user_id)

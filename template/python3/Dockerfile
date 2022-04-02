@@ -48,6 +48,9 @@ COPY function           function
 RUN chown -R app:app ./ && \
   chmod -R 777 /home/app/python
 
+
+RUN echo 'Asia/Shanghai' >/etc/timezone
+
 USER app
 
 ENV fprocess="python3 index.py"
