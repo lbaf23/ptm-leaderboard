@@ -25,7 +25,7 @@ function TaskInfo() {
   }, [])
 
   return (
-    <Card hoverable className="task-card" loading={loading}>
+    <Card hoverable bordered={false} className="task-card" loading={loading}>
       <div className="task-title">{task.title}</div>
       <div className="task-description">{task.description}</div>
 

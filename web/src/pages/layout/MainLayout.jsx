@@ -13,7 +13,7 @@ import {
 import FooterBar from "./component/FooterBar";
 import TaskLayout from "./TaskLayout";
 
-import {getAuthorizeUrl, getMyProfileUrl} from '../Auth/Auth'
+import {getAuthorizeUrl, getMyProfileUrl} from '../auth/Auth'
 
 import './mainlayout.css'
 import AuthBackend from "../../backend/AuthBackend";
@@ -23,6 +23,7 @@ import TaskInfo from "../tasks/TaskInfo";
 import Submit from "../tasks/submit/Submit";
 import Rank from "../tasks/rank/Rank";
 import Record from "../tasks/record/Record";
+import NeedLogin from "./component/NeedLogin";
 
 
 const PUBLIC_URL = process.env.PUBLIC_URL
@@ -76,6 +77,14 @@ function MainLayout() {
     const url = window.location.href
     localStorage.setItem("url", url)
     window.location.href = getAuthorizeUrl()
+  }
+
+  const renderComponentIfLogin = (component) => {
+    if(account === null) {
+      return <NeedLogin userLogin={userLogin}/>
+    } else {
+      return component
+    }
   }
 
   const mainMenu = (
@@ -152,10 +161,10 @@ function MainLayout() {
           <Route path="tasks" element={<Tasks/>}/>
           <Route path="tasks/:id" element={<TaskLayout/>}>
             <Route index element={<TaskInfo/>}/>
-            <Route exact path="submit" element={<Submit account={account}/>}/>
             <Route exact path="rank" element={<Rank/>}/>
-            <Route path="record" element={<Record/>}/>
-            <Route path="record/:id" element={<TaskInfo/>}/>
+
+            <Route exact path="submit" element={renderComponentIfLogin(<Submit account={account}/>)}/>
+            <Route path="record" element={renderComponentIfLogin(<Record/>)}/>
           </Route>
         </Routes>
 

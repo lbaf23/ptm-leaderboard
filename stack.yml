@@ -1,7 +1,7 @@
 version: 1.0
 provider:
   name: openfaas
-  gateway: http://localhost:31112
+  gateway: http://localhost:8080
 functions:
   leaderboard:
     lang: dockerfile

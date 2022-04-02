@@ -1,5 +1,5 @@
-import {Button, Drawer, Pagination, Table, Tag} from "antd";
-import {DownloadOutlined} from "@ant-design/icons"
+import {Button, Divider, Drawer, Pagination, Table, Tag, Row, Col} from "antd";
+import {DownloadOutlined,ReloadOutlined} from "@ant-design/icons"
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import RecordBackend from "../../../../backend/RecordBackend";
@@ -27,6 +27,11 @@ function RecordList() {
   const [item, setItem] = useState({})
 
   useEffect(() => {
+    getRecords()
+  }, [])
+
+  const getRecords = () => {
+    setLoading(true)
     RecordBackend.getRecordList(params.id, page, pageSize, orderBy, orderType)
       .then(res => {
         setLoading(false)
@@ -37,7 +42,7 @@ function RecordList() {
       })
       .catch(err => {
       })
-  }, [])
+  }
 
   const stopPop = (e) => {
     e.stopPropagation()
@@ -94,7 +99,9 @@ function RecordList() {
     RecordBackend.getRecord(item.id)
     .then(res=>{
       let i = res.data.record;
-      i.result = JSON.parse(i.result)
+      if (typeof(i.result) == "string") {
+        i.result = JSON.parse(i.result)
+      }
       setItem(i)
       setDrawerLoading(false)
     })
@@ -108,6 +115,15 @@ function RecordList() {
 
   return (
     <>
+      <Button
+        style={{float: 'right', fontSize: '10px'}}
+        type="text"
+        shape="circle"
+        icon={<ReloadOutlined />}
+        loading={loading}
+        onClick={getRecords}
+        size="large"
+      />
       <Table
         dataSource={records}
         columns={columns}
@@ -129,16 +145,34 @@ function RecordList() {
           </span>
         </div>
       } visible={showInfo} onClose={handleClose} >
-        <h2>{item.modelName}</h2>
-        <div>Start Time:&nbsp;&nbsp;{utils.TimeFilter(item.startedAt)}</div>
 
-        <div>Finished Time:&nbsp;&nbsp;{utils.TimeFilter(item.finishedAt)}</div>
-        <div>Running Time:&nbsp;{item.runningTime}&nbsp;s</div>
+        <div>
+          <span style={{fontSize: '20px', fontWeight: '500'}}>{item.modelName}</span>
+          <span style={{marginLeft: '20px'}}>
+            <a href={item.fileUrl}><Button icon={<DownloadOutlined />}>Download File</Button></a>
+          </span>
+        </div>
 
-        <a href={item.fileUrl}><Button icon={<DownloadOutlined />}>Download File</Button></a>
+        <Divider>Time</Divider>
+
+        <Row>
+          <Col span={8}>
+            <div>Submitted At</div>
+            <div>Started At</div>
+            <div>Finished At</div>
+            <div>Running Time</div>
+          </Col>
+          <Col>
+            <div>{utils.TimeFilter(item.submittedAt)}</div>
+            <div>{utils.TimeFilter(item.startedAt)}</div>
+            <div>{utils.TimeFilter(item.finishedAt)}</div>
+            <div>{item.runningTime}&nbsp;s</div>
+          </Col>
+        </Row>
+
+        <Divider>Score</Divider>
         {item.status === 'succeed' ?
           <>
-            <div>Result:</div>
             <Table
               dataSource={item.result}
               columns={[
@@ -150,7 +184,8 @@ function RecordList() {
             />
           </> : null
         }
-        <div>message:&nbsp;{item.message}</div>
+        <Divider>Message</Divider>
+        <div style={{padding: '10px', backgroundColor: '#efefef'}}>{item.message}</div>
       </Drawer>
     </>
   )
