@@ -11,7 +11,7 @@ function RecordList() {
   const params = useParams()
 
   const [page, setPage] = useState(1)
-  const [pageSize, setPageSize] = useState(20)
+  const [pageSize, setPageSize] = useState(10)
   const [total, setTotal] = useState(100)
 
   const [loading, setLoading] = useState(true)
@@ -27,10 +27,10 @@ function RecordList() {
   const [item, setItem] = useState({})
 
   useEffect(() => {
-    getRecords()
+    getRecords(page, pageSize, orderBy, orderType)
   }, [])
 
-  const getRecords = () => {
+  const getRecords = (page, pageSize, orderBy, orderType) => {
     setLoading(true)
     RecordBackend.getRecordList(params.id, page, pageSize, orderBy, orderType)
       .then(res => {
@@ -42,6 +42,12 @@ function RecordList() {
       })
       .catch(err => {
       })
+  }
+
+  const changePage = (page, pageSize) => {
+    setPage(page)
+    setPageSize(pageSize)
+    getRecords(page, pageSize, orderBy, orderType);
   }
 
   const stopPop = (e) => {
@@ -136,7 +142,14 @@ function RecordList() {
           }
         }}
       />
-      <Pagination style={{marginTop: '20px', float: 'right'}} current={page} total={total} pageSize={pageSize}/>
+      <Pagination
+        style={{marginTop: '20px', float: 'right'}}
+        current={page}
+        total={total}
+        pageSize={pageSize}
+        onChange={changePage}
+      />
+
       <Drawer title={
         <div style={{fontSize: '26px'}}>
           Score:&nbsp;&nbsp;{item.score}

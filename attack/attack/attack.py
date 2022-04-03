@@ -8,7 +8,7 @@ def start_attack(config, db, rid, task_id, user_id, user_name, file_url, model_n
     started_at = datetime.datetime.now()
     update_record_start_time(db, rid, started_at)
 
-    time.sleep(5)
+    time.sleep(30)
 
     # TODO generate attack score and result    file_url
 
