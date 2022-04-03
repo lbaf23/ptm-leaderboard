@@ -18,13 +18,17 @@ function RecordChart() {
     RecordBackend.getRecordData(params.id )
       .then(res=>{
         if(res.data.code === 200) {
-          initChart(res.data.data)
+          let value = []
+          for(let i=0; i<res.data.data.length; i++){
+            value[i] = i;
+          }
+          initChart(value, res.data.data)
         }
       })
       .catch(e=>{})
   }
 
-  const initChart = (data) => {
+  const initChart = (value, data) => {
     setOption({
       title: {
         text: 'History Score'

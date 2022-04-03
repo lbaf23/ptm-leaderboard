@@ -52,6 +52,7 @@ func GetUserRecordData(userId string, taskId string) (data []float32) {
 		Where("user_id = ?", userId).
 		Where("status = 'succeed'").
 		Select([]string{"score"}).
+		Order("submitted_at asc").
 		Find(&data)
 	return
 }
