@@ -13,8 +13,8 @@ type Record struct {
 	FinishedAt  time.Time `json:"finishedAt" gorm:"column:finished_at"`
 	RunningTime uint      `json:"runningTime" gorm:"column:running_time"`
 
-	TaskId string `json:"taskId" gorm:"column:task_id"`
-	UserId string `json:"userId" gorm:"column:user_id"`
+	TaskId string `json:"taskId" gorm:"index;column:task_id"`
+	UserId string `json:"userId" gorm:"index;column:user_id"`
 
 	Status  string `json:"status" gorm:"column:status"`
 	Message string `json:"message" gorm:"column:message"`

@@ -10,7 +10,7 @@ function NeedLogin(obj) {
         Please Login First
       </div>
       <div onClick={obj.userLogin} className="login">
-        LOGIN
+        L O G I N
       </div>
     </div>
   )

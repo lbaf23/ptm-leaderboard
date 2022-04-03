@@ -3,22 +3,21 @@
 }
 
 .need-login .title{
-    font-size: 30px;
+    font-size: 20px;
     font-weight: 600;
     text-align: center;
     padding: 40px;
 }
 
 .need-login .login{
-    margin-top: 40px;
     font-size: 20px;
     color: gray;
     text-align: center;
-    background-color: #f6f6f6;
+    background-color: rgba(246, 246, 246, 0.68);
     cursor: pointer;
-    padding: 40px;
+    padding: 100px;
 }
 
 .need-login .login:hover{
-    background-color: aliceblue;
+    background-color: rgb(246, 246, 246);
 }
