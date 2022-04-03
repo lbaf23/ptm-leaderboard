@@ -39,6 +39,7 @@ func Init() {
 	SQLDB.SetMaxIdleConns(5)
 	SQLDB.SetMaxOpenConns(100)
 
+	db.AutoMigrate(&Home{})
 	db.AutoMigrate(&Task{})
 
 	db.AutoMigrate(&Record{})

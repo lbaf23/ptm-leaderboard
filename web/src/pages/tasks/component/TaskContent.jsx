@@ -38,7 +38,7 @@ function TaskContent(obj) {
     <div style={{marginTop: '40px'}}>
       <div style={{textAlign: 'right'}}>
         {editing ?
-          <Button type="text" icon={<SaveOutlined />} onClick={handleSave}/> :
+          <Button loading={saving} type="text" icon={<SaveOutlined />} onClick={handleSave}/> :
           <Button type="text" icon={<EditOutlined />} onClick={handleEdit}/>
         }
       </div>

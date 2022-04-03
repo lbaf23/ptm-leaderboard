@@ -15,6 +15,13 @@ func Init(r *gin.Engine) {
 		authGroup.GET("/account/", controllers.GetAccount)
 	}
 
+	homeGroup := r.Group("/home/")
+	homeGroup.Use()
+	{
+		homeGroup.GET("/", controllers.GetHomeContent)
+		homeGroup.POST("/", controllers.UpdateHomeContent)
+	}
+
 	rankListGroup := r.Group("/ranklist")
 	rankListGroup.Use()
 	{
