@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {Button, Card, Cascader, Input, message, Space, Upload} from "antd";
-import {UploadOutlined} from "@ant-design/icons"
+import {UploadOutlined, InboxOutlined} from "@ant-design/icons"
 import CasdoorBackend from "../../../backend/CasdoorBackend";
 import {useParams} from "react-router-dom";
 import SubmitBackend from "../../../backend/SubmitBackend";
+
+const { Dragger } = Upload;
 
 function Submit(obj) {
   const params = useParams();
@@ -104,12 +106,22 @@ function Submit(obj) {
       <div>
         <Space direction="vertical" size="middle" style={{width: '100%'}}>
           <Input addonBefore="Model Name" onChange={inputModelName} value={modelName}/>
-          <Upload {...props}>
-            <Button loading={uploading} icon={<UploadOutlined/>}>Upload ZIP File</Button>
-          </Upload>
-          <Button loading={loading} onClick={handleSubmit}>
-            Submit
-          </Button>
+
+          <Dragger {...props}>
+            <p className="ant-upload-drag-icon">
+              <InboxOutlined />
+            </p>
+            <p className="ant-upload-text">Click or drag file to this area to upload</p>
+            <p className="ant-upload-hint">
+              Upload ZIP file
+            </p>
+          </Dragger>
+
+          <div style={{textAlign: 'center', marginTop: '20px'}}>
+            <Button loading={loading} onClick={handleSubmit}>
+              Submit
+            </Button>
+          </div>
         </Space>
       </div>
     </Card>
