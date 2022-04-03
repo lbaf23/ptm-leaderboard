@@ -37,6 +37,21 @@ func GetUserRecords(c *gin.Context) {
 	c.JSON(http.StatusOK, &res)
 }
 
+type RecordDataResponse struct {
+	Response
+	Data []float32 `json:"data"`
+}
+
+func GetUserRecordData(c *gin.Context) {
+	var res RecordDataResponse
+	userId := c.GetString("userId")
+	taskId := c.Query("taskId")
+	data := models.GetUserRecordData(userId, taskId)
+	res.Code = 200
+	res.Data = data
+	c.JSON(http.StatusOK, &res)
+}
+
 type RecordResponse struct {
 	Response
 	Record models.Record `json:"record"`

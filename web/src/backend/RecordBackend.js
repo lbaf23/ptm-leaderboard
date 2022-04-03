@@ -23,6 +23,16 @@ const RecordBackend = {
         token: localStorage.getItem("token")
       }
     })
+  },
+  getRecordData(taskId) {
+    return apiRequest({
+      url: `/recordlist/data/`,
+      method: 'get',
+      params: {
+        taskId: taskId,
+        token: localStorage.getItem("token")
+      }
+    })
   }
 }
 

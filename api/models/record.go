@@ -46,6 +46,16 @@ func GetUserRecords(userId string, taskId string, page int, pageSize int, orderB
 	return
 }
 
+func GetUserRecordData(userId string, taskId string) (data []float32) {
+	db.Model(Record{}).
+		Where("task_id = ?", taskId).
+		Where("user_id = ?", userId).
+		Where("status = 'succeed'").
+		Select([]string{"score"}).
+		Find(&data)
+	return
+}
+
 func GetRecordById(id uint) (record Record, err error) {
 	tx := db.Where("id = ?", id).Take(&record)
 	err = tx.Error

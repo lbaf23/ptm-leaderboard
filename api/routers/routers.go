@@ -50,6 +50,7 @@ func Init(r *gin.Engine) {
 	recordListGroup.Use(AuthMiddleware())
 	{
 		recordListGroup.GET("/", controllers.GetUserRecords)
+		recordListGroup.GET("/data/", controllers.GetUserRecordData)
 	}
 
 	recordGroup := r.Group("/record/:id")
