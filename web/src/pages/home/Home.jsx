@@ -50,8 +50,8 @@ function Home() {
   return (
     <Card
       bordered={false}
-      hoverable
-      className="card"
+      hoverable={false}
+      className="card shadow"
     >
       <div className="title">{title}</div>
       <Image src={img} preview={false} className="image"/>
