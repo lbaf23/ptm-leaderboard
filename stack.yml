@@ -7,12 +7,14 @@ functions:
     lang: dockerfile
     handler: ./web
     image: lbaf23/ptm-leaderboard-web:1.0.0
+    imagePullPolicy: IfNotPresent
     labels:
       com.openfaas.scale.zero: false
   api:
     lang: dockerfile
     handler: ./api
     image: lbaf23/ptm-leaderboard-api:1.0.0
+    imagePullPolicy: IfNotPresent
     build_args:
       GO111MODULE: on
     environment:
@@ -21,6 +23,7 @@ functions:
     lang: python3
     handler: ./attack
     image: lbaf23/ptm-leaderboard-attack:1.0.0
+    imagePullPolicy: IfNotPresent
     environment:
       run_mode: release
 

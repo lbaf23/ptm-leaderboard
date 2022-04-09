@@ -7,6 +7,7 @@ functions:
     lang: python3
     handler: ./attack
     image: lbaf23/ptm-leaderboard-attack:1.0.0
+    imagePullPolicy: IfNotPresent
     environment:
       run_mode: release
       write_debug: true
