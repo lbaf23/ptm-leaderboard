@@ -4,6 +4,7 @@ import datetime
 import random
 
 
+
 def start_attack(config, db, rid, task_id, user_id, user_name, file_url, model_name):
     started_at = datetime.datetime.now()
     update_record_start_time(db, rid, started_at)

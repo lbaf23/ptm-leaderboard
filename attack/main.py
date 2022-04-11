@@ -1,52 +1,32 @@
 import asyncio
 import nats
-from nats.errors import ConnectionClosedError, TimeoutError, NoServersError
+from config import init_config
+from attack import start_attack
+from database import PostgreSQL
+
+config = init_config()
+db = PostgreSQL(config)
+
 
 async def main():
-    nc = await nats.connect("nats://localhost:4222")
+    nc = await nats.connect(config.get('nats', 'url'))
+    sub = await nc.subscribe("foo", cb=handle)
 
-    async def message_handler(msg):
-        subject = msg.subject
-        reply = msg.reply
-        data = msg.data.decode()
-        print("Received a message on '{subject} {reply}': {data}".format(
-            subject=subject, reply=reply, data=data))
 
-    sub = await nc.subscribe("foo", cb=message_handler)
+async def handle(msg):
+    data = msg.data.decode()
+    start_attack(
+        config,
+        db,
+        data.get('id'),
+        data.get('taskId'),
+        data.get('userId'),
+        data.get('userName'),
+        data.get('fileUrl'),
+        data.get('modelName')
+    )
+    return {"code": 202}
 
-    await sub.unsubscribe(limit=2)
-    await nc.publish("foo", b'Hello')
-    await nc.publish("foo", b'World')
-    await nc.publish("foo", b'!!!!!')
-
-    # Synchronous style with iterator also supported.
-    sub = await nc.subscribe("bar")
-    await nc.publish("bar", b'First')
-    await nc.publish("bar", b'Second')
-
-    try:
-        async for msg in sub.messages:
-            print(f"Received a message on '{msg.subject} {msg.reply}': {msg.data.decode()}")
-            await sub.unsubscribe()
-    except Exception as e:
-        pass
-
-    async def help_request(msg):
-        print(f"Received a message on '{msg.subject} {msg.reply}': {msg.data.decode()}")
-        await nc.publish(msg.reply, b'I can help')
-
-    sub = await nc.subscribe("help", "workers", help_request)
-
-    try:
-        response = await nc.request("help", b'help me', timeout=0.5)
-        print("Received response: {message}".format(
-            message=response.data.decode()))
-    except TimeoutError:
-        print("Request timed out")
-
-    await sub.unsubscribe()
-
-    await nc.drain()
 
 if __name__ == '__main__':
     asyncio.run(main())

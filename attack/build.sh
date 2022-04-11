@@ -1,0 +1,1 @@
+docker build -t localhost:32000/ptm-leaderboard-attack:1.0.0 .
