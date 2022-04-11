@@ -13,7 +13,7 @@ spec:
     args: ["./app"]
     resources:
       limits:
-        cpu: 2
-        memory: 1024mb
+        cpu: "1000m"
+        memory: "1024Mi"
     ports:
     - containerPort: 12001
