@@ -50,6 +50,8 @@ with NATSClient(config.get("config", "natsURL")) as client:
 
             "score": attack_result.get('score'),
             "result": json.dumps(attack_result.get('result')),
+            "status": attack_result.get('status'),
+
             "modelName": message.get('modelName'),
             "message": attack_result.get('message')
         }

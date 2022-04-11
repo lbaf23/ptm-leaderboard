@@ -57,6 +57,7 @@ type FinishedResponse struct {
 
 	Score  float32 `json:"score"`
 	Result string  `json:"result"`
+	Status string  `json:"status"`
 
 	ModelName string `json:"modelName"`
 	Message   string `json:"message"`
@@ -70,7 +71,7 @@ func handleFinished(m *nats.Msg) {
 		Id:          res.RecordId,
 		FinishedAt:  res.FinishedAt,
 		RunningTime: res.RunningTime,
-		Status:      "finished",
+		Status:      res.Status,
 		Message:     res.Message,
 		Result:      res.Result,
 		Score:       res.Score,

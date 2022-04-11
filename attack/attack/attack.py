@@ -22,7 +22,8 @@ def start_attack(config, task_id, file_url):
     result = {
         "score": score,
         "result": result,
-        "message": "msgggg"
+        "status": "succeed",
+        "message": "msgggg",
     }
 
     return result
