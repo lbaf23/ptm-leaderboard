@@ -28,3 +28,27 @@ func GetRankList(taskId string, page int, pageSize int) (total int64, ranks []Ra
 		Count(&total)
 	return
 }
+
+func GetUserRank(userId string, taskId string) (rank Rank, err error) {
+	tx := db.Model(&Rank{}).
+		Where("user_id = ?", userId).
+		Where("task_id = ?", taskId).
+		First(&rank)
+	err = tx.Error
+	return
+}
+
+func CreateRank(rank Rank) (err error) {
+	tx := db.Model(&Rank{}).Create(&rank)
+	err = tx.Error
+	return
+}
+
+func UpdateRank(rank Rank) (err error) {
+	tx := db.Model(&Rank{}).
+		Where("user_id = ?", rank.UserId).
+		Where("task_id = ?", rank.TaskId).
+		Updates(&rank)
+	err = tx.Error
+	return
+}

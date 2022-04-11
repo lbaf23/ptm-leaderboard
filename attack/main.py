@@ -1,42 +1,60 @@
-import asyncio
-import nats
-from config import init_config
+from pynats import NATSClient
+import json
+import datetime
 from attack import start_attack
-from database import PostgreSQL
+from conf import init_config
+
 
 config = init_config()
-db = PostgreSQL(config)
 
 
-async def main():
-    url = config.get('config', 'natsUrl')
-    print(url)
-
-    nc = await nats.connect(url)
-    print('connected')
-
-    sub = await nc.subscribe("foo", cb=handle)
+class DateEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime.datetime):
+            return obj.strftime("%Y-%m-%dT%H:%M:%SZ")
+        else:
+            return json.JSONEncoder.default(self, obj)
 
 
-async def handle(msg):
-    data = msg.data.decode()
-    start_attack(
-        config,
-        db,
-        data.get('id'),
-        data.get('taskId'),
-        data.get('userId'),
-        data.get('userName'),
-        data.get('fileUrl'),
-        data.get('modelName')
-    )
-    return {"code": 202}
+with NATSClient(config.get("config", "natsURL")) as client:
+    client.connect()
+    print("connected")
 
+    def handle(msg):
+        message = json.loads(msg.payload)
 
-if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(main())
-    try:
-        loop.run_forever()
-    finally:
-        loop.close()
+        started_at = datetime.datetime.now()
+        data = {
+            "recordId": message.get('recordId'),
+            "startedAt": started_at
+        }
+        res = json.dumps(data, cls=DateEncoder).encode()
+        client.publish(subject="startAttack", payload=res)
+
+        attack_result = start_attack(
+            config,
+            message.get('TaskId'),
+            message.get('fileUrl'),
+        )
+
+        finished_at = datetime.datetime.now()
+        running_time = (finished_at - started_at).seconds
+
+        data = {
+            "recordId": message.get('recordId'),
+            "taskId": message.get('taskId'),
+            "userId": message.get('userId'),
+            "userName": message.get('userName'),
+            "finishedAt": finished_at,
+            "runningTime": running_time,
+
+            "score": attack_result.get('score'),
+            "result": json.dumps(attack_result.get('result')),
+            "modelName": message.get('modelName'),
+            "message": attack_result.get('message')
+        }
+        res = json.dumps(data, cls=DateEncoder).encode()
+        client.publish(subject="finishAttack", payload=res)
+
+    client.subscribe(subject="attack", callback=handle)
+    client.wait()
