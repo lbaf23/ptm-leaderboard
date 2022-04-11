@@ -1,18 +1,28 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: auth
   namespace: ptm
   labels:
-    k8s-app: auth
+    app: auth
+    component: auth
 spec:
-  containers:
-  - name: auth
-    image: lbaf23/ptm-leaderboard-auth:1.0.0
-    imagePullPolicy: IfNotPresent
-    resources:
-      limits:
-        cpu: "500m"
-        memory: "512Mi"
-    ports:
-    - containerPort: 12003
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      containers:
+      - name: auth
+        image: lbaf23/ptm-leaderboard-auth:1.0.0
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "2048Mi"
+            cpu: "1000m"
+        ports:
+        - containerPort: 12003
