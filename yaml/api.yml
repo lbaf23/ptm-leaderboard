@@ -10,7 +10,7 @@ spec:
   - name: ptm-leaderboard-api
     image: localhost:32000/ptm-leaderboard-api:1.0.0
     imagePullPolicy: IfNotPresent
-    args: ["./main"]
+    args: ["./app"]
     resources:
       limits:
         cpu: 2
