@@ -1,1 +1,1 @@
-docker build -t localhost:32000/ptm-leaderboard-api:1.0.0 .
+docker build -t lbaf23/ptm-leaderboard-api:1.0.0 .

@@ -1,19 +1,28 @@
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: ptm-leaderboard-web
+  name: web
   namespace: ptm
   labels:
-    k8s-app: ptm-leaderboard-web
+    app: web
+    component: web
 spec:
-  containers:
-  - name: ptm-leaderboard-web
-    image: localhost:32000/ptm-leaderboard-web:1.0.0
-    imagePullPolicy: IfNotPresent
-    args: ["./app"]
-    resources:
-      limits:
-        cpu: "1000m"
-        memory: "1024Mi"
-    ports:
-    - containerPort: 12001
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: lbaf23/ptm-leaderboard-web:1.0.0
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 12001

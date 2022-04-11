@@ -9,7 +9,7 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - name: http
+    - name: tcp
       port: 4222
       targetPort: 4222
       protocol: TCP

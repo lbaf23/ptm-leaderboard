@@ -9,7 +9,12 @@ db = PostgreSQL(config)
 
 
 async def main():
-    nc = await nats.connect(config.get('nats', 'url'))
+    url = config.get('config', 'natsUrl')
+    print(url)
+
+    nc = await nats.connect(url)
+    print('connected')
+
     sub = await nc.subscribe("foo", cb=handle)
 
 
@@ -29,4 +34,9 @@ async def handle(msg):
 
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
+    try:
+        loop.run_forever()
+    finally:
+        loop.close()

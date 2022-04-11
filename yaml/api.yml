@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: localhost:32000/ptm-leaderboard-api:1.0.0
+        image: lbaf23/ptm-leaderboard-api:1.0.0
         imagePullPolicy: IfNotPresent
         resources:
           limits:
