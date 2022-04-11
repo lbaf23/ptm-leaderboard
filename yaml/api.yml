@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ptm-leaderboard-api
+  namespace: ptm
+  labels:
+    k8s-app: ptm-leaderboard-api
+spec:
+  containers:
+  - name: ptm-leaderboard-api
+    image: localhost:32000/ptm-leaderboard-api:1.0.0
+    imagePullPolicy: IfNotPresent
+    args: ["./main"]
+    resources:
+      limits:
+        cpu: 2
+        memory: 1024mb
+    ports:
+    - containerPort: 12001
