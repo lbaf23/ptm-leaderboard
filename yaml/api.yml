@@ -16,4 +16,4 @@ spec:
         cpu: 2
         memory: 1024mb
     ports:
-    - containerPort: 12001
+    - containerPort: 12002

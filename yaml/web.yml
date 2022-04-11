@@ -1,13 +1,19 @@
-version: 1.0
-provider:
-  name: openfaas
-  gateway: http://localhost:31112
-functions:
-  leaderboard:
-    lang: dockerfile
-    handler: ./web
-    image: lbaf23/ptm-leaderboard-web:1.0.0
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ptm-leaderboard-web
+  namespace: ptm
+  labels:
+    k8s-app: ptm-leaderboard-web
+spec:
+  containers:
+  - name: ptm-leaderboard-web
+    image: localhost:32000/ptm-leaderboard-web:1.0.0
     imagePullPolicy: IfNotPresent
-    labels:
-      com.openfaas.scale.zero: false
-
+    args: ["./app"]
+    resources:
+      limits:
+        cpu: 2
+        memory: 1024mb
+    ports:
+    - containerPort: 12001

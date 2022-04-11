@@ -18,6 +18,6 @@ WORKDIR /home/app
 
 COPY --from=build /home/app .
 
-EXPOSE 12001
+EXPOSE 12002
 
 CMD ["./app"]
