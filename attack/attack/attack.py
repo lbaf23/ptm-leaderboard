@@ -1,4 +1,3 @@
-from turtle import screensize
 from attack.sa import sa_attack
 import shutil
 import zipfile
@@ -40,11 +39,14 @@ def start_attack(config, task_id, file_url):
     score = 0
     result = {}
 
+    print("-->attacking")
+
     model_path = unzip_file(get_file(file_url))
     if(task_id == 'sa'):
         score, result = sa_attack(model_path)
     
-    print("score: %s" % score)
+    print("-->score: %s" % score)
+
     result = {
         "score": score,
         "result": result,

@@ -10,4 +10,6 @@ COPY . .
 
 ENV run_mode=release
 
+ENV PYTHONUNBUFFERED=1
+
 CMD ["python", "main.py"]

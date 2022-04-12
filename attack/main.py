@@ -18,7 +18,7 @@ class DateEncoder(json.JSONEncoder):
 
 with NATSClient(config.get("config", "natsURL")) as client:
     client.connect()
-    print("connected")
+    print("-->nats connected")
 
     def handle(msg):
         message = json.loads(msg.payload)
@@ -29,8 +29,11 @@ with NATSClient(config.get("config", "natsURL")) as client:
             "startedAt": started_at
         }
         res = json.dumps(data, cls=DateEncoder).encode()
+
         client.publish(subject="startAttack", payload=res)
 
+        print("-->start attack")
+        
         attack_result = start_attack(
             config,
             message.get('taskId'),
