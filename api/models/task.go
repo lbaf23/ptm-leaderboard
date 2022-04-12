@@ -7,7 +7,8 @@ type Task struct {
 	Type        string `json:"type" gorm:"index;column:type"`
 	Num         uint   `json:"num" gorm:"index;column:num"`
 
-	Content string `json:"content" gorm:"column:content"`
+	Content           string `json:"content" gorm:"column:content"`
+	SubmitDescription string `json:"submitDescription" gorm:"column:submit_description"`
 }
 
 func (Task) TableName() string {
@@ -15,7 +16,17 @@ func (Task) TableName() string {
 }
 
 func GetTaskById(id string) (task Task, err error) {
-	tx := db.Where("id = ?", id).First(&task)
+	tx := db.Where("id = ?", id).
+		Select([]string{"id", "title", "description", "type", "num", "content"}).
+		First(&task)
+	err = tx.Error
+	return
+}
+
+func GetTaskSubmitDescriptionById(id string) (content string, err error) {
+	tx := db.Where("id = ?", id).
+		Select([]string{"submit_description"}).
+		First(&content)
 	err = tx.Error
 	return
 }
@@ -40,6 +51,15 @@ func UpdateTaskContent(id string, content string) (err error) {
 		Model(Task{}).
 		Where("id = ?", id).
 		Update("content", content)
+	err = tx.Error
+	return
+}
+
+func UpdateTaskSubmitContent(id string, content string) (err error) {
+	tx := db.
+		Model(Task{}).
+		Where("id = ?", id).
+		Update("submit_description", content)
 	err = tx.Error
 	return
 }

@@ -4,6 +4,7 @@ import {UploadOutlined, InboxOutlined} from "@ant-design/icons"
 import CasdoorBackend from "../../../backend/CasdoorBackend";
 import {useParams} from "react-router-dom";
 import SubmitBackend from "../../../backend/SubmitBackend";
+import SubmitDescription from "./component/SubmitDescription";
 
 
 const { Dragger } = Upload;
@@ -17,7 +18,6 @@ function Submit(obj) {
   const [fileList, setFileList] = useState([])
 
   useEffect(()=>{
-
   },[])
 
   const preCheck = () => {
@@ -108,6 +108,9 @@ function Submit(obj) {
       hoverable
     >
       <p style={{fontSize: '20px', textAlign: 'center', fontWeight: 'bold'}}>Submit</p>
+
+      <SubmitDescription />
+
       <div>
         <Space direction="vertical" size="middle" style={{width: '100%'}}>
           <Input addonBefore="Model Name" onChange={inputModelName} value={modelName}/>

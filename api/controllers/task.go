@@ -27,6 +27,26 @@ func GetTask(c *gin.Context) {
 	c.JSON(http.StatusOK, &res)
 }
 
+type TaskSubmitDescriptionResponse struct {
+	Response
+	Content string `json:"content"`
+}
+
+func GetTaskSubmitDescription(c *gin.Context) {
+	var res TaskSubmitDescriptionResponse
+	id := c.Param("id")
+	content, err := models.GetTaskSubmitDescriptionById(id)
+	if err != nil {
+		res.Code = 500
+		res.Message = err.Error()
+		c.JSON(http.StatusOK, &res)
+		return
+	}
+	res.Code = 200
+	res.Content = content
+	c.JSON(http.StatusOK, &res)
+}
+
 type TaskListResponse struct {
 	Response
 	TaskList []models.Task `json:"taskList"`
@@ -52,6 +72,21 @@ func UpdateTask(c *gin.Context) {
 	id := c.Param("id")
 	content := c.PostForm("content")
 	err := models.UpdateTaskContent(id, content)
+	if err != nil {
+		res.Code = 500
+		res.Message = err.Error()
+		c.JSON(http.StatusOK, &res)
+		return
+	}
+	res.Code = 200
+	c.JSON(http.StatusOK, &res)
+}
+
+func UpdateTaskSubmitDescription(c *gin.Context) {
+	var res Response
+	id := c.Param("id")
+	content := c.PostForm("content")
+	err := models.UpdateTaskSubmitContent(id, content)
 	if err != nil {
 		res.Code = 500
 		res.Message = err.Error()
