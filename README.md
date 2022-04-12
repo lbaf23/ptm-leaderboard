@@ -1,11 +1,10 @@
 # PTM Leaderboard
 
-
 ## dev
 
 ### api
 
-run gin 
+run gin
 
 ```bash
 cd api
@@ -22,10 +21,7 @@ yarn
 yarn start
 ```
 
-
-
 ## prod
-
 
 ### database
 
@@ -49,7 +45,6 @@ helm install postgresql bitnami/postgresql \
 echo $(kubectl get secret --namespace default postgresql -o jsonpath="{.data.postgresql-password}" | base64 --decode)
 ```
 
-
 ### web
 
 > set casdoor key
@@ -59,11 +54,10 @@ vim ptm-leaderboard-casdoorconf
 ```
 
 > write key
+
 ```bash
 faas-cli secret create ptm-leaderboard-casdoorconf --from-file ptm-leaderboard-casdoorconf
 ```
-
-
 
 ### api (gin)
 
@@ -79,10 +73,7 @@ vim ptm-leaderboard-db-password
 faas-cli secret create ptm-leaderboard-db-password --from-file ptm-leaderboard-db-password
 ```
 
-
 ### attack (python)
-
-
 
 ### casdoor
 
@@ -113,12 +104,24 @@ go build main.go
 ./main
 ```
 
+## Deployment
 
-
-### deploy all functions
-
-```sh
-faas-cli template pull
-
-faas-cli up -f stack.yml
+```bash
+kubectl apply -f ./yaml/
 ```
+
+
+
+
+
+port
+
+12001:30001 web
+
+12002:30002 api
+
+12003:30003 auth
+
+12004:30004 attack
+
+4222:30005 nats

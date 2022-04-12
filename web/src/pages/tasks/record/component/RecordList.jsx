@@ -2,6 +2,8 @@ import {Button, Divider, Drawer, Pagination, Table, Tag, Row, Col} from "antd";
 import {DownloadOutlined,ReloadOutlined} from "@ant-design/icons"
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
+import ReactJson from 'react-json-view'
+
 import RecordBackend from "../../../../backend/RecordBackend";
 
 import utils from '../../../utils/Utils'
@@ -150,14 +152,18 @@ function RecordList() {
         onChange={changePage}
       />
 
-      <Drawer title={
-        <div style={{fontSize: '26px'}}>
-          Score:&nbsp;&nbsp;{item.score}
-          <span style={{float: 'right'}}>
-            <StatusTag status={item.status} />
-          </span>
-        </div>
-      } visible={showInfo} onClose={handleClose} >
+      <Drawer
+        title={
+          <div style={{fontSize: '26px'}}>
+            Score:&nbsp;&nbsp;{item.score}
+            <span style={{float: 'right'}}>
+              <StatusTag status={item.status} />
+            </span>
+          </div>
+        }
+        visible={showInfo} onClose={handleClose}
+        size="large"
+      >
 
         <div>
           <span style={{fontSize: '20px', fontWeight: '500'}}>{item.modelName}</span>
@@ -169,13 +175,13 @@ function RecordList() {
         <Divider>Time</Divider>
 
         <Row>
-          <Col span={8}>
+          <Col span={12}>
             <div>Submitted At</div>
             <div>Started At</div>
             <div>Finished At</div>
             <div>Running Time</div>
           </Col>
-          <Col>
+          <Col span={12}>
             <div>{utils.TimeFilter(item.submittedAt)}</div>
             <div>{utils.TimeFilter(item.startedAt)}</div>
             <div>{utils.TimeFilter(item.finishedAt)}</div>
@@ -183,20 +189,9 @@ function RecordList() {
           </Col>
         </Row>
 
-        <Divider>Score</Divider>
-        {item.status === 'succeed' ?
-          <>
-            <Table
-              dataSource={item.result}
-              columns={[
-                {title: 'transformation', dataIndex: 'trans', key: 'trans'},
-                {title: 'score', dataIndex: 'score', key: 'score'}
-              ]}
-              pagination={false}
-              style={{overflow: 'auto', marginTop: '20px'}}
-            />
-          </> : null
-        }
+        <Divider>Attack Result</Divider>
+        <ReactJson name={false} src={item.result} />
+
         <Divider>Message</Divider>
         <div style={{padding: '10px', backgroundColor: '#efefef'}}>{item.message}</div>
       </Drawer>

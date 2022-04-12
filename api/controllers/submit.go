@@ -2,8 +2,8 @@ package controllers
 
 import (
 	"api/models"
-	"bytes"
-	"encoding/json"
+	"api/queue"
+	"api/utils"
 	"net/http"
 	"time"
 
@@ -12,7 +12,7 @@ import (
 )
 
 type SubmitAttack struct {
-	Id        uint   `json:"id"`
+	RecordId  uint   `json:"recordId"`
 	FileUrl   string `json:"fileUrl"`
 	UserId    string `json:"userId"`
 	UserName  string `json:"userName"`
@@ -50,17 +50,16 @@ func CreateSubmit(c *gin.Context) {
 		return
 	}
 
-	body := &SubmitAttack{
-		Id:        id,
+	data := SubmitAttack{
+		RecordId:  id,
 		FileUrl:   fileUrl,
 		UserId:    userId,
 		UserName:  userName,
 		TaskId:    taskId,
 		ModelName: modelName,
 	}
-	buf := new(bytes.Buffer)
-	json.NewEncoder(buf).Encode(body)
-	_, err = DoPost("/", buf)
+
+	err = queue.Publish(utils.StructToByte(data))
 
 	if err != nil {
 		res.Code = 500

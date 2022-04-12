@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: attack
+  namespace: ptm
+  labels:
+    app: attack
+    component: attack
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: attack
+  template:
+    metadata:
+      labels:
+        app: attack
+    spec:
+      containers:
+      - name: attack
+        image: lbaf23/ptm-leaderboard-attack:1.0.0
+        imagePullPolicy: IfNotPresent
+        resources:
+          limits:
+            memory: "2048Mi"
+            cpu: "1000m"
+            nvidia.com/gpu: 1

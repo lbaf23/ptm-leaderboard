@@ -69,3 +69,11 @@ func CreateRecord(record Record) (id uint, err error) {
 	id = record.Id
 	return
 }
+
+func UpdateRecord(record Record) (err error) {
+	tx := db.Model(&Record{}).
+		Where("id = ?", record.Id).
+		Updates(&record)
+	err = tx.Error
+	return
+}

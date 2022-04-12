@@ -27,7 +27,7 @@ type config struct {
 	CasdoorOrganization string
 	ApplicationName     string
 
-	AttackBaseUrl string
+	NATSURL string
 }
 
 var Config = &config{}

@@ -4,6 +4,7 @@ import (
 	"api/conf"
 	"api/controllers"
 	"api/models"
+	"api/queue"
 	"api/routers"
 	"encoding/gob"
 	"fmt"
@@ -17,6 +18,7 @@ func main() {
 	gin.SetMode(conf.Config.RunMode)
 	r := gin.Default()
 	models.Init()
+	queue.Init()
 
 	gob.Register(auth.Claims{})
 

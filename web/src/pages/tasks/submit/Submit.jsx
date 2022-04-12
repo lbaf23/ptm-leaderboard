@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Cascader, Input, message, Space, Upload} from "antd";
+import {Button, Card, Cascader, Divider, Input, message, Space, Upload} from "antd";
 import {UploadOutlined, InboxOutlined} from "@ant-design/icons"
 import CasdoorBackend from "../../../backend/CasdoorBackend";
 import {useParams} from "react-router-dom";
 import SubmitBackend from "../../../backend/SubmitBackend";
+import SubmitDescription from "./component/SubmitDescription";
+
 
 const { Dragger } = Upload;
 
@@ -16,7 +18,6 @@ function Submit(obj) {
   const [fileList, setFileList] = useState([])
 
   useEffect(()=>{
-
   },[])
 
   const preCheck = () => {
@@ -60,7 +61,9 @@ function Submit(obj) {
   const onUploadFile = (f) =>{
     setUploading(true)
     const file = f.file
-    console.log(file)
+
+    setFileList([{name: file.name, status: 'uploading'}])
+
     const index = file.name.lastIndexOf('.');
     const ftype = file.name.substring(index)
     if (index === -1) {
@@ -95,6 +98,8 @@ function Submit(obj) {
     customRequest: onUploadFile,
     fileList: fileList,
     onRemove: removeFile,
+    maxCount: 1,
+    disabled: uploading
   };
 
   return (
@@ -103,6 +108,15 @@ function Submit(obj) {
       hoverable
     >
       <p style={{fontSize: '20px', textAlign: 'center', fontWeight: 'bold'}}>Submit</p>
+
+      <Divider>Description</Divider>
+
+      <div>
+        <SubmitDescription />
+      </div>
+
+      <Divider>Submit</Divider>
+
       <div>
         <Space direction="vertical" size="middle" style={{width: '100%'}}>
           <Input addonBefore="Model Name" onChange={inputModelName} value={modelName}/>

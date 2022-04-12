@@ -1,0 +1,1 @@
+docker build -t lbaf23/ptm-leaderboard-api:1.0.0 .
