@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Cascader, Input, message, Space, Upload} from "antd";
+import {Button, Card, Cascader, Divider, Input, message, Space, Upload} from "antd";
 import {UploadOutlined, InboxOutlined} from "@ant-design/icons"
 import CasdoorBackend from "../../../backend/CasdoorBackend";
 import {useParams} from "react-router-dom";
@@ -109,7 +109,13 @@ function Submit(obj) {
     >
       <p style={{fontSize: '20px', textAlign: 'center', fontWeight: 'bold'}}>Submit</p>
 
-      <SubmitDescription />
+      <Divider>Description</Divider>
+
+      <div>
+        <SubmitDescription />
+      </div>
+
+      <Divider>Submit</Divider>
 
       <div>
         <Space direction="vertical" size="middle" style={{width: '100%'}}>

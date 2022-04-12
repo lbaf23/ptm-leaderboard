@@ -16,7 +16,8 @@ func (Task) TableName() string {
 }
 
 func GetTaskById(id string) (task Task, err error) {
-	tx := db.Where("id = ?", id).
+	tx := db.Model(&Task{}).
+		Where("id = ?", id).
 		Select([]string{"id", "title", "description", "type", "num", "content"}).
 		First(&task)
 	err = tx.Error
@@ -24,7 +25,8 @@ func GetTaskById(id string) (task Task, err error) {
 }
 
 func GetTaskSubmitDescriptionById(id string) (content string, err error) {
-	tx := db.Where("id = ?", id).
+	tx := db.Model(&Task{}).
+		Where("id = ?", id).
 		Select([]string{"submit_description"}).
 		First(&content)
 	err = tx.Error
@@ -32,7 +34,8 @@ func GetTaskSubmitDescriptionById(id string) (content string, err error) {
 }
 
 func GetTaskList(t string) (task []Task, err error) {
-	tx := db.Where("type = ?", t).
+	tx := db.Model(&Task{}).
+		Where("type = ?", t).
 		Select([]string{"id", "title", "description", "type"}).
 		Order("num asc").
 		Find(&task)

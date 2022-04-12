@@ -23,13 +23,13 @@ const TaskBackend = {
   },
   getTaskSubmitDescription(taskId) {
     return apiRequest({
-      url: `/task/${taskId}/submit-description`,
+      url: `/task/${taskId}/submit-description/`,
       method: 'get',
     })
   },
   updateTaskSubmitDescription(taskId, content) {
     return apiRequest({
-      url: `/task/${taskId}/submit-description`,
+      url: `/task/${taskId}/submit-description/`,
       method: 'post',
       data: qs.stringify({content: content})
     })

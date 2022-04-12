@@ -6,12 +6,11 @@ import TaskBackend from "../../../../backend/TaskBackend";
 import {useParams} from "react-router-dom";
 
 
-function SubmitDescription(obj) {
+function SubmitDescription() {
   const params = useParams()
-
-
   const [editing, setEditing] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [editable, setEditable] = useState(false)
 
   const [content, setContent] = useState('')
 
@@ -23,6 +22,7 @@ function SubmitDescription(obj) {
         }
       })
       .catch(err=>{})
+    setEditable(true)
   }, [])
 
   const handleEdit = () => {
@@ -47,12 +47,14 @@ function SubmitDescription(obj) {
 
   return (
     <div style={{marginTop: '40px'}}>
-      <div style={{textAlign: 'right'}}>
-        {editing ?
-          <Button loading={saving} type="text" icon={<SaveOutlined />} onClick={handleSave}/> :
-          <Button type="text" icon={<EditOutlined />} onClick={handleEdit}/>
-        }
-      </div>
+      {editable ?
+        <div style={{textAlign: 'right'}}>
+          {editing ?
+            <Button loading={saving} type="text" icon={<SaveOutlined/>} onClick={handleSave}/> :
+            <Button type="text" icon={<EditOutlined/>} onClick={handleEdit}/>
+          }
+        </div> : null
+      }
       <div style={{marginTop: '5px'}}>
         {editing ?
           <MDEditor value={content} onChange={handleChange} height="100%" /> :
