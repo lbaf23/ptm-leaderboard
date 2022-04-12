@@ -17,12 +17,20 @@ spec:
         app: auth
     spec:
       containers:
-      - name: auth
-        image: lbaf23/ptm-leaderboard-auth:1.0.0
-        imagePullPolicy: IfNotPresent
-        resources:
-          limits:
-            memory: "2048Mi"
-            cpu: "1000m"
-        ports:
-        - containerPort: 12003
+        - name: auth
+          image: lbaf23/ptm-leaderboard-auth:1.0.0
+          imagePullPolicy: IfNotPresent
+          resources:
+            limits:
+              memory: "2048Mi"
+              cpu: "1000m"
+          ports:
+            - containerPort: 12003
+          volumeMounts:
+            - name: files
+              mountPath: /files
+      volumes:
+        - name: files
+          hostPath:
+            path: /home/lbaf23/ptm/files
+            type: DirectoryOrCreate
