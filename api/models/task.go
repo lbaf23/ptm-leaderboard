@@ -5,6 +5,7 @@ type Task struct {
 	Title       string `json:"title" gorm:"column:title"`
 	Description string `json:"description" gorm:"column:description"`
 	Type        string `json:"type" gorm:"index;column:type"`
+	Num         uint   `json:"num" gorm:"index;column:num"`
 
 	Content string `json:"content" gorm:"column:content"`
 }
@@ -22,13 +23,14 @@ func GetTaskById(id string) (task Task, err error) {
 func GetTaskList(t string) (task []Task, err error) {
 	tx := db.Where("type = ?", t).
 		Select([]string{"id", "title", "description", "type"}).
+		Order("num asc").
 		Find(&task)
 	err = tx.Error
 	return
 }
 
 func UpdateTask(task Task) (err error) {
-	tx := db.Model(Task{}).Updates(task)
+	tx := db.Model(Task{}).Updates(&task)
 	err = tx.Error
 	return
 }
