@@ -5,6 +5,7 @@ import CasdoorBackend from "../../../backend/CasdoorBackend";
 import {useParams} from "react-router-dom";
 import SubmitBackend from "../../../backend/SubmitBackend";
 
+
 const { Dragger } = Upload;
 
 function Submit(obj) {
@@ -60,7 +61,9 @@ function Submit(obj) {
   const onUploadFile = (f) =>{
     setUploading(true)
     const file = f.file
-    console.log(file)
+
+    setFileList([{name: file.name, status: 'uploading'}])
+
     const index = file.name.lastIndexOf('.');
     const ftype = file.name.substring(index)
     if (index === -1) {
@@ -95,6 +98,8 @@ function Submit(obj) {
     customRequest: onUploadFile,
     fileList: fileList,
     onRemove: removeFile,
+    maxCount: 1,
+    disabled: uploading
   };
 
   return (
