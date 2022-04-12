@@ -9,8 +9,8 @@ def dataset_mapping(x):
     }
     
 # attack a model
-def sa_attack(model_path):
-    dataset = datasets.load_dataset("sst", split="train[:5]").map(function=dataset_mapping)
+def sa_attack(config, model_path):
+    dataset = datasets.load_dataset("sst", split="train[:%s]" % config.get("config", "dataSize")).map(function=dataset_mapping)
 
     tokenizer = transformers.AutoTokenizer.from_pretrained(model_path)
     model = transformers.AutoModelForSequenceClassification.from_pretrained(model_path, num_labels=2, output_hidden_states=False)
@@ -32,8 +32,8 @@ def sa_attack(model_path):
 
     score = score * 100 / 2
     result = {
-        "PWWS": res1,
-        "TextBugger": res2,
+        "PWWSAttacker": res1,
+        "TextBuggerAttacker": res2,
     }
 
     return score, result

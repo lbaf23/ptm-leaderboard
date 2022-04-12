@@ -43,7 +43,7 @@ def start_attack(config, task_id, file_url):
 
     model_path = unzip_file(get_file(file_url))
     if(task_id == 'sa'):
-        score, result = sa_attack(model_path)
+        score, result = sa_attack(config, model_path)
     
     print("-->score: %s" % score)
 
