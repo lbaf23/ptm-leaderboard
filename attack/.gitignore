@@ -2,5 +2,9 @@
 .vscode
 
 
-/conf/app.debug.ini
-/conf/app.release.ini
+conf/app.debug.ini
+conf/app.release.ini
+
+attack/__pycache__
+attack/sa/__pycache__
+conf/__pycache__
