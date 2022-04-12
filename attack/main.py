@@ -33,7 +33,7 @@ with NATSClient(config.get("config", "natsURL")) as client:
 
         attack_result = start_attack(
             config,
-            message.get('TaskId'),
+            message.get('taskId'),
             message.get('fileUrl'),
         )
 
