@@ -1,8 +1,10 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {Divider, Drawer, Pagination, Tag, Card} from "antd";
+import {Divider, Drawer, Pagination, Tag, Card, Col, Row} from "antd";
 
 import RankBackend from "../../../../backend/RankBackend";
+import ReactJson from "react-json-view";
+import utils from "../../../utils/Utils";
 
 const {Table} = require("antd");
 
@@ -86,23 +88,27 @@ function RankList(obj) {
         }}
       />
       <Pagination style={{marginTop: '20px', float: 'right'}} current={page} total={total} pageSize={pageSize}/>
-      <Drawer title={<div style={{fontSize: '26px'}}>Score:&nbsp;&nbsp;{item.score}</div>} visible={showD} onClose={closeD}>
+      <Drawer
+        title={<div style={{fontSize: '26px'}}>Score:&nbsp;&nbsp;{item.score}</div>}
+        visible={showD}
+        onClose={closeD}
+        size="large"
+      >
         <div>
-          <div style={{fontSize: '18px', fontWeight: '500'}}>
-            <span>{item.userName}</span>
-            <Divider type="vertical" style={{borderWidth: '2px', height: '25px', borderColor: '#c9c9c9'}}/>
-            <span>{item.modelName}</span>
-          </div>
+          <Row>
+            <Col span={12}>
+              <div>User Name:</div>
+              <div>Model Name:</div>
+            </Col>
+            <Col span={12}>
+              <div>{item.userName}</div>
+              <div>{item.modelName}</div>
+            </Col>
+          </Row>
 
-          <Table
-            dataSource={item.result}
-            columns={[
-              {title: 'transformation', dataIndex: 'trans', key: 'trans'},
-              {title: 'score', dataIndex: 'score', key: 'score'}
-            ]}
-            pagination={false}
-            style={{overflow: 'auto', marginTop: '20px'}}
-          />
+          <Divider>Attack Result</Divider>
+          <ReactJson name={false} src={item.result} />
+
         </div>
       </Drawer>
     </>

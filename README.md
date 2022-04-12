@@ -104,6 +104,16 @@ go build main.go
 ./main
 ```
 
+## Deployment
+
+```bash
+kubectl apply -f ./yaml/
+```
+
+
+
+
+
 port
 
 12001:30001 web
