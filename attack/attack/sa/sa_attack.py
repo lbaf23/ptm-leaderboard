@@ -19,9 +19,11 @@ def sa_attack(config, model_path):
     rate = 0
     result = []
 
+    print("-->PWWS Start")
     attacker = oa.attackers.PWWSAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False)
+    print("-->PWWS Finished")
 
     result.append({
         "attacker": "PWWSAttacker",
@@ -29,9 +31,11 @@ def sa_attack(config, model_path):
     })
     rate = rate + res.get("Attack Success Rate")
 
+    print("-->TextBugger Start")
     attacker = oa.attackers.TextBuggerAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False)
+    print("-->TextBugger Finished")
 
     result.append({
         "attacker": "TextBuggerAttacker",
@@ -40,12 +44,14 @@ def sa_attack(config, model_path):
 
     rate = rate + res.get("Attack Success Rate")
 
-    attacker = oa.attackers.SCPNAttacker()
+    print("-->GAN Start")
+    attacker = oa.attackers.GANAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False)
+    print("-->GAN Finished")
 
     result.append({
-        "attacker": "SCPNAttacker",
+        "attacker": "GANAttacker",
         "result": res
     })
 
