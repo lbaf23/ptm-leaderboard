@@ -1,7 +1,7 @@
 from pynats import NATSClient
 import json
 import datetime
-from attack import start_attack
+from attack import start_attack, fake_attack
 from conf import init_config
 
 
@@ -26,7 +26,9 @@ with NATSClient(config.get("config", "natsURL")) as client:
         started_at = datetime.datetime.now()
         data = {
             "recordId": message.get('recordId'),
-            "startedAt": started_at
+            "startedAt": started_at,
+            "taskId": message.get('taskId'),
+            "userId": message.get('userId'),
         }
         res = json.dumps(data, cls=DateEncoder).encode()
 
@@ -34,11 +36,15 @@ with NATSClient(config.get("config", "natsURL")) as client:
 
         print("-->start attack")
         
-        attack_result = start_attack(
-            config,
-            message.get('taskId'),
-            message.get('fileUrl'),
-        )
+        if(config.get("config", "fake") == 'on'):
+            attack_result = fake_attack()
+        else:
+            attack_result = start_attack(
+                config,
+                message.get('taskId'),
+                message.get('fileUrl'),
+            )
+        
 
         finished_at = datetime.datetime.now()
         running_time = (finished_at - started_at).seconds

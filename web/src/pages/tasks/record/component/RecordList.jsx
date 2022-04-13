@@ -1,6 +1,6 @@
 import {Button, Divider, Drawer, Pagination, Table, Tag, Row, Col} from "antd";
 import {DownloadOutlined,ReloadOutlined} from "@ant-design/icons"
-import {useEffect, useState} from "react";
+import {useEffect, useImperativeHandle, useState} from "react";
 import {useParams} from "react-router-dom";
 import ReactJson from 'react-json-view'
 
@@ -9,7 +9,7 @@ import RecordBackend from "../../../../backend/RecordBackend";
 import utils from '../../../utils/Utils'
 import StatusTag from "./StatusTag";
 
-function RecordList() {
+function RecordList(props) {
   const params = useParams()
 
   const [page, setPage] = useState(1)
@@ -29,8 +29,16 @@ function RecordList() {
   const [item, setItem] = useState({})
 
   useEffect(() => {
-    getRecords(page, pageSize, orderBy, orderType)
+    update()
   }, [])
+
+  useImperativeHandle(props.onRef, () => ({
+    update: update
+  }))
+
+  const update = () => {
+    getRecords(page, pageSize, orderBy, orderType)
+  }
 
   const getRecords = (page, pageSize, orderBy, orderType) => {
     setLoading(true)
@@ -123,15 +131,6 @@ function RecordList() {
 
   return (
     <>
-      <Button
-        style={{float: 'right', fontSize: '10px'}}
-        type="text"
-        shape="circle"
-        icon={<ReloadOutlined />}
-        loading={loading}
-        onClick={getRecords}
-        size="large"
-      />
       <Table
         dataSource={records}
         columns={columns}

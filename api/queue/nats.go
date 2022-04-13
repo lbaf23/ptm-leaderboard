@@ -2,8 +2,10 @@ package queue
 
 import (
 	"api/conf"
+	"api/event"
 	"api/models"
 	"encoding/json"
+	"fmt"
 	"github.com/nats-io/nats.go"
 	"time"
 )
@@ -34,9 +36,12 @@ func Publish(b []byte) (err error) {
 type StartedResponse struct {
 	RecordId  uint      `json:"recordId"`
 	StartedAt time.Time `json:"startedAt"`
+	TaskId    string    `json:"taskId"`
+	UserId    string    `json:"userId"`
 }
 
 func handleStart(m *nats.Msg) {
+
 	var res StartedResponse
 	json.Unmarshal(m.Data, &res)
 	r := models.Record{
@@ -45,6 +50,8 @@ func handleStart(m *nats.Msg) {
 		Status:    "running",
 	}
 	models.UpdateRecord(r)
+
+	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "update")
 }
 
 type FinishedResponse struct {
@@ -101,4 +108,6 @@ func handleFinished(m *nats.Msg) {
 		}
 		models.UpdateRank(rank)
 	}
+
+	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "update")
 }
