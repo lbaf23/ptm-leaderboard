@@ -129,8 +129,6 @@ function RecordList(props) {
         let i = res.data.record;
         const result = JSON.parse(i.result)
         i.result = result
-        setItem(i)
-
         let indicator = []
         let value = []
         for (let j=0; j<result.length; j++) {
@@ -139,6 +137,9 @@ function RecordList(props) {
           value.push(100-result[j]["result"]["Attack Success Rate"]*100)
         }
         initChart(indicator, value)
+
+        setItem(i)
+
       })
       .catch(err=>{})
   }
@@ -229,11 +230,15 @@ function RecordList(props) {
           </Col>
         </Row>
 
-        <Divider>Attack Result</Divider>
-        <ReactJson name={false} src={item.result} />
 
-        <ReactEcharts option={option} style={{height: '400px'}}/>
+        {item.status === 'succeed' ?
+          <>
+            <Divider>Attack Result</Divider>
+            <ReactJson name={false} src={item.result}/>
 
+            <ReactEcharts option={option} style={{height: '400px'}}/>
+          </> : null
+        }
 
         <Divider>Message</Divider>
         <div style={{padding: '10px', backgroundColor: '#efefef'}}>{item.message}</div>
