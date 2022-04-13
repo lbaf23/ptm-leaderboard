@@ -19,7 +19,7 @@ spec:
       containers:
       - name: nats
         image: nats:latest
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: "512Mi"

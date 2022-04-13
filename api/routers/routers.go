@@ -7,6 +7,8 @@ import (
 )
 
 func Init(r *gin.Engine) {
+	r.GET("/test", controllers.SendEvent)
+
 	authGroup := r.Group("/auth")
 	authGroup.Use()
 	{

@@ -2,7 +2,6 @@ import axios from 'axios'
 import {message} from 'antd'
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL
-const REACT_APP_ATTACK_URL = process.env.REACT_APP_ATTACK_URL
 const REACT_APP_CASDOOR_ENDPOINT = process.env.REACT_APP_CASDOOR_ENDPOINT
 
 export const apiRequest = axios.create({

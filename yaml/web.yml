@@ -19,7 +19,7 @@ spec:
       containers:
       - name: web
         image: lbaf23/ptm-leaderboard-web:1.0.0
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: "512Mi"

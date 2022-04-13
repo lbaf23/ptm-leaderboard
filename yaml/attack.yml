@@ -19,9 +19,9 @@ spec:
       containers:
       - name: attack
         image: lbaf23/ptm-leaderboard-attack:1.0.0
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         resources:
           limits:
             memory: "2048Mi"
             cpu: "1000m"
-            nvidia.com/gpu: 1
+            nvidia.com/gpu: "1"

@@ -3,6 +3,7 @@ module api
 go 1.16
 
 require (
+	github.com/alexandrevicenzi/go-sse v1.6.0
 	github.com/casdoor/casdoor-go-sdk v0.2.0
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-ini/ini v1.66.3

@@ -16,24 +16,46 @@ def sa_attack(config, model_path):
     model = transformers.AutoModelForSequenceClassification.from_pretrained(model_path, num_labels=2, output_hidden_states=False)
     victim = oa.classifiers.TransformersClassifier(model, tokenizer, model.bert.embeddings.word_embeddings)
 
-    score = 0
+    rate = 0
+    result = []
 
+    print("-->PWWS Start")
     attacker = oa.attackers.PWWSAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
-    res1 = attack_eval.eval(dataset, visualize=False)
+    res = attack_eval.eval(dataset, visualize=False)
+    print("-->PWWS Finished")
 
-    score = score + res1.get("Attack Success Rate")
+    result.append({
+        "attacker": "PWWSAttacker",
+        "result": res
+    })
+    rate = rate + res.get("Attack Success Rate")
 
+    print("-->TextBugger Start")
     attacker = oa.attackers.TextBuggerAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
-    res2 = attack_eval.eval(dataset, visualize=False)
+    res = attack_eval.eval(dataset, visualize=False)
+    print("-->TextBugger Finished")
 
-    score = score + res1.get("Attack Success Rate")
+    result.append({
+        "attacker": "TextBuggerAttacker",
+        "result": res
+    })
 
-    score = score * 100 / 2
-    result = {
-        "PWWSAttacker": res1,
-        "TextBuggerAttacker": res2,
-    }
+    rate = rate + res.get("Attack Success Rate")
 
+    print("-->GAN Start")
+    attacker = oa.attackers.GANAttacker()
+    attack_eval = oa.AttackEval(attacker, victim)
+    res = attack_eval.eval(dataset, visualize=False)
+    print("-->GAN Finished")
+
+    result.append({
+        "attacker": "GANAttacker",
+        "result": res
+    })
+
+    rate = rate + res.get("Attack Success Rate")
+
+    score = (1 - rate / 3) * 100
     return score, result

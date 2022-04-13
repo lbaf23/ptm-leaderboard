@@ -1,10 +1,10 @@
 import ReactEcharts from 'echarts-for-react';
 
 import RecordBackend from "../../../../backend/RecordBackend";
-import {useEffect, useState} from "react";
+import {useEffect, useImperativeHandle, useState} from "react";
 import {useParams} from "react-router-dom";
 
-function RecordChart() {
+function RecordChart(props) {
   const params = useParams()
 
   const [loading, setLoading] = useState(false)
@@ -13,6 +13,10 @@ function RecordChart() {
   useEffect(()=>{
     getRecordData();
   }, [])
+
+  useImperativeHandle(props.onRef, () => ({
+    update: getRecordData
+  }))
 
   const getRecordData = () => {
     RecordBackend.getRecordData(params.id )

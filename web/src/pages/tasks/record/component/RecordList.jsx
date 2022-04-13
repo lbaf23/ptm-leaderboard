@@ -1,6 +1,6 @@
 import {Button, Divider, Drawer, Pagination, Table, Tag, Row, Col} from "antd";
 import {DownloadOutlined,ReloadOutlined} from "@ant-design/icons"
-import {useEffect, useState} from "react";
+import {useEffect, useImperativeHandle, useState} from "react";
 import {useParams} from "react-router-dom";
 import ReactJson from 'react-json-view'
 
@@ -8,9 +8,12 @@ import RecordBackend from "../../../../backend/RecordBackend";
 
 import utils from '../../../utils/Utils'
 import StatusTag from "./StatusTag";
+import ReactEcharts from "echarts-for-react";
 
-function RecordList() {
+function RecordList(props) {
   const params = useParams()
+
+  const [option, setOption] = useState({})
 
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
@@ -29,8 +32,19 @@ function RecordList() {
   const [item, setItem] = useState({})
 
   useEffect(() => {
-    getRecords(page, pageSize, orderBy, orderType)
+    update()
   }, [])
+
+  useImperativeHandle(props.onRef, () => ({
+    update: update
+  }))
+
+  const update = () => {
+    getRecords(page, pageSize, orderBy, orderType)
+    if(showInfo) {
+      updateInfo(item.id)
+    }
+  }
 
   const getRecords = (page, pageSize, orderBy, orderType) => {
     setLoading(true)
@@ -103,17 +117,53 @@ function RecordList() {
 
   const handleClick = (item) => {
     setShowInfo(true)
+    updateInfo(item.id)
+  }
+
+  const updateInfo = (id) => {
     setDrawerLoading(true)
-    RecordBackend.getRecord(item.id)
-    .then(res=>{
-      let i = res.data.record;
-      if (typeof(i.result) == "string") {
-        i.result = JSON.parse(i.result)
-      }
-      setItem(i)
-      setDrawerLoading(false)
-    })
+    RecordBackend.getRecord(id)
+      .then(res=>{
+        setDrawerLoading(false)
+
+        let i = res.data.record;
+        const result = JSON.parse(i.result)
+        i.result = result
+        let indicator = []
+        let value = []
+        for (let j=0; j<result.length; j++) {
+          indicator.push({name: result[j]["attacker"], max: 100})
+
+          value.push(100-result[j]["result"]["Attack Success Rate"]*100)
+        }
+        initChart(indicator, value)
+
+        setItem(i)
+
+      })
       .catch(err=>{})
+  }
+
+  const initChart = (indicator, value) => {
+    setOption({
+      title: {},
+      tooltip: {},
+      radar: {
+        indicator: indicator
+      },
+      series: [
+        {
+          name: '',
+          type: 'radar',
+          data: [
+            {
+              value: value,
+              name: 'Score'
+            }
+          ]
+        }
+      ]
+    })
   }
 
   const handleClose = () => {
@@ -123,15 +173,6 @@ function RecordList() {
 
   return (
     <>
-      <Button
-        style={{float: 'right', fontSize: '10px'}}
-        type="text"
-        shape="circle"
-        icon={<ReloadOutlined />}
-        loading={loading}
-        onClick={getRecords}
-        size="large"
-      />
       <Table
         dataSource={records}
         columns={columns}
@@ -189,8 +230,15 @@ function RecordList() {
           </Col>
         </Row>
 
-        <Divider>Attack Result</Divider>
-        <ReactJson name={false} src={item.result} />
+
+        {item.status === 'succeed' ?
+          <>
+            <Divider>Attack Result</Divider>
+            <ReactJson name={false} src={item.result}/>
+
+            <ReactEcharts option={option} style={{height: '400px'}}/>
+          </> : null
+        }
 
         <Divider>Message</Divider>
         <div style={{padding: '10px', backgroundColor: '#efefef'}}>{item.message}</div>

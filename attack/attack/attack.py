@@ -2,6 +2,7 @@ from attack.sa import sa_attack
 import shutil
 import zipfile
 import os
+import time
 import requests
 
 
@@ -51,8 +52,52 @@ def start_attack(config, task_id, file_url):
         "score": score,
         "result": result,
         "status": "succeed",
-        "message": "msg",
+        "message": "ok",
     }
 
     return result
 
+
+def fake_attack():
+    print("-->fake attacking")
+    time.sleep(10)
+    return {
+        "score": 25,
+        "result": [
+            {
+                "attacker": "PWWSAttacker",
+                "result": {
+                    "Total Attacked Instances": 20,
+                    "Successful Instances": 14,
+                    "Attack Success Rate": 0.7,
+                    "Avg. Running Time": 0.022733259201049804,
+                    "Total Query Exceeded": 0,
+                    "Avg. Victim Model Queries": 178.2
+                }
+            },
+            {
+                "attacker": "TextBuggerAttacker",
+                "result": {
+                    "Total Attacked Instances": 20,
+                    "Successful Instances": 15,
+                    "Attack Success Rate": 0.75,
+                    "Avg. Running Time": 0.0022499561309814453,
+                    "Total Query Exceeded": 0,
+                    "Avg. Victim Model Queries": 45.8
+                },
+            },
+            {
+                "attacker": "SCPNAttacker",
+                "result": {
+                    "Total Attacked Instances": 20,
+                    "Successful Instances": 16,
+                    "Attack Success Rate": 0.8,
+                    "Avg. Running Time": 0.0022499561309814453,
+                    "Total Query Exceeded": 0,
+                    "Avg. Victim Model Queries": 45.8
+                }
+            }
+        ],
+        "status": "succeed",
+        "message": "msg",
+    }

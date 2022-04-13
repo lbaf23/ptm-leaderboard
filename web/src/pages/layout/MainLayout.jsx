@@ -164,7 +164,7 @@ function MainLayout() {
             <Route exact path="rank" element={<Rank/>}/>
 
             <Route exact path="submit" element={renderComponentIfLogin(<Submit account={account}/>)}/>
-            <Route path="record" element={renderComponentIfLogin(<Record/>)}/>
+            <Route path="record" element={renderComponentIfLogin(<Record account={account}/>)}/>
           </Route>
         </Routes>
 
