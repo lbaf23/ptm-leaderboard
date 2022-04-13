@@ -8,9 +8,12 @@ import RecordBackend from "../../../../backend/RecordBackend";
 
 import utils from '../../../utils/Utils'
 import StatusTag from "./StatusTag";
+import ReactEcharts from "echarts-for-react";
 
 function RecordList(props) {
   const params = useParams()
+
+  const [option, setOption] = useState({})
 
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
@@ -38,6 +41,9 @@ function RecordList(props) {
 
   const update = () => {
     getRecords(page, pageSize, orderBy, orderType)
+    if(showInfo) {
+      updateInfo(item.id)
+    }
   }
 
   const getRecords = (page, pageSize, orderBy, orderType) => {
@@ -111,17 +117,52 @@ function RecordList(props) {
 
   const handleClick = (item) => {
     setShowInfo(true)
+    updateInfo(item.id)
+  }
+
+  const updateInfo = (id) => {
     setDrawerLoading(true)
-    RecordBackend.getRecord(item.id)
-    .then(res=>{
-      let i = res.data.record;
-      if (typeof(i.result) == "string") {
-        i.result = JSON.parse(i.result)
-      }
-      setItem(i)
-      setDrawerLoading(false)
-    })
+    RecordBackend.getRecord(id)
+      .then(res=>{
+        setDrawerLoading(false)
+
+        let i = res.data.record;
+        const result = JSON.parse(i.result)
+        i.result = result
+        setItem(i)
+
+        let indicator = []
+        let value = []
+        for (let j=0; j<result.length; j++) {
+          indicator.push({name: result[j]["attacker"], max: 100})
+
+          value.push(100-result[j]["result"]["Attack Success Rate"]*100)
+        }
+        initChart(indicator, value)
+      })
       .catch(err=>{})
+  }
+
+  const initChart = (indicator, value) => {
+    setOption({
+      title: {},
+      tooltip: {},
+      radar: {
+        indicator: indicator
+      },
+      series: [
+        {
+          name: '',
+          type: 'radar',
+          data: [
+            {
+              value: value,
+              name: 'Score'
+            }
+          ]
+        }
+      ]
+    })
   }
 
   const handleClose = () => {
@@ -190,6 +231,9 @@ function RecordList(props) {
 
         <Divider>Attack Result</Divider>
         <ReactJson name={false} src={item.result} />
+
+        <ReactEcharts option={option} style={{height: '400px'}}/>
+
 
         <Divider>Message</Divider>
         <div style={{padding: '10px', backgroundColor: '#efefef'}}>{item.message}</div>

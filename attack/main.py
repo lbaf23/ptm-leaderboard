@@ -44,7 +44,6 @@ with NATSClient(config.get("config", "natsURL")) as client:
                 message.get('taskId'),
                 message.get('fileUrl'),
             )
-        
 
         finished_at = datetime.datetime.now()
         running_time = (finished_at - started_at).seconds
