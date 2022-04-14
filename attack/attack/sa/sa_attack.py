@@ -19,7 +19,7 @@ def imdb_dataset(x):
 
 # attack a model
 def sa_attack(config, model_path):
-    dataset = datasets.load_from_disk('datasets/sst')
+    dataset = datasets.load_from_disk('datasets/sst', keep_in_memory=True)
 
     tokenizer = transformers.AutoTokenizer.from_pretrained(model_path)
     model = transformers.AutoModelForSequenceClassification.from_pretrained(model_path, num_labels=2, output_hidden_states=False)
@@ -28,11 +28,11 @@ def sa_attack(config, model_path):
     rate = 0
     result = []
 
-    print("-->PWWS Start")
+    print("-->PWWSAttacker Start")
     attacker = oa.attackers.PWWSAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False)
-    print("-->PWWS Finished")
+    print("-->PWWSAttacker Finished")
 
     result.append({
         "attacker": "PWWSAttacker",
@@ -40,24 +40,24 @@ def sa_attack(config, model_path):
     })
     rate = rate + res.get("Attack Success Rate")
 
-    print("-->TextBugger Start")
-    attacker = oa.attackers.TextBuggerAttacker()
+    print("-->DeepWordBugAttacker Start")
+    attacker = oa.attackers.DeepWordBugAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False)
-    print("-->TextBugger Finished")
+    print("-->DeepWordBugAttacker Finished")
 
     result.append({
-        "attacker": "TextBuggerAttacker",
+        "attacker": "DeepWordBugAttacker",
         "result": res
     })
 
     rate = rate + res.get("Attack Success Rate")
 
-    print("-->GAN Start")
+    print("-->GANAttacker Start")
     attacker = oa.attackers.GANAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False)
-    print("-->GAN Finished")
+    print("-->GANAttacker Finished")
 
     result.append({
         "attacker": "GANAttacker",
