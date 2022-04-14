@@ -29,6 +29,10 @@ function Submit(obj) {
       message.error("Upload zip file")
       return false
     }
+    if(fileList[0].status === 'uploading') {
+      message.error("Wait uploading")
+      return false
+    }
     return true
   }
   const handleSubmit = () => {
@@ -119,7 +123,7 @@ function Submit(obj) {
 
       <div>
         <Space direction="vertical" size="middle" style={{width: '100%'}}>
-          <Input addonBefore="Model Name" onChange={inputModelName} value={modelName}/>
+          <Input addonBefore="Model Name" maxLength={20} showCount onChange={inputModelName} value={modelName}/>
 
           <Dragger {...props}>
             <p className="ant-upload-drag-icon">
