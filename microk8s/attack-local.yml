@@ -27,4 +27,4 @@ spec:
           limits:
             memory: "2048Mi"
             cpu: "1000m"
-            nvidia.com/gpu: 1
+            nvidia.com/gpu: "1"
