@@ -6,11 +6,12 @@ import "./needlogin.css"
 function NeedLogin(obj) {
   return (
     <div className="need-login">
-      <div className="title">
-        Please Login First
-      </div>
       <div onClick={obj.userLogin} className="login">
-        L O G I N
+        L&nbsp;&nbsp;
+        O&nbsp;&nbsp;
+        G&nbsp;&nbsp;
+        I&nbsp;&nbsp;
+        N
       </div>
     </div>
   )
