@@ -164,7 +164,7 @@ function Submit(obj) {
 
             </TabPane>
             <TabPane tab="File url" key="url">
-              <Input addonBefore="File url" maxLength={100} showCount onChange={inputModelUrl} value={modelUrl}/>
+              <Input addonBefore="File url" maxLength={1000} showCount onChange={inputModelUrl} value={modelUrl}/>
             </TabPane>
 
           </Tabs>
