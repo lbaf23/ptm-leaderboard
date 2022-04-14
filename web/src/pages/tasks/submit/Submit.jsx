@@ -6,6 +6,9 @@ import {useParams} from "react-router-dom";
 import SubmitBackend from "../../../backend/SubmitBackend";
 import SubmitDescription from "./component/SubmitDescription";
 
+import { Tabs } from 'antd';
+
+const { TabPane } = Tabs;
 
 const { Dragger } = Upload;
 
@@ -15,36 +18,55 @@ function Submit(obj) {
   const [loading, setLoading] = useState(false)
   const [uploading, setUploading] = useState(false)
   const [modelName, setModelName] = useState('')
+  const [modelUrl, setModelUrl] = useState('')
   const [fileList, setFileList] = useState([])
+
+  const [mode, setMode] = useState('1')
 
   useEffect(()=>{
   },[])
+
+  const changeTab = (e) => {
+    setMode(e)
+  }
 
   const preCheck = () => {
     if (modelName === '') {
       message.error("Model Name is empty")
       return false
     }
-    if (fileList.length === 0) {
-      message.error("Upload zip file")
-      return false
-    }
-    if(fileList[0].status === 'uploading') {
-      message.error("Wait uploading")
-      return false
+    if(mode === 'file') {
+      if (fileList.length === 0) {
+        message.error("Upload zip file")
+        return false
+      }
+      if (fileList[0].status === 'uploading') {
+        message.error("Wait uploading")
+        return false
+      }
+    } else {
+      if(modelUrl === '') {
+        message.error("Write file url")
+        return false
+      }
     }
     return true
   }
   const handleSubmit = () => {
     if (preCheck()){
       setLoading(true)
-      SubmitBackend.submitModel(modelName, fileList[0].url, params.id)
+      let url = modelUrl
+      if(mode === 'file') {
+        url = fileList[0].url
+      }
+      SubmitBackend.submitModel(modelName, url, params.id)
         .then(res=>{
           setLoading(false)
           if(res.data.code === 200) {
             message.success(res.data.message)
             setFileList([])
             setModelName('')
+            setModelUrl('')
           } else {
             message.error(res.data.message)
           }
@@ -55,6 +77,9 @@ function Submit(obj) {
 
   const inputModelName = (e) => {
     setModelName(e.target.value)
+  }
+  const inputModelUrl = (e) => {
+    setModelUrl(e.target.value)
   }
 
   const removeFile = () => {
@@ -125,15 +150,24 @@ function Submit(obj) {
         <Space direction="vertical" size="middle" style={{width: '100%'}}>
           <Input addonBefore="Model Name" maxLength={20} showCount onChange={inputModelName} value={modelName}/>
 
-          <Dragger {...props}>
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">Click or drag file to this area to upload</p>
-            <p className="ant-upload-hint">
-              Upload ZIP file
-            </p>
-          </Dragger>
+          <Tabs defaultActiveKey="file" onChange={changeTab}>
+            <TabPane tab="Upload file" key="file">
+              <Dragger {...props}>
+                <p className="ant-upload-drag-icon">
+                  <InboxOutlined />
+                </p>
+                <p className="ant-upload-text">Click or drag file to this area to upload</p>
+                <p className="ant-upload-hint">
+                  Upload ZIP file
+                </p>
+              </Dragger>
+
+            </TabPane>
+            <TabPane tab="File url" key="url">
+              <Input addonBefore="File url" maxLength={100} showCount onChange={inputModelUrl} value={modelUrl}/>
+            </TabPane>
+
+          </Tabs>
 
           <div style={{textAlign: 'center', marginTop: '20px'}}>
             <Button loading={loading} onClick={handleSubmit}>
