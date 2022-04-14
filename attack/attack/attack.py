@@ -40,13 +40,15 @@ def start_attack(config, task_id, file_url):
     score = 0
     result = {}
 
-    print("-->attacking")
-
+    print("-->download model file")
     model_path = unzip_file(get_file(file_url))
+
+    print("-->start attack")
+
     if(task_id == 'sa'):
         score, result = sa_attack(config, model_path)
     
-    print("-->score: %s" % score)
+    print("-->attack finished")
 
     result = {
         "score": score,
@@ -59,7 +61,7 @@ def start_attack(config, task_id, file_url):
 
 
 def fake_attack():
-    print("-->fake attacking")
+    print("-->fake attack")
     time.sleep(10)
     return {
         "score": 25,
