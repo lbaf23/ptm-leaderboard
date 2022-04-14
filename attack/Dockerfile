@@ -6,7 +6,13 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY data .
+COPY datasets .
+
+COPY attack .
+COPY conf .
+COPY __init__.py .
+COPY main.py .
 
 ENV run_mode=release
 
