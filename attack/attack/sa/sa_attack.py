@@ -2,15 +2,24 @@ import OpenAttack as oa
 import datasets
 import transformers
 
-def dataset_mapping(x):
+
+def sst_dataset(x):
     return {
         "x": x["sentence"],
         "y": 1 if x["label"] > 0.5 else 0,
     }
-    
+
+
+def imdb_dataset(x):
+    return {
+        "x": x["text"],
+        "y": x["label"],
+    }
+
+
 # attack a model
 def sa_attack(config, model_path):
-    dataset = datasets.load_dataset("sst", split="train[:%s]" % config.get("config", "dataSize")).map(function=dataset_mapping)
+    dataset = datasets.load_from_disk('datasets/sst')
 
     tokenizer = transformers.AutoTokenizer.from_pretrained(model_path)
     model = transformers.AutoModelForSequenceClassification.from_pretrained(model_path, num_labels=2, output_hidden_states=False)
