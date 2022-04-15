@@ -32,25 +32,6 @@ function Submit(obj) {
   }
 
   const preCheck = () => {
-    if (modelName === '') {
-      if(mode === 'file') {
-        if (fileList.length === 0) {
-          message.error("Please upload a ZIP file")
-          return false
-        } else {
-          setModelName(fileList[0].name)
-          return true
-        }
-      } else {
-        if (hg === '') {
-          message.error("Please input Hugging Face Model")
-          return false
-        } else {
-          setModelName(hg)
-          return true
-        }
-      }
-    }
     if(mode === 'file') {
       if (fileList.length === 0) {
         message.error("Upload zip file")
@@ -78,7 +59,15 @@ function Submit(obj) {
   }
 
   const submit = (url) => {
-    SubmitBackend.submitModel(modelName, url, params.id, mode, hgToken)
+    let name = modelName
+    if(name === '') {
+      if (mode === 'file') {
+        name = fileList[0].name
+      } else {
+        name = hg
+      }
+    }
+    SubmitBackend.submitModel(name, url, params.id, mode, hgToken)
       .then(res=>{
         setLoading(false)
         if(res.data.code === 200) {

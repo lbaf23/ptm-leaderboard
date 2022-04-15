@@ -77,7 +77,7 @@ function RecordList(props) {
       key: 'score',
       render: (value, item) => (
         <>
-          {item.status === 'pending' || item.status === 'running' ?
+          {item.status === 'pending' || item.status === 'running' || item.status === 'loading' ?
             <>---</>
             :
             <>{value}</>
@@ -107,7 +107,7 @@ function RecordList(props) {
       key: 'runningTime',
       render: (time, item) => (
         <>
-          {item.status === 'pending' || item.status === 'running' ?
+          {item.status === 'pending' || item.status === 'running' || item.status === 'loading' ?
             <>---</>
             :
             <>{time}&nbsp;s</>
@@ -218,7 +218,7 @@ function RecordList(props) {
         title={
           <div style={{fontSize: '26px'}}>
             Score:&nbsp;&nbsp;
-            {item.status === 'pending' || item.status === 'running' ?
+            {item.status === 'pending' || item.status === 'running' || item.status === 'loading' ?
               <>---</> : <>{item.score}</>
             }
             <span style={{float: 'right'}}>
@@ -253,21 +253,21 @@ function RecordList(props) {
           <Col span={12}>
             <div>{utils.TimeFilter(item.submittedAt)}</div>
             <div>
-              {item.status === 'pending' ?
+              {item.status === 'pending' || item.status === 'loading' ?
                 <>---</>
                 :
                 <>{utils.TimeFilter(item.startedAt)}</>
               }
             </div>
             <div>
-              {item.status === 'pending' || item.status === 'running' ?
+              {item.status === 'pending' || item.status === 'loading' || item.status === 'running' ?
                 <>---</>
                 :
                 <>{utils.TimeFilter(item.finishedAt)}</>
               }
             </div>
             <div>
-              {item.status === 'pending' || item.status === 'running' ?
+              {item.status === 'pending' || item.status === 'loading' || item.status === 'running' ?
                 <>---</>
                 :
                 <>{item.runningTime} &nbsp;s</>
