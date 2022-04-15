@@ -1,9 +1,14 @@
+from tracemalloc import start
+
+from numpy import record
 from attack.sa import sa_attack
 import shutil
 import zipfile
 import os
 import time
 import requests
+import json
+import datetime
 
 
 def unzip_file(name):
@@ -35,34 +40,57 @@ def del_all():
         os.remove('user_model.zip')
 
 
-
-def start_attack(config, task_id, file_url):
+def start_attack(config, client, record_id, task_id, user_id, file_url, mode, hgToken):
     score = 0
     result = {}
 
-    print("-->download model file")
-    model_path = unzip_file(get_file(file_url))
+    if mode == 'hg':
+        print("[attack] use Hugging Face Model")
+        model_path = file_url
+    else:
+        print("[attack] download model file")
+        model_path = unzip_file(get_file(file_url))
+        print("[attack] start attack")
 
-    print("-->start attack")
-
-    if(task_id == 'sa'):
-        score, result = sa_attack(config, model_path)
+    status = 'succeed'
+    message = ''
+    started_at = datetime.datetime.now()
+    try:
+        if(task_id == 'sa'):
+            score, result, started_at = sa_attack(
+                config,
+                client,
+                record_id,
+                task_id,
+                user_id,
+                model_path,
+                mode,
+                hgToken
+            )
+    except Exception as e:
+        status = 'error'
+        message = str(e)
     
-    print("-->attack finished")
+    print("[attack] attack all finished")
 
     result = {
         "score": score,
         "result": result,
-        "status": "succeed",
-        "message": "ok",
+        "status": status,
+        "message": message,
     }
 
-    return result
+    return result, started_at
 
 
-def fake_attack():
-    print("-->fake attack")
+def fake_attack(file_url):
+    started_at = datetime.datetime.now()
+    print("[attack] download model file")
+    model_path = unzip_file(get_file(file_url))
+    print("[attack] start attack")
+
     time.sleep(10)
+
     return {
         "score": 25,
         "result": [
@@ -102,4 +130,4 @@ def fake_attack():
         ],
         "status": "succeed",
         "message": "msg",
-    }
+    }, started_at

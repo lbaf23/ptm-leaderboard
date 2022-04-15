@@ -10,8 +10,6 @@ import FileBackend from "../../../backend/FileBackend";
 
 const { TabPane } = Tabs;
 
-const { Dragger } = Upload;
-
 function Submit(obj) {
   const params = useParams();
 
@@ -19,10 +17,12 @@ function Submit(obj) {
 
   const [modelName, setModelName] = useState('')
   const [modelUrl, setModelUrl] = useState('')
+  const [hg, setHg] = useState('')
+  const [hgToken, setHgToken] = useState('')
   const [fileList, setFileList] = useState([])
   const [percent, setPercent] = useState(0)
 
-  const [mode, setMode] = useState('file')
+  const [mode, setMode] = useState('hg')
 
   useEffect(()=>{
   },[])
@@ -32,18 +32,14 @@ function Submit(obj) {
   }
 
   const preCheck = () => {
-    if (modelName === '') {
-      message.error("Model Name is empty")
-      return false
-    }
     if(mode === 'file') {
       if (fileList.length === 0) {
         message.error("Upload zip file")
         return false
       }
     } else {
-      if(modelUrl === '') {
-        message.error("Write file url")
+      if(hg === '') {
+        message.error("Please input Hugging Face Model")
         return false
       }
     }
@@ -52,9 +48,10 @@ function Submit(obj) {
   const handleSubmit = () => {
     if (preCheck()){
       setLoading(true)
-
       if(mode === 'file') {
         uploadFile()
+      } else if(mode === 'hg') {
+        submit(hg)
       } else {
         submit(modelUrl)
       }
@@ -62,7 +59,15 @@ function Submit(obj) {
   }
 
   const submit = (url) => {
-    SubmitBackend.submitModel(modelName, url, params.id)
+    let name = modelName
+    if(name === '') {
+      if (mode === 'file') {
+        name = fileList[0].name
+      } else {
+        name = hg
+      }
+    }
+    SubmitBackend.submitModel(name, url, params.id, mode, hgToken)
       .then(res=>{
         setLoading(false)
         if(res.data.code === 200) {
@@ -70,6 +75,8 @@ function Submit(obj) {
           setFileList([])
           setModelName('')
           setModelUrl('')
+          setHg('')
+          setHgToken('')
         } else {
           message.error(res.data.message)
         }
@@ -82,6 +89,12 @@ function Submit(obj) {
   }
   const inputModelUrl = (e) => {
     setModelUrl(e.target.value)
+  }
+  const inputHg = (e) => {
+    setHg(e.target.value)
+  }
+  const inputHgToken = (e) => {
+    setHgToken(e.target.value)
   }
 
   const removeFile = () => {
@@ -195,7 +208,11 @@ function Submit(obj) {
         <Space direction="vertical" size="middle" style={{width: '100%'}}>
           <Input addonBefore="Model Name" maxLength={20} showCount onChange={inputModelName} value={modelName}/>
 
-          <Tabs defaultActiveKey="file" onChange={changeTab}>
+          <Tabs defaultActiveKey="hg" onChange={changeTab}>
+            <TabPane tab="Hugging Face Model" key="hg">
+              <Input addonBefore="Hugging Face Model" maxLength={1000} showCount onChange={inputHg} value={hg}/>
+              <Input style={{marginTop: '20px'}} addonBefore="Auth Token" maxLength={1000} showCount onChange={inputHgToken} value={hgToken}/>
+            </TabPane>
             <TabPane tab="Upload file" key="file">
               <Upload {...props}>
                 <Button icon={<UploadOutlined />}>choose ZIP file</Button>
@@ -203,11 +220,12 @@ function Submit(obj) {
               {loading ?
                 <Progress percent={percent}/> : null
               }
-
             </TabPane>
+{/*
             <TabPane tab="File url" key="url">
               <Input addonBefore="File url" maxLength={1000} showCount onChange={inputModelUrl} value={modelUrl}/>
             </TabPane>
+*/}
 
           </Tabs>
 

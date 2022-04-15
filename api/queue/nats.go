@@ -22,6 +22,10 @@ func Init() {
 	if err != nil {
 		panic(err.Error())
 	}
+	_, err = nc.Subscribe("loadAttack", handleLoad)
+	if err != nil {
+		panic(err.Error())
+	}
 	_, err = nc.Subscribe("finishAttack", handleFinished)
 	if err != nil {
 		panic(err.Error())
@@ -33,25 +37,44 @@ func Publish(b []byte) (err error) {
 	return
 }
 
-type StartedResponse struct {
+type LoadResponse struct {
+	RecordId uint   `json:"recordId"`
+	TaskId   string `json:"taskId"`
+	UserId   string `json:"userId"`
+	Status   string `json:"status"`
+}
+
+func handleLoad(m *nats.Msg) {
+	var res LoadResponse
+	json.Unmarshal(m.Data, &res)
+	r := models.Record{
+		Id:     res.RecordId,
+		Status: res.Status,
+	}
+	models.UpdateRecord(r)
+
+	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "loading")
+}
+
+type StartResponse struct {
 	RecordId  uint      `json:"recordId"`
 	StartedAt time.Time `json:"startedAt"`
 	TaskId    string    `json:"taskId"`
 	UserId    string    `json:"userId"`
+	Status    string    `json:"status"`
 }
 
 func handleStart(m *nats.Msg) {
-
-	var res StartedResponse
+	var res StartResponse
 	json.Unmarshal(m.Data, &res)
 	r := models.Record{
 		Id:        res.RecordId,
 		StartedAt: res.StartedAt,
-		Status:    "running",
+		Status:    res.Status,
 	}
 	models.UpdateRecord(r)
 
-	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "update")
+	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "running")
 }
 
 type FinishedResponse struct {
@@ -86,28 +109,29 @@ func handleFinished(m *nats.Msg) {
 
 	models.UpdateRecord(r)
 
-	rank, err := models.GetUserRank(res.UserId, res.TaskId)
-	if err != nil {
-		rank = models.Rank{
-			TaskId:    res.TaskId,
-			UserId:    res.UserId,
-			UserName:  res.UserName,
-			ModelName: res.ModelName,
-			Score:     res.Score,
-			Result:    res.Result,
+	if res.Status == "succeed" {
+		rank, err := models.GetUserRank(res.UserId, res.TaskId)
+		if err != nil {
+			rank = models.Rank{
+				TaskId:    res.TaskId,
+				UserId:    res.UserId,
+				UserName:  res.UserName,
+				ModelName: res.ModelName,
+				Score:     res.Score,
+				Result:    res.Result,
+			}
+			models.CreateRank(rank)
+		} else {
+			rank = models.Rank{
+				TaskId:    rank.TaskId,
+				UserId:    rank.UserId,
+				UserName:  res.UserName,
+				ModelName: res.ModelName,
+				Score:     res.Score,
+				Result:    res.Result,
+			}
+			models.UpdateRank(rank)
 		}
-		models.CreateRank(rank)
-	} else {
-		rank = models.Rank{
-			TaskId:    rank.TaskId,
-			UserId:    rank.UserId,
-			UserName:  res.UserName,
-			ModelName: res.ModelName,
-			Score:     res.Score,
-			Result:    res.Result,
-		}
-		models.UpdateRank(rank)
 	}
-
-	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "update")
+	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), res.Status)
 }

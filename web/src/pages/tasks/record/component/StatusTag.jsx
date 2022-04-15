@@ -12,11 +12,15 @@ function StatusTag(obj) {
           <span style={{color: 'gray'}}>{obj.status}&nbsp;...</span> : null
       }
       {
+        obj.status === 'loading' ?
+          <span style={{color: 'gray'}}>{obj.status}&nbsp;...</span> : null
+      }
+      {
         obj.status === 'succeed' ?
           <span style={{color: 'green'}}>{obj.status}</span> : null
       }
       {
-        obj.status === 'failed' ?
+        obj.status === 'error' ?
           <span style={{color: 'red'}}>{obj.status}</span> : null
       }
     </Tag>

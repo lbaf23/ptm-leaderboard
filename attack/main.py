@@ -5,9 +5,6 @@ from attack import start_attack, fake_attack
 from conf import init_config
 
 
-config = init_config()
-
-
 class DateEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, datetime.datetime):
@@ -16,33 +13,37 @@ class DateEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, obj)
 
 
+config = init_config()
+
+
 with NATSClient(config.get("config", "natsURL")) as client:
     client.connect()
-    print("-->nats connected")
+    print("[attack] nats connected")
 
     def handle(msg):
         message = json.loads(msg.payload)
 
-        started_at = datetime.datetime.now()
         data = {
             "recordId": message.get('recordId'),
-            "startedAt": started_at,
             "taskId": message.get('taskId'),
             "userId": message.get('userId'),
+            "status": "loading",
         }
         res = json.dumps(data, cls=DateEncoder).encode()
-
-        client.publish(subject="startAttack", payload=res)
-
-        print("-->start attack")
+        client.publish(subject="loadAttack", payload=res)
         
         if(config.get("config", "fake") == 'on'):
-            attack_result = fake_attack()
+            attack_result, started_at = fake_attack(message.get('fileUrl'))
         else:
-            attack_result = start_attack(
+            attack_result, started_at = start_attack(
                 config,
+                client,
+                message.get('recordId'),
                 message.get('taskId'),
+                message.get('userId'),
                 message.get('fileUrl'),
+                message.get('mode'),
+                message.get('hgToken'),
             )
 
         finished_at = datetime.datetime.now()

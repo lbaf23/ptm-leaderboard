@@ -1,5 +1,5 @@
 import {Button, Divider, Drawer, Pagination, Table, Tag, Row, Col} from "antd";
-import {DownloadOutlined,ReloadOutlined} from "@ant-design/icons"
+import {DownloadOutlined, LinkOutlined} from "@ant-design/icons"
 import {useEffect, useImperativeHandle, useState} from "react";
 import {useParams} from "react-router-dom";
 import ReactJson from 'react-json-view'
@@ -75,6 +75,15 @@ function RecordList(props) {
       title: 'Score',
       dataIndex: 'score',
       key: 'score',
+      render: (value, item) => (
+        <>
+          {item.status === 'pending' || item.status === 'running' || item.status === 'loading' ?
+            <>---</>
+            :
+            <>{value}</>
+          }
+        </>
+      )
     },
     {
       title: 'Status',
@@ -97,7 +106,13 @@ function RecordList(props) {
       dataIndex: 'runningTime',
       key: 'runningTime',
       render: (time, item) => (
-        <>{time}&nbsp;s</>
+        <>
+          {item.status === 'pending' || item.status === 'running' || item.status === 'loading' ?
+            <>---</>
+            :
+            <>{time}&nbsp;s</>
+          }
+        </>
       )
     },
     {
@@ -106,11 +121,17 @@ function RecordList(props) {
       key: 'modelName',
     },
     {
-      title: 'File',
+      title: 'Link',
       dataIndex: 'fileUrl',
       key: 'fileUrl',
-      render: (item) => (
-        <a href={item} onClick={stopPop}><Button type="link" icon={<DownloadOutlined />} /></a>
+      render: (value, item) => (
+        <>
+          {item.mode === 'file' ?
+            <a href={value} onClick={stopPop}><Button type="link" icon={<DownloadOutlined/>}/></a>
+            :
+            <a href={`https://huggingface.co/${value}`} onClick={stopPop}><Button type="link" icon={<LinkOutlined/>}/></a>
+          }
+        </>
       )
     },
   ]
@@ -196,7 +217,10 @@ function RecordList(props) {
       <Drawer
         title={
           <div style={{fontSize: '26px'}}>
-            Score:&nbsp;&nbsp;{item.score}
+            Score:&nbsp;&nbsp;
+            {item.status === 'pending' || item.status === 'running' || item.status === 'loading' ?
+              <>---</> : <>{item.score}</>
+            }
             <span style={{float: 'right'}}>
               <StatusTag status={item.status} />
             </span>
@@ -209,7 +233,11 @@ function RecordList(props) {
         <div>
           <span style={{fontSize: '20px', fontWeight: '500'}}>{item.modelName}</span>
           <span style={{marginLeft: '20px'}}>
-            <a href={item.fileUrl}><Button icon={<DownloadOutlined />}>Download File</Button></a>
+            {item.mode === 'file' ?
+              <a href={item.fileUrl}><Button icon={<DownloadOutlined />}>Download File</Button></a>
+              :
+              <a href={`https://huggingface.co/${item.fileUrl}`}><Button icon={<LinkOutlined />}>Go to Hugging Face Model</Button></a>
+            }
           </span>
         </div>
 
@@ -224,9 +252,27 @@ function RecordList(props) {
           </Col>
           <Col span={12}>
             <div>{utils.TimeFilter(item.submittedAt)}</div>
-            <div>{utils.TimeFilter(item.startedAt)}</div>
-            <div>{utils.TimeFilter(item.finishedAt)}</div>
-            <div>{item.runningTime}&nbsp;s</div>
+            <div>
+              {item.status === 'pending' || item.status === 'loading' ?
+                <>---</>
+                :
+                <>{utils.TimeFilter(item.startedAt)}</>
+              }
+            </div>
+            <div>
+              {item.status === 'pending' || item.status === 'loading' || item.status === 'running' ?
+                <>---</>
+                :
+                <>{utils.TimeFilter(item.finishedAt)}</>
+              }
+            </div>
+            <div>
+              {item.status === 'pending' || item.status === 'loading' || item.status === 'running' ?
+                <>---</>
+                :
+                <>{item.runningTime} &nbsp;s</>
+              }
+            </div>
           </Col>
         </Row>
 
