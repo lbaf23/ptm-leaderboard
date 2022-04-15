@@ -53,7 +53,7 @@ func handleLoad(m *nats.Msg) {
 	}
 	models.UpdateRecord(r)
 
-	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "start")
+	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "loading")
 }
 
 type StartResponse struct {
@@ -74,7 +74,7 @@ func handleStart(m *nats.Msg) {
 	}
 	models.UpdateRecord(r)
 
-	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "start")
+	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "running")
 }
 
 type FinishedResponse struct {
@@ -133,5 +133,5 @@ func handleFinished(m *nats.Msg) {
 			models.UpdateRank(rank)
 		}
 	}
-	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "update")
+	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), res.Status)
 }
