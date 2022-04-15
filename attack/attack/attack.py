@@ -47,16 +47,22 @@ def start_attack(config, task_id, file_url, mode, hgToken):
         model_path = unzip_file(get_file(file_url))
         print("[attack] start attack")
 
-    if(task_id == 'sa'):
-        score, result = sa_attack(config, model_path, mode, hgToken)
+    status = 'succeed'
+    message = ''
+    try:
+        if(task_id == 'sa'):
+            score, result = sa_attack(config, model_path, mode, hgToken)
+    except Exception as e:
+        status = 'error'
+        message = e
     
-    print("[attack] attack finished")
+    print("[attack] attack all finished")
 
     result = {
         "score": score,
         "result": result,
-        "status": "succeed",
-        "message": "ok",
+        "status": status,
+        "message": message,
     }
 
     return result

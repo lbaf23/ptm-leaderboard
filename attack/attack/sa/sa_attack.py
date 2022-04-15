@@ -3,7 +3,6 @@ import datasets
 import transformers
 
 
-# attack a model
 def sa_attack(config, model_path, mode='file', hgToken=''):
     dataset = datasets.load_from_disk('datasets/sst', keep_in_memory=True)
 
@@ -21,14 +20,16 @@ def sa_attack(config, model_path, mode='file', hgToken=''):
     
     victim = oa.classifiers.TransformersClassifier(model, tokenizer, model.bert.embeddings.word_embeddings)
 
+    print("[attack] model loaded")
+
     rate = 0
     result = []
 
-    print("-->PWWSAttacker Start")
+    print("[attack] PWWSAttacker Start")
     attacker = oa.attackers.PWWSAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False)
-    print("-->PWWSAttacker Finished")
+    print("[attack] PWWSAttacker Finished")
 
     result.append({
         "attacker": "PWWSAttacker",
@@ -36,11 +37,11 @@ def sa_attack(config, model_path, mode='file', hgToken=''):
     })
     rate = rate + res.get("Attack Success Rate")
 
-    print("-->DeepWordBugAttacker Start")
+    print("[attack] DeepWordBugAttacker Start")
     attacker = oa.attackers.DeepWordBugAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False)
-    print("-->DeepWordBugAttacker Finished")
+    print("[attack] DeepWordBugAttacker Finished")
 
     result.append({
         "attacker": "DeepWordBugAttacker",
@@ -49,11 +50,11 @@ def sa_attack(config, model_path, mode='file', hgToken=''):
 
     rate = rate + res.get("Attack Success Rate")
 
-    print("-->GANAttacker Start")
+    print("[attack] GANAttacker Start")
     attacker = oa.attackers.GANAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False)
-    print("-->GANAttacker Finished")
+    print("[attack] GANAttacker Finished")
 
     result.append({
         "attacker": "GANAttacker",

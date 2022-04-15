@@ -33,8 +33,6 @@ with NATSClient(config.get("config", "natsURL")) as client:
         res = json.dumps(data, cls=DateEncoder).encode()
 
         client.publish(subject="startAttack", payload=res)
-
-        print("[attack] start attack")
         
         if(config.get("config", "fake") == 'on'):
             attack_result = fake_attack(message.get('fileUrl'))
