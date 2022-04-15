@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Cascader, Divider, Input, message, Space, Upload} from "antd";
+import {Button, Card, Cascader, Divider, Input, message, Space, Upload, Progress} from "antd";
 import {UploadOutlined, InboxOutlined} from "@ant-design/icons"
-import CasdoorBackend from "../../../backend/CasdoorBackend";
 import {useParams} from "react-router-dom";
 import SubmitBackend from "../../../backend/SubmitBackend";
 import SubmitDescription from "./component/SubmitDescription";
 
 import { Tabs } from 'antd';
+import FileBackend from "../../../backend/FileBackend";
 
 const { TabPane } = Tabs;
 
@@ -16,12 +16,14 @@ function Submit(obj) {
   const params = useParams();
 
   const [loading, setLoading] = useState(false)
-  const [uploading, setUploading] = useState(false)
+//  const [uploading, setUploading] = useState(false)
+
   const [modelName, setModelName] = useState('')
   const [modelUrl, setModelUrl] = useState('')
   const [fileList, setFileList] = useState([])
+  const [percent, setPercent] = useState(0)
 
-  const [mode, setMode] = useState('1')
+  const [mode, setMode] = useState('file')
 
   useEffect(()=>{
   },[])
@@ -40,10 +42,6 @@ function Submit(obj) {
         message.error("Upload zip file")
         return false
       }
-      if (fileList[0].status === 'uploading') {
-        message.error("Wait uploading")
-        return false
-      }
     } else {
       if(modelUrl === '') {
         message.error("Write file url")
@@ -55,24 +53,29 @@ function Submit(obj) {
   const handleSubmit = () => {
     if (preCheck()){
       setLoading(true)
-      let url = modelUrl
+
       if(mode === 'file') {
-        url = fileList[0].url
+        uploadFile()
+      } else {
+        submit(modelUrl)
       }
-      SubmitBackend.submitModel(modelName, url, params.id)
-        .then(res=>{
-          setLoading(false)
-          if(res.data.code === 200) {
-            message.success(res.data.message)
-            setFileList([])
-            setModelName('')
-            setModelUrl('')
-          } else {
-            message.error(res.data.message)
-          }
-        })
-        .catch(err=>{})
     }
+  }
+
+  const submit = (url) => {
+    SubmitBackend.submitModel(modelName, url, params.id)
+      .then(res=>{
+        setLoading(false)
+        if(res.data.code === 200) {
+          message.success(res.data.message)
+          setFileList([])
+          setModelName('')
+          setModelUrl('')
+        } else {
+          message.error(res.data.message)
+        }
+      })
+      .catch(err=>{})
   }
 
   const inputModelName = (e) => {
@@ -87,39 +90,83 @@ function Submit(obj) {
     setFileList([])
   }
 
-  const onUploadFile = (f) =>{
-    setUploading(true)
-    const file = f.file
+  const onUploadFile = (file) => {
+    setFileList([file.file])
+  }
 
-    setFileList([{name: file.name, status: 'uploading'}])
-
+  const uploadFile = () =>{
+    setLoading(true)
+    const file = fileList[0]
     const index = file.name.lastIndexOf('.');
     const ftype = file.name.substring(index)
-    if (index === -1) {
+    if (index === -1 || ftype !== '.zip') {
       message.error('invalid file type, need .zip file');
-      setUploading(false)
+      setLoading(false)
       return
     }
     if (file.size > 1024 * 1024 * 1024) {
       message.error('file size should be smaller than 1GB');
-      setUploading(false)
+      setLoading(false)
       return
     }
-    let filePath = `/ptm-leaderboard/${obj.account.name}/${params.id}/${file.name}`
-    CasdoorBackend.uploadFile(obj.account.owner, obj.account.name, "ptm-leaderboard", "models", "admin", filePath, file)
-      .then(res=>{
-        setUploading(false)
-        if (res.data.status === 'ok') {
-          console.log(res.data.data)
-          setFileList([
-            {name: file.name, url: res.data.data}
-          ])
-        } else {
-          message.error(res.data.msg)
-        }
-      })
-      .catch(e=>{console.log(e)})
+    uploadChunks(file)
   }
+
+  const uploadChunks = async (file) => {
+    // 5 MB
+    const chunkSize = 1024 * 1024 * 5
+    const chunks = getFileChunks(file, chunkSize)
+    const path = `/ptm-leaderboard/${obj.account.name}/${params.id}`
+    const name = file.name
+    const chunkLength = chunks.length
+
+    for (let i=0; i<chunkLength; i++) {
+      let chunk = chunks[i]
+      let data = new FormData()
+      data.append('file', chunk)
+      data.append('index', i)
+      data.append('chunkLength', chunkLength)
+      data.append('currentSize', chunk.size)
+      data.append('totalSize', file.size)
+      data.append('path', path)
+      data.append('name', name)
+      data.append('location', 'local')
+
+      await FileBackend.uploadFile(data)
+        .then(res => {
+          if (res.data.code === 200) {
+            setPercent(parseInt((i+1)/chunkLength * 100))
+            if(res.data.finished) {
+              const url = res.data.url
+              submit(url)
+            }
+          } else {
+            message.error(res.data.message)
+          }
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    }
+  }
+
+  const getFileChunks = (file, chunkSize) => {
+    let { size } = file
+    let total = Math.ceil(size / chunkSize)
+    let chunks = []
+    if (size > chunkSize) {
+      for (let i = 0; i < total; i++) {
+        let start = i * chunkSize
+        let end = (i + 1) * chunkSize
+        let chunk = file.slice(start, end)
+        chunks.push(chunk)
+      }
+    } else {
+      chunks.push(file)
+    }
+    return chunks
+  }
+
   const props = {
     name: 'file',
     accept: '.zip',
@@ -127,8 +174,8 @@ function Submit(obj) {
     customRequest: onUploadFile,
     fileList: fileList,
     onRemove: removeFile,
-    maxCount: 1,
-    disabled: uploading
+    disabled: loading,
+    listType: "picture"
   };
 
   return (
@@ -152,15 +199,12 @@ function Submit(obj) {
 
           <Tabs defaultActiveKey="file" onChange={changeTab}>
             <TabPane tab="Upload file" key="file">
-              <Dragger {...props}>
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p className="ant-upload-text">Click or drag file to this area to upload</p>
-                <p className="ant-upload-hint">
-                  Upload ZIP file
-                </p>
-              </Dragger>
+              <Upload {...props}>
+                <Button icon={<UploadOutlined />}>choose ZIP file</Button>
+              </Upload>
+              {loading ?
+                <Progress percent={percent}/> : null
+              }
 
             </TabPane>
             <TabPane tab="File url" key="url">
