@@ -17,12 +17,20 @@ spec:
         app: file
     spec:
       containers:
-      - name: file
-        image: lbaf23/ptm-leaderboard-file:1.0.0
-        imagePullPolicy: Always
-        resources:
-          limits:
-            memory: "2048Mi"
-            cpu: "500m"
-        ports:
-        - containerPort: 12006
+        - name: file
+          image: lbaf23/ptm-leaderboard-file:1.0.0
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "2048Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 12006
+          volumeMounts:
+            - name: files
+              mountPath: /files
+      volumes:
+        - name: files
+          hostPath:
+            path: /home/lbaf23/ptm/files
+            type: DirectoryOrCreate
