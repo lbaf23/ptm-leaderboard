@@ -33,9 +33,9 @@ with NATSClient(config.get("config", "natsURL")) as client:
         client.publish(subject="loadAttack", payload=res)
         
         if(config.get("config", "fake") == 'on'):
-            attack_result = fake_attack(message.get('fileUrl'))
+            attack_result, started_at = fake_attack(message.get('fileUrl'))
         else:
-            attack_result = start_attack(
+            attack_result, started_at = start_attack(
                 config,
                 client,
                 message.get('taskId'),

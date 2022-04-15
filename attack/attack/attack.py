@@ -1,3 +1,4 @@
+from tracemalloc import start
 from attack.sa import sa_attack
 import shutil
 import zipfile
@@ -53,7 +54,7 @@ def start_attack(config, client, task_id, file_url, mode, hgToken):
     message = ''
     try:
         if(task_id == 'sa'):
-            score, result = sa_attack(
+            score, result, started_at = sa_attack(
                 config,
                 client,
                 message.get('recordId'),
@@ -76,15 +77,17 @@ def start_attack(config, client, task_id, file_url, mode, hgToken):
         "message": message,
     }
 
-    return result
+    return result, started_at
 
 
 def fake_attack(file_url):
+    started_at = datetime.datetime.now()
     print("[attack] download model file")
     model_path = unzip_file(get_file(file_url))
     print("[attack] start attack")
 
     time.sleep(10)
+
     return {
         "score": 25,
         "result": [
@@ -124,4 +127,4 @@ def fake_attack(file_url):
         ],
         "status": "succeed",
         "message": "msg",
-    }
+    }, started_at

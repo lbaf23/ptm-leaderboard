@@ -86,4 +86,4 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, mode='fil
     rate = rate + res.get("Attack Success Rate")
 
     score = (1 - rate / 3) * 100
-    return score, result
+    return score, result, started_at
