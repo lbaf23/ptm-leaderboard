@@ -54,7 +54,7 @@ def start_attack(config, task_id, file_url, mode, hgToken):
             score, result = sa_attack(config, model_path, mode, hgToken)
     except Exception as e:
         status = 'error'
-        message = e
+        message = str(e)
     
     print("[attack] attack all finished")
 
