@@ -22,6 +22,10 @@ func Init() {
 	if err != nil {
 		panic(err.Error())
 	}
+	_, err = nc.Subscribe("loadAttack", handleLoad)
+	if err != nil {
+		panic(err.Error())
+	}
 	_, err = nc.Subscribe("finishAttack", handleFinished)
 	if err != nil {
 		panic(err.Error())
@@ -33,25 +37,44 @@ func Publish(b []byte) (err error) {
 	return
 }
 
-type StartedResponse struct {
+type LoadResponse struct {
+	RecordId uint   `json:"recordId"`
+	TaskId   string `json:"taskId"`
+	UserId   string `json:"userId"`
+	Status   string `json:"status"`
+}
+
+func handleLoad(m *nats.Msg) {
+	var res LoadResponse
+	json.Unmarshal(m.Data, &res)
+	r := models.Record{
+		Id:     res.RecordId,
+		Status: res.Status,
+	}
+	models.UpdateRecord(r)
+
+	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "start")
+}
+
+type StartResponse struct {
 	RecordId  uint      `json:"recordId"`
 	StartedAt time.Time `json:"startedAt"`
 	TaskId    string    `json:"taskId"`
 	UserId    string    `json:"userId"`
+	Status    string    `json:"status"`
 }
 
 func handleStart(m *nats.Msg) {
-
-	var res StartedResponse
+	var res StartResponse
 	json.Unmarshal(m.Data, &res)
 	r := models.Record{
 		Id:        res.RecordId,
 		StartedAt: res.StartedAt,
-		Status:    "running",
+		Status:    res.Status,
 	}
 	models.UpdateRecord(r)
 
-	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "update")
+	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "start")
 }
 
 type FinishedResponse struct {

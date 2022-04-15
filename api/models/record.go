@@ -16,7 +16,7 @@ type Record struct {
 	TaskId string `json:"taskId" gorm:"index;column:task_id"`
 	UserId string `json:"userId" gorm:"index;column:user_id"`
 
-	Status  string `json:"status" gorm:"column:status"`
+	Status  string `json:"status" gorm:"column:status"` // pending loading running succeed
 	Message string `json:"message" gorm:"column:message"`
 
 	FileUrl string `json:"fileUrl" gorm:"column:file_url"`

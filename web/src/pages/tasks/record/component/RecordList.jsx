@@ -80,7 +80,7 @@ function RecordList(props) {
           {item.status === 'pending' || item.status === 'running' ?
             <>---</>
             :
-            <>{value}&nbsp;s</>
+            <>{value}</>
           }
         </>
       )
@@ -218,8 +218,8 @@ function RecordList(props) {
         title={
           <div style={{fontSize: '26px'}}>
             Score:&nbsp;&nbsp;
-            {item.status === 'succeed' ?
-              <>{item.score}</> : <>---</>
+            {item.status === 'pending' || item.status === 'running' ?
+              <>---</> : <>{item.score}</>
             }
             <span style={{float: 'right'}}>
               <StatusTag status={item.status} />

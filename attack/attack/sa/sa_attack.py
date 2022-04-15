@@ -1,9 +1,20 @@
 import OpenAttack as oa
 import datasets
 import transformers
+import datetime
+import json
 
 
-def sa_attack(config, model_path, mode='file', hgToken=''):
+class DateEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime.datetime):
+            return obj.strftime("%Y-%m-%dT%H:%M:%SZ")
+        else:
+            return json.JSONEncoder.default(self, obj)
+
+
+
+def sa_attack(config, client, record_id, task_id, user_id, model_path, mode='file', hgToken=''):
     dataset = datasets.load_from_disk('datasets/sst', keep_in_memory=True)
 
     if(mode == 'hg'):
@@ -21,6 +32,17 @@ def sa_attack(config, model_path, mode='file', hgToken=''):
     victim = oa.classifiers.TransformersClassifier(model, tokenizer, model.bert.embeddings.word_embeddings)
 
     print("[attack] model loaded")
+    started_at = datetime.datetime.now()
+    data = {
+        "recordId": record_id,
+        "startedAt": started_at,
+        "taskId": task_id,
+        "userId": user_id,
+        "status": "running",
+    }
+    res = json.dumps(data, cls=DateEncoder).encode()
+    client.publish(subject="startAttack", payload=res)
+
 
     rate = 0
     result = []

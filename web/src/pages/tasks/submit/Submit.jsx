@@ -33,8 +33,23 @@ function Submit(obj) {
 
   const preCheck = () => {
     if (modelName === '') {
-      message.error("Model Name is empty")
-      return false
+      if(mode === 'file') {
+        if (fileList.length === 0) {
+          message.error("Please upload a ZIP file")
+          return false
+        } else {
+          setModelName(fileList[0].name)
+          return true
+        }
+      } else {
+        if (hg === '') {
+          message.error("Please input Hugging Face Model")
+          return false
+        } else {
+          setModelName(hg)
+          return true
+        }
+      }
     }
     if(mode === 'file') {
       if (fileList.length === 0) {
@@ -52,7 +67,6 @@ function Submit(obj) {
   const handleSubmit = () => {
     if (preCheck()){
       setLoading(true)
-
       if(mode === 'file') {
         uploadFile()
       } else if(mode === 'hg') {

@@ -8,14 +8,6 @@ from conf import init_config
 config = init_config()
 
 
-class DateEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, datetime.datetime):
-            return obj.strftime("%Y-%m-%dT%H:%M:%SZ")
-        else:
-            return json.JSONEncoder.default(self, obj)
-
-
 with NATSClient(config.get("config", "natsURL")) as client:
     client.connect()
     print("[attack] nats connected")
@@ -23,22 +15,21 @@ with NATSClient(config.get("config", "natsURL")) as client:
     def handle(msg):
         message = json.loads(msg.payload)
 
-        started_at = datetime.datetime.now()
         data = {
             "recordId": message.get('recordId'),
-            "startedAt": started_at,
             "taskId": message.get('taskId'),
             "userId": message.get('userId'),
+            "status": "loading",
         }
         res = json.dumps(data, cls=DateEncoder).encode()
-
-        client.publish(subject="startAttack", payload=res)
+        client.publish(subject="loadAttack", payload=res)
         
         if(config.get("config", "fake") == 'on'):
             attack_result = fake_attack(message.get('fileUrl'))
         else:
             attack_result = start_attack(
                 config,
+                client,
                 message.get('taskId'),
                 message.get('fileUrl'),
                 message.get('mode'),

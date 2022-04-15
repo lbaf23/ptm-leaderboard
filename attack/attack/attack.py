@@ -4,6 +4,8 @@ import zipfile
 import os
 import time
 import requests
+import json
+import datetime
 
 
 def unzip_file(name):
@@ -35,7 +37,7 @@ def del_all():
         os.remove('user_model.zip')
 
 
-def start_attack(config, task_id, file_url, mode, hgToken):
+def start_attack(config, client, task_id, file_url, mode, hgToken):
     score = 0
     result = {}
 
@@ -51,7 +53,16 @@ def start_attack(config, task_id, file_url, mode, hgToken):
     message = ''
     try:
         if(task_id == 'sa'):
-            score, result = sa_attack(config, model_path, mode, hgToken)
+            score, result = sa_attack(
+                config,
+                client,
+                message.get('recordId'),
+                task_id,
+                message.get('userId'),
+                model_path,
+                mode,
+                hgToken
+            )
     except Exception as e:
         status = 'error'
         message = str(e)
