@@ -236,7 +236,7 @@ function RecordList(props) {
             {item.mode === 'file' ?
               <a href={item.fileUrl}><Button icon={<DownloadOutlined />}>Download File</Button></a>
               :
-              <a href={`https://huggingface.co/${item.fileUrl}`}><Button icon={<LinkOutlined />}>Go to Hugging Face</Button></a>
+              <a href={`https://huggingface.co/${item.fileUrl}`}><Button icon={<LinkOutlined />}>Go to Hugging Face Model</Button></a>
             }
           </span>
         </div>
