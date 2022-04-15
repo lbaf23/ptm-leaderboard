@@ -72,6 +72,8 @@ function Submit(obj) {
           setFileList([])
           setModelName('')
           setModelUrl('')
+          setHg('')
+          setHgToken('')
         } else {
           message.error(res.data.message)
         }
