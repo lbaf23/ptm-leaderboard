@@ -1,4 +1,6 @@
 from tracemalloc import start
+
+from numpy import record
 from attack.sa import sa_attack
 import shutil
 import zipfile
@@ -38,7 +40,7 @@ def del_all():
         os.remove('user_model.zip')
 
 
-def start_attack(config, client, task_id, file_url, mode, hgToken):
+def start_attack(config, client, record_id, task_id, user_id, file_url, mode, hgToken):
     score = 0
     result = {}
 
@@ -52,14 +54,15 @@ def start_attack(config, client, task_id, file_url, mode, hgToken):
 
     status = 'succeed'
     message = ''
+    started_at = datetime.datetime.now()
     try:
         if(task_id == 'sa'):
             score, result, started_at = sa_attack(
                 config,
                 client,
-                message.get('recordId'),
+                record_id,
                 task_id,
-                message.get('userId'),
+                user_id,
                 model_path,
                 mode,
                 hgToken

@@ -38,10 +38,12 @@ with NATSClient(config.get("config", "natsURL")) as client:
             attack_result, started_at = start_attack(
                 config,
                 client,
+                message.get('recordId'),
                 message.get('taskId'),
+                message.get('userId'),
                 message.get('fileUrl'),
                 message.get('mode'),
-                message.get('hgToken')
+                message.get('hgToken'),
             )
 
         finished_at = datetime.datetime.now()
