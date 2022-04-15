@@ -86,28 +86,29 @@ func handleFinished(m *nats.Msg) {
 
 	models.UpdateRecord(r)
 
-	rank, err := models.GetUserRank(res.UserId, res.TaskId)
-	if err != nil {
-		rank = models.Rank{
-			TaskId:    res.TaskId,
-			UserId:    res.UserId,
-			UserName:  res.UserName,
-			ModelName: res.ModelName,
-			Score:     res.Score,
-			Result:    res.Result,
+	if res.Status == "succeed" {
+		rank, err := models.GetUserRank(res.UserId, res.TaskId)
+		if err != nil {
+			rank = models.Rank{
+				TaskId:    res.TaskId,
+				UserId:    res.UserId,
+				UserName:  res.UserName,
+				ModelName: res.ModelName,
+				Score:     res.Score,
+				Result:    res.Result,
+			}
+			models.CreateRank(rank)
+		} else {
+			rank = models.Rank{
+				TaskId:    rank.TaskId,
+				UserId:    rank.UserId,
+				UserName:  res.UserName,
+				ModelName: res.ModelName,
+				Score:     res.Score,
+				Result:    res.Result,
+			}
+			models.UpdateRank(rank)
 		}
-		models.CreateRank(rank)
-	} else {
-		rank = models.Rank{
-			TaskId:    rank.TaskId,
-			UserId:    rank.UserId,
-			UserName:  res.UserName,
-			ModelName: res.ModelName,
-			Score:     res.Score,
-			Result:    res.Result,
-		}
-		models.UpdateRank(rank)
 	}
-
 	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "update")
 }
