@@ -40,8 +40,10 @@ func UploadFile(c *gin.Context) {
 	url := ""
 	finished := false
 	if index+1 == chunkLength {
+		print("[file] merge chunks")
 		url, err = mergeChunks(dir, name, chunkLength)
 		finished = true
+		print("[file] merge finished")
 	}
 
 	c.JSON(200, gin.H{

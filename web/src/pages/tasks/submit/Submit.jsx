@@ -16,7 +16,6 @@ function Submit(obj) {
   const params = useParams();
 
   const [loading, setLoading] = useState(false)
-//  const [uploading, setUploading] = useState(false)
 
   const [modelName, setModelName] = useState('')
   const [modelUrl, setModelUrl] = useState('')
@@ -86,7 +85,6 @@ function Submit(obj) {
   }
 
   const removeFile = () => {
-    // TODO delete file
     setFileList([])
   }
 
@@ -113,8 +111,8 @@ function Submit(obj) {
   }
 
   const uploadChunks = async (file) => {
-    // 5 MB
-    const chunkSize = 1024 * 1024 * 5
+    // 1 MB
+    const chunkSize = 1024 * 1024 * 1
     const chunks = getFileChunks(file, chunkSize)
     const path = `/ptm-leaderboard/${obj.account.name}/${params.id}`
     const name = file.name
