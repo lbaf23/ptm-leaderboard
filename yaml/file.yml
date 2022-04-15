@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: file
+  namespace: ptm
+  labels:
+    app: file
+    component: file
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: file
+  template:
+    metadata:
+      labels:
+        app: file
+    spec:
+      containers:
+      - name: file
+        image: lbaf23/ptm-leaderboard-file:1.0.0
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "2048Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 12006
