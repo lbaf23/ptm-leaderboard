@@ -35,20 +35,22 @@ def del_all():
         os.remove('user_model.zip')
 
 
-
-def start_attack(config, task_id, file_url):
+def start_attack(config, task_id, file_url, mode, hgToken):
     score = 0
     result = {}
 
-    print("-->download model file")
-    model_path = unzip_file(get_file(file_url))
-
-    print("-->start attack")
+    if mode == 'hg':
+        print("[attack] use Hugging Face Model")
+        model_path = file_url
+    else:
+        print("[attack] download model file")
+        model_path = unzip_file(get_file(file_url))
+        print("[attack] start attack")
 
     if(task_id == 'sa'):
-        score, result = sa_attack(config, model_path)
+        score, result = sa_attack(config, model_path, mode, hgToken)
     
-    print("-->attack finished")
+    print("[attack] attack finished")
 
     result = {
         "score": score,
@@ -60,8 +62,11 @@ def start_attack(config, task_id, file_url):
     return result
 
 
-def fake_attack():
-    print("-->fake attack")
+def fake_attack(file_url):
+    print("[attack] download model file")
+    model_path = unzip_file(get_file(file_url))
+    print("[attack] start attack")
+
     time.sleep(10)
     return {
         "score": 25,

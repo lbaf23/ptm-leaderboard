@@ -18,7 +18,7 @@ class DateEncoder(json.JSONEncoder):
 
 with NATSClient(config.get("config", "natsURL")) as client:
     client.connect()
-    print("-->nats connected")
+    print("[attack] nats connected")
 
     def handle(msg):
         message = json.loads(msg.payload)
@@ -34,15 +34,17 @@ with NATSClient(config.get("config", "natsURL")) as client:
 
         client.publish(subject="startAttack", payload=res)
 
-        print("-->start attack")
+        print("[attack] start attack")
         
         if(config.get("config", "fake") == 'on'):
-            attack_result = fake_attack()
+            attack_result = fake_attack(message.get('fileUrl'))
         else:
             attack_result = start_attack(
                 config,
                 message.get('taskId'),
                 message.get('fileUrl'),
+                message.get('mode'),
+                message.get('hgToken')
             )
 
         finished_at = datetime.datetime.now()

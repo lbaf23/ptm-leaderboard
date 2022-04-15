@@ -18,6 +18,8 @@ type SubmitAttack struct {
 	UserName  string `json:"userName"`
 	TaskId    string `json:"taskId"`
 	ModelName string `json:"modelName"`
+	Mode      string `json:"mode"`
+	HgToken   string `json:"hgToken"`
 }
 
 func CreateSubmit(c *gin.Context) {
@@ -31,6 +33,8 @@ func CreateSubmit(c *gin.Context) {
 	modelName := c.PostForm("modelName")
 	fileUrl := c.PostForm("fileUrl")
 	taskId := c.PostForm("taskId")
+	mode := c.PostForm("mode")
+	hgToken := c.PostForm("hgToken")
 
 	record := models.Record{
 		UserId:      userId,
@@ -40,6 +44,7 @@ func CreateSubmit(c *gin.Context) {
 		ModelName:   modelName,
 		FileUrl:     fileUrl,
 		Result:      "[]",
+		Mode:        mode,
 	}
 
 	id, err := models.CreateRecord(record)
@@ -57,6 +62,8 @@ func CreateSubmit(c *gin.Context) {
 		UserName:  userName,
 		TaskId:    taskId,
 		ModelName: modelName,
+		Mode:      mode,
+		HgToken:   hgToken,
 	}
 
 	err = queue.Publish(utils.StructToByte(data))

@@ -20,6 +20,7 @@ type Record struct {
 	Message string `json:"message" gorm:"column:message"`
 
 	FileUrl string `json:"fileUrl" gorm:"column:file_url"`
+	Mode    string `json:"mode" gorm:"column:mode"` // hg: hugging face model    file: zip file
 
 	ModelName string  `json:"modelName" gorm:"column:model_name"`
 	Result    string  `json:"result" gorm:"column:result"`
@@ -34,7 +35,7 @@ func GetUserRecords(userId string, taskId string, page int, pageSize int, orderB
 	db.Model(Record{}).
 		Where("task_id = ?", taskId).
 		Where("user_id = ?", userId).
-		Select([]string{"id", "submitted_at", "started_at", "finished_at", "running_time", "task_id", "user_id", "status", "file_url", "model_name", "score"}).
+		Select([]string{"id", "submitted_at", "started_at", "finished_at", "running_time", "task_id", "user_id", "status", "file_url", "model_name", "score", "mode"}).
 		Limit(pageSize).
 		Offset((page - 1) * pageSize).
 		Order(fmt.Sprintf("%s %s", orderBy, orderType)).
