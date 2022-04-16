@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ptm
+  annotations:
+    linkerd.io/inject: enabled
+  labels:
+    role: ptm
+    access: ptm
+    istio-injection: enabled
