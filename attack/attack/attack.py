@@ -43,19 +43,20 @@ def del_all():
 def start_attack(config, client, record_id, task_id, user_id, file_url, mode, hgToken):
     score = 0
     result = {}
-
-    if mode == 'hg':
-        print("[attack] use Hugging Face Model")
-        model_path = file_url
-    else:
-        print("[attack] download model file")
-        model_path = unzip_file(get_file(file_url))
-        print("[attack] start attack")
-
-    status = 'succeed'
-    message = ''
     started_at = datetime.datetime.now()
+
     try:
+        if mode == 'hg':
+            print("[attack] use Hugging Face Model")
+            model_path = file_url
+        else:
+            print("[attack] download model file")
+            model_path = unzip_file(get_file(file_url))
+            print("[attack] start attack")
+
+        status = 'succeed'
+        message = ''
+        started_at = datetime.datetime.now()
         if(task_id == 'sa'):
             score, result, started_at = sa_attack(
                 config,
