@@ -36,8 +36,17 @@ function RecordList(props) {
 
   const [item, setItem] = useState({})
 
+  const [md, setMd] = useState('')
+
   useEffect(() => {
     update()
+  }, [])
+
+  useEffect(()=>{
+    fetch(saMd)
+      .then(res=>res.text()).then((text)=>{
+        setMd(text)
+    })
   }, [])
 
   useImperativeHandle(props.onRef, () => ({
@@ -285,7 +294,7 @@ function RecordList(props) {
         {item.status === 'succeed' ?
           <>
             <Popover
-              content={<ReactMarkdown children={saMd}/>}
+              content={<ReactMarkdown children={md}/>}
               trigger="hover"
             >
               <Divider>Attack Result&nbsp;&nbsp;<QuestionCircleOutlined /></Divider>
