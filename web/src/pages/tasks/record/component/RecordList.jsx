@@ -4,13 +4,14 @@ import {useEffect, useImperativeHandle, useState} from "react";
 import {useParams} from "react-router-dom";
 import ReactJson from 'react-json-view'
 import ReactMarkdown from 'react-markdown'
-
-import RecordBackend from "../../../../backend/RecordBackend";
-
-import utils from '../../../utils/Utils'
-import StatusTag from "./StatusTag";
 import ReactEcharts from "echarts-for-react";
 
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+
+import RecordBackend from "../../../../backend/RecordBackend";
+import utils from '../../../utils/Utils'
+import StatusTag from "./StatusTag";
 import saMd from '../../../../assets/result/sa.md'
 
 const { Panel } = Collapse
@@ -293,12 +294,20 @@ function RecordList(props) {
 
         {item.status === 'succeed' ?
           <>
-            <Popover
-              content={<ReactMarkdown children={md}/>}
-              trigger="hover"
+            <Divider>Attack Result</Divider>
+            <Collapse
+              bordered={false}
+              expandIcon={({ isActive }) => <QuestionCircleOutlined style={{fontSize: '14px'}} rotate={isActive ? 180 : 0} />}
             >
-              <Divider>Attack Result&nbsp;&nbsp;<QuestionCircleOutlined /></Divider>
-            </Popover>
+              <Panel key={0} header="Tips" >
+                <ReactMarkdown
+                  children={md}
+                  remarkPlugins={[remarkMath]}
+                  rehypePlugins={[rehypeKatex]}
+                />
+              </Panel>
+            </Collapse>
+            <br/>
             <ReactJson
               name={false}
               src={item.result}
