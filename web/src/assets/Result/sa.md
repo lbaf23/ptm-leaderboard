@@ -1,3 +1,5 @@
+**Attack Result**
+
 - attacker: 攻击类型，对于情感分析任务分为：
   - PWWSAttacker
   - DeepWordBugAttacker
@@ -13,6 +15,16 @@
 - score: 最终得分
 
 $$
-score = \sum (1-Attack\space Success\space Rate)
+score = \sum_{i=1}^n [(1 - Attack\space Success\space Rate_i) \times 100]
 $$
+
+---
+
+**chart**
+- score: 单项得分
+
+$$
+score = (1 - Attack\space Success\space Rate) \times 100
+$$
+
 

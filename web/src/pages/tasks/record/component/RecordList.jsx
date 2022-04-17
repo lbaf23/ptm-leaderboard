@@ -3,18 +3,14 @@ import {DownloadOutlined, LinkOutlined, QuestionCircleOutlined} from "@ant-desig
 import {useEffect, useImperativeHandle, useState} from "react";
 import {useParams} from "react-router-dom";
 import ReactJson from 'react-json-view'
-import ReactMarkdown from 'react-markdown'
 import ReactEcharts from "echarts-for-react";
-
-import remarkMath from 'remark-math'
-import rehypeKatex from 'rehype-katex'
 
 import RecordBackend from "../../../../backend/RecordBackend";
 import utils from '../../../utils/Utils'
 import StatusTag from "./StatusTag";
 import saMd from '../../../../assets/result/sa.md'
+import Tips from "../../component/Tips";
 
-const { Panel } = Collapse
 
 function RecordList(props) {
   const params = useParams()
@@ -209,117 +205,112 @@ function RecordList(props) {
 
   return (
     <>
-      <Table
-        dataSource={records}
-        columns={columns}
-        loading={loading}
-        pagination={false}
-        style={{overflow: 'auto'}}
-        onRow={item=>{
-          return {
-            onClick: e => handleClick(item)
+      <div>
+        <Table
+          dataSource={records}
+          columns={columns}
+          loading={loading}
+          pagination={false}
+          style={{overflow: 'auto'}}
+          onRow={item=>{
+            return {
+              onClick: e => handleClick(item)
+            }
+          }}
+        />
+        <Pagination
+          style={{marginTop: '20px', float: 'right'}}
+          current={page}
+          total={total}
+          pageSize={pageSize}
+          onChange={changePage}
+        />
+      </div>
+
+      <div>
+        <Drawer
+          title={
+            <div style={{fontSize: '26px'}}>
+              Score:&nbsp;&nbsp;
+              {item.status === 'pending' || item.status === 'running' || item.status === 'loading' ?
+                <>---</> : <>{item.score}</>
+              }
+              <span style={{float: 'right'}}>
+                <StatusTag status={item.status} />
+              </span>
+            </div>
           }
-        }}
-      />
-      <Pagination
-        style={{marginTop: '20px', float: 'right'}}
-        current={page}
-        total={total}
-        pageSize={pageSize}
-        onChange={changePage}
-      />
-
-      <Drawer
-        title={
-          <div style={{fontSize: '26px'}}>
-            Score:&nbsp;&nbsp;
-            {item.status === 'pending' || item.status === 'running' || item.status === 'loading' ?
-              <>---</> : <>{item.score}</>
-            }
-            <span style={{float: 'right'}}>
-              <StatusTag status={item.status} />
-            </span>
-          </div>
-        }
-        visible={showInfo} onClose={handleClose}
-        size="large"
-      >
-
-        <div>
-          <span style={{fontSize: '20px', fontWeight: '500'}}>{item.modelName}</span>
-          <span style={{marginLeft: '20px'}}>
-            {item.mode === 'file' ?
-              <a href={item.fileUrl}><Button icon={<DownloadOutlined />}>Download File</Button></a>
-              :
-              <a href={`https://huggingface.co/${item.fileUrl}`}><Button icon={<LinkOutlined />}>Go to Hugging Face Model</Button></a>
-            }
-          </span>
-        </div>
-
-        <Divider>Time</Divider>
-
-        <Row>
-          <Col span={12}>
-            <div>Submitted At</div>
-            <div>Started At</div>
-            <div>Finished At</div>
-            <div>Running Time</div>
-          </Col>
-          <Col span={12}>
-            <div>{utils.TimeFilter(item.submittedAt)}</div>
+          visible={showInfo} onClose={handleClose}
+          size="large"
+        >
+          <div>
             <div>
-              {item.status === 'pending' || item.status === 'loading' ?
-                <>---</>
-                :
-                <>{utils.TimeFilter(item.startedAt)}</>
-              }
+              <span style={{fontSize: '20px', fontWeight: '500'}}>{item.modelName}</span>
+              <span style={{marginLeft: '20px'}}>
+                {item.mode === 'file' ?
+                  <a href={item.fileUrl}><Button icon={<DownloadOutlined />}>Download File</Button></a>
+                  :
+                  <a href={`https://huggingface.co/${item.fileUrl}`}><Button icon={<LinkOutlined />}>Go to Hugging Face Model</Button></a>
+                }
+              </span>
             </div>
-            <div>
-              {item.status === 'pending' || item.status === 'loading' || item.status === 'running' ?
-                <>---</>
-                :
-                <>{utils.TimeFilter(item.finishedAt)}</>
-              }
-            </div>
-            <div>
-              {item.status === 'pending' || item.status === 'loading' || item.status === 'running' ?
-                <>---</>
-                :
-                <>{item.runningTime} &nbsp;s</>
-              }
-            </div>
-          </Col>
-        </Row>
+
+            <Divider>Time</Divider>
+
+            <Row>
+              <Col span={12}>
+                <div>Submitted At</div>
+                <div>Started At</div>
+                <div>Finished At</div>
+                <div>Running Time</div>
+              </Col>
+              <Col span={12}>
+                <div>{utils.TimeFilter(item.submittedAt)}</div>
+                <div>
+                  {item.status === 'pending' || item.status === 'loading' ?
+                    <>---</>
+                    :
+                    <>{utils.TimeFilter(item.startedAt)}</>
+                  }
+                </div>
+                <div>
+                  {item.status === 'pending' || item.status === 'loading' || item.status === 'running' ?
+                    <>---</>
+                    :
+                    <>{utils.TimeFilter(item.finishedAt)}</>
+                  }
+                </div>
+                <div>
+                  {item.status === 'pending' || item.status === 'loading' || item.status === 'running' ?
+                    <>---</>
+                    :
+                    <>{item.runningTime} &nbsp;s</>
+                  }
+                </div>
+              </Col>
+            </Row>
 
 
-        {item.status === 'succeed' ?
-          <>
-            <Divider>Attack Result</Divider>
-            <Collapse
-              bordered={false}
-              expandIcon={({ isActive }) => <QuestionCircleOutlined style={{fontSize: '14px'}} rotate={isActive ? 180 : 0} />}
-            >
-              <Panel key={0} header="Tips" >
-                <ReactMarkdown
-                  children={md}
-                  remarkPlugins={[remarkMath]}
-                  rehypePlugins={[rehypeKatex]}
+            {item.status === 'succeed' ?
+              <>
+                <Divider>Attack Result</Divider>
+                <Tips md={md} />
+                <br/>
+                <ReactJson
+                  name={false}
+                  src={item.result}
+                  displayDataTypes={false}
                 />
-              </Panel>
-            </Collapse>
-            <br/>
-            <ReactJson
-              name={false}
-              src={item.result}
-              displayDataTypes={false}
-            />
-            <ReactEcharts option={option} style={{height: '400px'}}/>
-          </> : null
-        }
 
-        <Divider>Message</Divider>
-        <div style={{padding: '10px', backgroundColor: '#efefef'}}>{item.message}</div>
-      </Drawer>
+                <ReactEcharts option={option} style={{height: '400px'}}/>
+              </> : null
+            }
+
+            <Divider>Message</Divider>
+            <div style={{padding: '10px', backgroundColor: '#efefef'}}>{item.message}</div>
+          </div>
+        </Drawer>
+      </div>
     </>
   )
 }

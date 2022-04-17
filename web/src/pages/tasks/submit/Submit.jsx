@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Cascader, Divider, Input, message, Space, Upload, Progress} from "antd";
-import {UploadOutlined, InboxOutlined} from "@ant-design/icons"
+import {Button, Card, Cascader, Divider, Input, message, Space, Upload, Progress, Collapse} from "antd";
+import {UploadOutlined, InboxOutlined, QuestionCircleOutlined} from "@ant-design/icons"
 import {useParams} from "react-router-dom";
 import SubmitBackend from "../../../backend/SubmitBackend";
 import SubmitDescription from "./component/SubmitDescription";
@@ -8,7 +8,12 @@ import SubmitDescription from "./component/SubmitDescription";
 import { Tabs } from 'antd';
 import FileBackend from "../../../backend/FileBackend";
 
+import hgMarkdown from '../../../assets/submit/hg.md'
+import fileMarkdown from '../../../assets/submit/file.md'
+import Tips from "../component/Tips";
+
 const { TabPane } = Tabs;
+const { Panel } = Collapse
 
 function Submit(obj) {
   const params = useParams();
@@ -24,7 +29,18 @@ function Submit(obj) {
 
   const [mode, setMode] = useState('hg')
 
+  const [hgMd, setHgMd] = useState('')
+  const [fileMd, setFileMd] = useState('')
+
   useEffect(()=>{
+    fetch(hgMarkdown)
+      .then(res=>res.text()).then((text)=>{
+      setHgMd(text)
+    })
+    fetch(fileMarkdown)
+      .then(res=>res.text()).then((text)=>{
+      setFileMd(text)
+    })
   },[])
 
   const changeTab = (e) => {
@@ -210,10 +226,14 @@ function Submit(obj) {
 
           <Tabs defaultActiveKey="hg" onChange={changeTab}>
             <TabPane tab="Hugging Face Model" key="hg">
+              <Tips md={hgMd} />
+              <br/>
               <Input addonBefore="Hugging Face Model" maxLength={1000} showCount onChange={inputHg} value={hg}/>
               <Input style={{marginTop: '20px'}} addonBefore="Auth Token" maxLength={1000} showCount onChange={inputHgToken} value={hgToken}/>
             </TabPane>
             <TabPane tab="Upload file" key="file">
+              <Tips md={fileMd} />
+              <br/>
               <Upload {...props}>
                 <Button icon={<UploadOutlined />}>choose ZIP file</Button>
               </Upload>
