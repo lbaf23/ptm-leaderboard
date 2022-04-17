@@ -2,7 +2,7 @@
 
 压缩包格式
 
-```
+```bash
 model.zip
  |
  |—— pytorch_model.bin
