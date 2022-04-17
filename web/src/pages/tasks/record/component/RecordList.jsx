@@ -1,14 +1,19 @@
-import {Button, Divider, Drawer, Pagination, Table, Tag, Row, Col} from "antd";
-import {DownloadOutlined, LinkOutlined} from "@ant-design/icons"
+import {Button, Divider, Drawer, Pagination, Table, Popover, Row, Col, Collapse} from "antd";
+import {DownloadOutlined, LinkOutlined, QuestionCircleOutlined} from "@ant-design/icons"
 import {useEffect, useImperativeHandle, useState} from "react";
 import {useParams} from "react-router-dom";
 import ReactJson from 'react-json-view'
+import ReactMarkdown from 'react-markdown'
 
 import RecordBackend from "../../../../backend/RecordBackend";
 
 import utils from '../../../utils/Utils'
 import StatusTag from "./StatusTag";
 import ReactEcharts from "echarts-for-react";
+
+import saMd from '../../../../assets/result/sa.md'
+
+const { Panel } = Collapse
 
 function RecordList(props) {
   const params = useParams()
@@ -279,9 +284,17 @@ function RecordList(props) {
 
         {item.status === 'succeed' ?
           <>
-            <Divider>Attack Result</Divider>
-            <ReactJson name={false} src={item.result}/>
-
+            <Popover
+              content={<ReactMarkdown children={saMd}/>}
+              trigger="hover"
+            >
+              <Divider>Attack Result&nbsp;&nbsp;<QuestionCircleOutlined /></Divider>
+            </Popover>
+            <ReactJson
+              name={false}
+              src={item.result}
+              displayDataTypes={false}
+            />
             <ReactEcharts option={option} style={{height: '400px'}}/>
           </> : null
         }
