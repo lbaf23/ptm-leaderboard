@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: nats
-        image: nats:latest
+        image: lbaf23/ptm-leaderboard-nats:1.0.0
         imagePullPolicy: Always
         resources:
           limits:
