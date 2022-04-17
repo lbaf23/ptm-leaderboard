@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {lazy, useEffect, useState} from "react";
 import {BackTop, Layout, Menu, Dropdown, Avatar, Row, Col} from 'antd';
 import {Link, Route, Routes, useLocation} from 'react-router-dom';
 import {
@@ -17,14 +17,22 @@ import {getAuthorizeUrl, getMyProfileUrl} from '../auth/Auth'
 
 import './mainlayout.css'
 import AuthBackend from "../../backend/AuthBackend";
-import Home from "../home/Home";
-import Tasks from "../tasks/Tasks";
-import TaskInfo from "../tasks/TaskInfo";
-import Submit from "../tasks/submit/Submit";
-import Rank from "../tasks/rank/Rank";
-import Record from "../tasks/record/Record";
-import NeedLogin from "./component/NeedLogin";
 
+//import Home from "../home/Home";
+//import Tasks from "../tasks/Tasks";
+//import TaskInfo from "../tasks/TaskInfo";
+//import Submit from "../tasks/submit/Submit";
+//import Rank from "../tasks/rank/Rank";
+//import Record from "../tasks/record/Record";
+//import NeedLogin from "./component/NeedLogin";
+
+const Home = lazy(() => import('../home/Home'))
+const Tasks = lazy(() => import('../tasks/Tasks'))
+const TaskInfo = lazy(() => import('../tasks/TaskInfo'))
+const Submit = lazy(() => import('../tasks/submit/Submit'))
+const Rank = lazy(() => import('../tasks/rank/Rank'))
+const Record = lazy(() => import('../tasks/record/Record'))
+const NeedLogin = lazy(() => import('./component/NeedLogin'))
 
 const PUBLIC_URL = process.env.PUBLIC_URL
 
@@ -158,14 +166,16 @@ function MainLayout() {
 
         <Routes>
           <Route index element={<Home/>} />
+
           <Route path="tasks" element={<Tasks/>}/>
+
           <Route path="tasks/:id" element={<TaskLayout/>}>
             <Route index element={<TaskInfo/>}/>
             <Route exact path="rank" element={<Rank/>}/>
-
             <Route exact path="submit" element={renderComponentIfLogin(<Submit account={account}/>)}/>
             <Route path="record" element={renderComponentIfLogin(<Record account={account}/>)}/>
           </Route>
+
         </Routes>
 
       </Content>

@@ -22,6 +22,7 @@ function RoutesLayout() {
         <Route path="home/*" element={<MainLayout/>}/>
 
         <Route exact path={`${PUBLIC_URL}/callback`} element={<Callback />}/>
+
       </Route>
     </Routes>
   )

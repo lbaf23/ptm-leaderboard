@@ -1,14 +1,15 @@
-import { useEffect } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
-import MainLayout from './pages/layout/MainLayout';
 import RoutesLayout from './pages/layout/RoutesLayout';
+import React, {Suspense} from "react";
 
 function App() {
   return (
-    <BrowserRouter>
-      <RoutesLayout />
-    </BrowserRouter>
+    <Suspense fallback={<div>loading</div>}>
+      <BrowserRouter>
+        <RoutesLayout />
+      </BrowserRouter>
+    </Suspense>
   );
 }
 
