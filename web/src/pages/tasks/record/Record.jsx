@@ -8,13 +8,13 @@ import RecordChart from "./component/RecordChart";
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL
 
+let e = null;
+
 function Record(obj) {
   const params = useParams()
 
-  const rlist = React.createRef();
+  const rlist = useRef(null)
   const rchart = useRef(null)
-
-  let e = null;
 
   useEffect(()=>{
     const path = `${params.id}-${obj.account.id}`

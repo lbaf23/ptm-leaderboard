@@ -1,18 +1,19 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import {Divider, Drawer, Pagination, Table, Col, Row} from "antd";
-import ReactJson from "react-json-view";
 
 import RankBackend from "../../../../backend/RankBackend";
+import AttackResult from "../../component/AttackResult";
 
 
-
-function RankList(obj) {
+function RankList(props) {
   const params = useParams()
 
   const [ranks, setRanks] = useState([])
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(20)
+  const [orderBy, setOrderBy] = useState('submitted_at')
+  const [orderType, setOrderType] = useState('desc')
   const [total, setTotal] = useState(20)
   const [loading, setLoading] = useState(true)
 
@@ -20,6 +21,10 @@ function RankList(obj) {
   const [item, setItem] = useState({result: []})
 
   useEffect(() => {
+    getRanks(page, pageSize, orderBy, orderType)
+  }, [])
+
+  const getRanks = (page, pageSize, orderBy, orderType) => {
     RankBackend.getRankList(params.id, page, pageSize)
       .then(res => {
         setLoading(false);
@@ -30,7 +35,13 @@ function RankList(obj) {
       })
       .catch(err => {
       })
-  }, [])
+  }
+
+  const changePage = (page, pageSize) => {
+    setPage(page)
+    setPageSize(pageSize)
+    getRanks(page, pageSize, orderBy, orderType);
+  }
 
   const handleClick = (item) => {
     let i = item;
@@ -85,7 +96,13 @@ function RankList(obj) {
           }
         }}
       />
-      <Pagination style={{marginTop: '20px', float: 'right'}} current={page} total={total} pageSize={pageSize}/>
+      <Pagination
+        style={{marginTop: '20px', float: 'right'}}
+        current={page}
+        total={total}
+        pageSize={pageSize}
+        onChange={changePage}
+      />
       <Drawer
         title={<div style={{fontSize: '26px'}}>Score:&nbsp;&nbsp;{item.score}</div>}
         visible={showD}
@@ -103,10 +120,8 @@ function RankList(obj) {
               <div>{item.modelName}</div>
             </Col>
           </Row>
-
           <Divider>Attack Result</Divider>
-          <ReactJson name={false} src={item.result} />
-
+          <AttackResult item={item} />
         </div>
       </Drawer>
     </>

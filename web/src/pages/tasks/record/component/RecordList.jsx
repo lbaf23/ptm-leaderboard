@@ -1,21 +1,16 @@
-import {Button, Divider, Drawer, Pagination, Table, Row, Col} from "antd";
+import {Button, Col, Divider, Drawer, Pagination, Row, Table} from "antd";
 import {DownloadOutlined, LinkOutlined} from "@ant-design/icons"
 import {useEffect, useImperativeHandle, useState} from "react";
 import {useParams} from "react-router-dom";
-import ReactJson from 'react-json-view'
-import ReactEcharts from "echarts-for-react";
 
 import RecordBackend from "../../../../backend/RecordBackend";
 import utils from '../../../utils/Utils'
 import StatusTag from "./StatusTag";
-import saMd from '../../../../assets/result/sa.md'
-import Tips from "../../component/Tips";
+import AttackResult from "../../component/AttackResult";
 
 
 function RecordList(props) {
   const params = useParams()
-
-  const [option, setOption] = useState({})
 
   const [page, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(10)
@@ -23,7 +18,7 @@ function RecordList(props) {
 
   const [loading, setLoading] = useState(true)
 
-  const [showInfo, setShowInfo] = useState(false)
+  const [showDrawer, setShowDrawer] = useState(false)
   const [drawerLoading, setDrawerLoading] = useState(false)
 
   const [records, setRecords] = useState([])
@@ -33,17 +28,8 @@ function RecordList(props) {
 
   const [item, setItem] = useState({})
 
-  const [md, setMd] = useState('')
-
   useEffect(() => {
     update()
-  }, [])
-
-  useEffect(()=>{
-    fetch(saMd)
-      .then(res=>res.text()).then((text)=>{
-        setMd(text)
-    })
   }, [])
 
   useImperativeHandle(props.onRef, () => ({
@@ -52,7 +38,7 @@ function RecordList(props) {
 
   const update = () => {
     getRecords(page, pageSize, orderBy, orderType)
-    if(showInfo) {
+    if(showDrawer) {
       updateInfo(item.id)
     }
   }
@@ -148,7 +134,7 @@ function RecordList(props) {
   ]
 
   const handleClick = (item) => {
-    setShowInfo(true)
+    setShowDrawer(true)
     updateInfo(item.id)
   }
 
@@ -157,49 +143,17 @@ function RecordList(props) {
     RecordBackend.getRecord(id)
       .then(res=>{
         setDrawerLoading(false)
-
         let i = res.data.record;
-        const result = JSON.parse(i.result)
-        i.result = result
-        let indicator = []
-        let value = []
-        for (let j=0; j<result.length; j++) {
-          indicator.push({name: result[j]["attacker"], max: 100})
-
-          value.push(100-result[j]["result"]["Attack Success Rate"]*100)
-        }
-        initChart(indicator, value)
-
+        i.result = JSON.parse(i.result)
         setItem(i)
-
       })
       .catch(err=>{})
   }
 
-  const initChart = (indicator, value) => {
-    setOption({
-      title: {},
-      tooltip: {},
-      radar: {
-        indicator: indicator
-      },
-      series: [
-        {
-          name: '',
-          type: 'radar',
-          data: [
-            {
-              value: value,
-              name: 'Score'
-            }
-          ]
-        }
-      ]
-    })
-  }
+
 
   const handleClose = () => {
-    setShowInfo(false)
+    setShowDrawer(false)
     setItem({})
   }
 
@@ -240,7 +194,7 @@ function RecordList(props) {
               </span>
             </div>
           }
-          visible={showInfo} onClose={handleClose}
+          visible={showDrawer} onClose={handleClose}
           size="large"
         >
           <div>
@@ -290,19 +244,10 @@ function RecordList(props) {
               </Col>
             </Row>
 
-
             {item.status === 'succeed' ?
               <>
                 <Divider>Attack Result</Divider>
-                <Tips md={md} />
-                <br/>
-                <ReactJson
-                  name={false}
-                  src={item.result}
-                  displayDataTypes={false}
-                />
-
-                <ReactEcharts option={option} style={{height: '400px'}}/>
+                <AttackResult item={item}  />
               </> : null
             }
 
