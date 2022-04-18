@@ -4,7 +4,6 @@ import {Card, Image} from "antd";
 import img from "../../assets/index-logo.svg"
 import "./index.css"
 
-import HomeBackend from "../../backend/HomeBackend";
 import homeMarkdown from "../../assets/home.md";
 import remarkGfm from "remark-gfm";
 import ReactMarkdown from "react-markdown";
@@ -32,10 +31,12 @@ function Home() {
     >
       <div className="title">Pre-Trained Models Attack Benchmark</div>
       <Image src={img} preview={false} className="image"/>
-      <ReactMarkdown
-        children={md}
-        remarkPlugins={[remarkGfm]}
-      />
+      <div style={{textAlign: 'left', marginTop: '40px', marginBottom: '60px', marginLeft: '60px', marginRight: '60px'}}>
+        <ReactMarkdown
+          children={md}
+          remarkPlugins={[remarkGfm]}
+        />
+      </div>
       {/*<div style={{textAlign: 'right'}}>
         {editing ?
           <Button loading={saving} type="text" icon={<SaveOutlined />} onClick={handleSave}/> :
