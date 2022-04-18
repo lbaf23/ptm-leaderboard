@@ -1,7 +1,8 @@
+import { useEffect } from "react";
 import {Route, Routes, useNavigate} from "react-router-dom";
+
 import Callback from "../auth/Callback";
 import MainLayout from "./MainLayout";
-import { useEffect } from "react";
 
 const PUBLIC_URL = process.env.PUBLIC_URL
 
@@ -18,11 +19,8 @@ function RoutesLayout() {
     <Routes>
       <Route path={PUBLIC_URL}>
         <Route index element={<Redirect to="home"/>} />
-
         <Route path="home/*" element={<MainLayout/>}/>
-
         <Route exact path={`${PUBLIC_URL}/callback`} element={<Callback />}/>
-
       </Route>
     </Routes>
   )

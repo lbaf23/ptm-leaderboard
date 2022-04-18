@@ -1,62 +1,42 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Image} from "antd";
+import {Card, Image} from "antd";
 
 import img from "../../assets/index-logo.svg"
 import "./index.css"
-import MDEditor from "@uiw/react-md-editor";
-import TaskBackend from "../../backend/TaskBackend";
-import {EditOutlined, SaveOutlined} from "@ant-design/icons";
-import HomeBackend from "../../backend/HomeBackend";
 
-const title = 'Pre-Trained Models Attack Benchmark';
+import HomeBackend from "../../backend/HomeBackend";
+import homeMarkdown from "../../assets/home.md";
+import remarkGfm from "remark-gfm";
+import ReactMarkdown from "react-markdown";
+
 
 function Home() {
-  const [editing, setEditing] = useState(false)
-  const [content, setContent] = useState('')
-  const [saving, setSaving] = useState(false)
+  const [md, setMd] = useState('')
 
   useEffect(()=>{
-    getHomeContent()
+    getMd()
   },[])
 
-  const getHomeContent = () => {
-    HomeBackend.getHomeContent()
-      .then(res=>{
-        if(res.data.code === 200){
-          setContent(res.data.content)
-        }
-      })
-      .catch(e=>{})
+  const getMd = () => {
+    fetch(homeMarkdown)
+      .then(res=>res.text()).then((text)=>{
+      setMd(text)
+    })
   }
 
-  const handleChange = (value) => {
-    setContent(value)
-  }
-  const handleEdit = () => {
-    setEditing(true)
-  }
-
-  const handleSave = () => {
-    setSaving(true)
-    HomeBackend.updateHomeContent(content)
-      .then(res=>{
-        setSaving(false)
-        if (res.data.code === 200) {
-          setEditing(false)
-        }
-      })
-      .catch(err=>{})
-  }
   return (
     <Card
       bordered={false}
       hoverable={false}
       className="card shadow"
     >
-      <div className="title">{title}</div>
+      <div className="title">Pre-Trained Models Attack Benchmark</div>
       <Image src={img} preview={false} className="image"/>
-
-      <div style={{textAlign: 'right'}}>
+      <ReactMarkdown
+        children={md}
+        remarkPlugins={[remarkGfm]}
+      />
+      {/*<div style={{textAlign: 'right'}}>
         {editing ?
           <Button loading={saving} type="text" icon={<SaveOutlined />} onClick={handleSave}/> :
           <Button type="text" icon={<EditOutlined />} onClick={handleEdit}/>
@@ -67,7 +47,7 @@ function Home() {
           <MDEditor value={content} onChange={handleChange} height="100%" /> :
           <MDEditor.Markdown source={content} />
         }
-      </div>
+      </div>*/}
     </Card>
   )
 }
