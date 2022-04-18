@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Cascader, Divider, Input, message, Space, Upload, Progress, Collapse} from "antd";
-import {UploadOutlined, InboxOutlined, QuestionCircleOutlined} from "@ant-design/icons"
+import {Button, Card, Divider, Input, message, Space, Upload, Progress} from "antd";
+import {UploadOutlined} from "@ant-design/icons"
 import {useParams} from "react-router-dom";
 import SubmitBackend from "../../../backend/SubmitBackend";
 import SubmitDescription from "./component/SubmitDescription";
@@ -13,7 +13,6 @@ import fileMarkdown from '../../../assets/submit/file.md'
 import Tips from "../component/Tips";
 
 const { TabPane } = Tabs;
-const { Panel } = Collapse
 
 function Submit(obj) {
   const params = useParams();

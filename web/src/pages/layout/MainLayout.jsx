@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {lazy, useEffect, useState} from "react";
 import {BackTop, Layout, Menu, Dropdown, Avatar, Row, Col} from 'antd';
 import {Link, Route, Routes, useLocation} from 'react-router-dom';
 import {
@@ -11,20 +11,14 @@ import {
 } from "@ant-design/icons";
 
 import FooterBar from "./component/FooterBar";
-import TaskLayout from "./TaskLayout";
-
 import {getAuthorizeUrl, getMyProfileUrl} from '../auth/Auth'
 
 import './mainlayout.css'
 import AuthBackend from "../../backend/AuthBackend";
-import Home from "../home/Home";
-import Tasks from "../tasks/Tasks";
-import TaskInfo from "../tasks/TaskInfo";
-import Submit from "../tasks/submit/Submit";
-import Rank from "../tasks/rank/Rank";
-import Record from "../tasks/record/Record";
-import NeedLogin from "./component/NeedLogin";
 
+const Home = lazy(() => import('../home/Home'))
+const Tasks = lazy(() => import('../tasks/Tasks'))
+const TaskLayout = lazy(() => import('./TaskLayout'))
 
 const PUBLIC_URL = process.env.PUBLIC_URL
 
@@ -56,6 +50,12 @@ function MainLayout() {
     setSelected(e.key)
   }
 
+  const userLogin = () => {
+    const url = window.location.href
+    localStorage.setItem("url", url)
+    window.location.href = getAuthorizeUrl()
+  }
+
   const handleMenuClick = (e) => {
     if (e.key === 'account') {
       window.open(getMyProfileUrl(account))
@@ -70,20 +70,6 @@ function MainLayout() {
         .catch((e) => {
           console.log(e)
         })
-    }
-  }
-
-  const userLogin = () => {
-    const url = window.location.href
-    localStorage.setItem("url", url)
-    window.location.href = getAuthorizeUrl()
-  }
-
-  const renderComponentIfLogin = (component) => {
-    if(account === null) {
-      return <NeedLogin userLogin={userLogin}/>
-    } else {
-      return component
     }
   }
 
@@ -155,19 +141,11 @@ function MainLayout() {
         </Row>
       </Header>
       <Content className="main-content">
-
         <Routes>
           <Route index element={<Home/>} />
           <Route path="tasks" element={<Tasks/>}/>
-          <Route path="tasks/:id" element={<TaskLayout/>}>
-            <Route index element={<TaskInfo/>}/>
-            <Route exact path="rank" element={<Rank/>}/>
-
-            <Route exact path="submit" element={renderComponentIfLogin(<Submit account={account}/>)}/>
-            <Route path="record" element={renderComponentIfLogin(<Record account={account}/>)}/>
-          </Route>
+          <Route path="tasks/:id/*" element={<TaskLayout account={account}/>} />
         </Routes>
-
       </Content>
       <Footer className="footer">
         <FooterBar/>

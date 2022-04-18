@@ -5,7 +5,6 @@ import './tasks.css'
 import TaskList from "./component/TaskList";
 import TaskBackend from "../../backend/TaskBackend";
 
-
 function Tasks() {
   const [loading, setLoading] = useState(true)
   const [zhLoading, setZhLoading] = useState(true)

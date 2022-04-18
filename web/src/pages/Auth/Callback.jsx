@@ -1,15 +1,15 @@
-import {useEffect, useState} from "react";
-import {Button, Spin, Result, Card} from "antd";
-import {useLocation, useSearchParams} from "react-router-dom";
+import {useEffect} from "react";
+import {message} from "antd";
+import {useSearchParams} from "react-router-dom";
 
 import './callback.css'
 import AuthBackend from "../../backend/AuthBackend";
+import Loading from "../Loading";
 
 const PUBLIC_URL = process.env.PUBLIC_URL
 
 function Callback() {
   const [params] = useSearchParams()
-  const [msg, setMsg] = useState('');
 
   useEffect(()=>{
     login();
@@ -29,7 +29,7 @@ function Callback() {
           window.location.href = url
         }
       } else {
-        setMsg(res.data.message);
+        message.error(res.data.message);
       }
     })
     .catch(err=>{
@@ -37,31 +37,7 @@ function Callback() {
     })
   }
   return (
-    <div className="callback">
-      <Card hoverable className="card">
-        <div className="title">PTM-Leaderboard</div>
-        {
-          (msg === '') ? (
-            <Spin size="large" tip="登录中..." style={{paddingTop: "10%"}}/>
-          ) : (
-            <div style={{display: "inline"}}>
-              <Result
-                status="error"
-                title="登录失败"
-                subTitle={msg}
-                extra={[
-                  <Button type="primary" key="details">
-                    信息
-                  </Button>,
-                  <Button key="help">帮助</Button>,
-                ]}
-              >
-              </Result>
-            </div>
-          )
-        }
-      </Card>
-    </div>
+    <Loading />
   )
 
 }

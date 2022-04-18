@@ -1,5 +1,5 @@
-import {Button, Divider, Drawer, Pagination, Table, Popover, Row, Col, Collapse} from "antd";
-import {DownloadOutlined, LinkOutlined, QuestionCircleOutlined} from "@ant-design/icons"
+import {Button, Divider, Drawer, Pagination, Table, Row, Col} from "antd";
+import {DownloadOutlined, LinkOutlined} from "@ant-design/icons"
 import {useEffect, useImperativeHandle, useState} from "react";
 import {useParams} from "react-router-dom";
 import ReactJson from 'react-json-view'

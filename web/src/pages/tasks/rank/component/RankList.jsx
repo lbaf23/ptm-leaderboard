@@ -1,12 +1,10 @@
 import {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {Divider, Drawer, Pagination, Tag, Card, Col, Row} from "antd";
+import {Divider, Drawer, Pagination, Table, Col, Row} from "antd";
+import ReactJson from "react-json-view";
 
 import RankBackend from "../../../../backend/RankBackend";
-import ReactJson from "react-json-view";
-import utils from "../../../utils/Utils";
 
-const {Table} = require("antd");
 
 
 function RankList(obj) {
