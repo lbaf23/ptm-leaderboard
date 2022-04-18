@@ -11,7 +11,6 @@ function App() {
       <BrowserRouter>
         <RoutesLayout />
       </BrowserRouter>
-      <Loading />
     </Suspense>
   );
 }
