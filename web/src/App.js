@@ -1,6 +1,5 @@
 import { BrowserRouter } from 'react-router-dom';
 import './App.css';
-//import RoutesLayout from './pages/layout/RoutesLayout';
 import React, {lazy, Suspense} from "react";
 import Loading from "./pages/Loading";
 
@@ -12,6 +11,7 @@ function App() {
       <BrowserRouter>
         <RoutesLayout />
       </BrowserRouter>
+      <Loading />
     </Suspense>
   );
 }
