@@ -1,8 +1,9 @@
 import ReactEcharts from 'echarts-for-react';
-
-import RecordBackend from "../../../../backend/RecordBackend";
 import {useEffect, useImperativeHandle, useState} from "react";
 import {useParams} from "react-router-dom";
+
+import RecordBackend from "../../../../backend/RecordBackend";
+
 
 function RecordChart(props) {
   const params = useParams()

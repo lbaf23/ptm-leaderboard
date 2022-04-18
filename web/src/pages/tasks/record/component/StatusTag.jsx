@@ -1,5 +1,5 @@
 import {Tag} from "antd";
-import {LoadingOutlined, EllipsisOutlined} from "@ant-design/icons"
+import {LoadingOutlined} from "@ant-design/icons"
 
 function StatusTag(obj) {
   return (

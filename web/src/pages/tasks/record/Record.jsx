@@ -1,8 +1,10 @@
 import { Card } from "antd";
 import React, {useEffect, useRef} from "react"
+import {useParams} from "react-router-dom";
+
+
 import RecordList from "./component/RecordList";
 import RecordChart from "./component/RecordChart";
-import {useParams} from "react-router-dom";
 
 const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL
 

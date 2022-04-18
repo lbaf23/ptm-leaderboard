@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Divider} from "antd";
-import {EditOutlined, SaveOutlined} from '@ant-design/icons'
+import {Card} from "antd";
 import {useParams} from "react-router-dom";
 
 import './taskinfo.css'
