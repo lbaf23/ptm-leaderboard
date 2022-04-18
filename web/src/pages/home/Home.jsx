@@ -37,18 +37,6 @@ function Home() {
           remarkPlugins={[remarkGfm]}
         />
       </div>
-      {/*<div style={{textAlign: 'right'}}>
-        {editing ?
-          <Button loading={saving} type="text" icon={<SaveOutlined />} onClick={handleSave}/> :
-          <Button type="text" icon={<EditOutlined />} onClick={handleEdit}/>
-        }
-      </div>
-      <div style={{textAlign: 'left', marginTop: '20px', marginBottom: '60px', marginLeft: '60px', marginRight: '60px'}}>
-        {editing ?
-          <MDEditor value={content} onChange={handleChange} height="100%" /> :
-          <MDEditor.Markdown source={content} />
-        }
-      </div>*/}
     </Card>
   )
 }
