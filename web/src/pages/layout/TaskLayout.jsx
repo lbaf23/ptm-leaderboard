@@ -1,11 +1,11 @@
 import React, {useState} from "react";
 import {Affix, Layout, PageHeader} from 'antd';
-import {Route, Routes, useNavigate} from 'react-router-dom';
+import {Route, Routes, useNavigate, useParams} from 'react-router-dom';
 import {LeftOutlined, RightOutlined} from "@ant-design/icons";
+
 import SiderBar from "./component/SiderBar";
-
-
 import './tasklayout.css'
+
 import {getAuthorizeUrl} from "../auth/Auth";
 
 import TaskInfo from "../tasks/TaskInfo";
@@ -17,7 +17,14 @@ import NeedLogin from "./component/NeedLogin";
 const {Content, Sider} = Layout;
 const PUBLIC_URL = process.env.PUBLIC_URL
 
+const map = {
+  "sa": "Sentiment Analysis",
+  "csa": "Chinese Sentiment Analysis",
+}
+
 function TaskLayout(props) {
+  const params = useParams()
+
   const [collapsed, setCollapsed] = useState(false)
 
   const onCollapse = () => {
@@ -45,7 +52,7 @@ function TaskLayout(props) {
           navigate(`${PUBLIC_URL}/home/tasks`)
         }}
         title={"Tasks"}
-        subTitle=""
+        subTitle={map[params.id]}
       />
       <Layout>
         <Affix offsetTop={10}>
