@@ -19,7 +19,7 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
         tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, use_auth_token=hgToken)
         model = transformers.AutoModelForSequenceClassification.from_pretrained(
             model_path,
-            num_labels=2,
+            num_labels=3,
             output_hidden_states=False,
             use_auth_token=hgToken
         )
