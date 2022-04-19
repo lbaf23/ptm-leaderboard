@@ -13,9 +13,10 @@ class DateEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, obj)
 
 
-def sa_attack(config, client, record_id, task_id, user_id, model_path, mode='file', hgToken=''):
-    dataset = datasets.load_from_disk('datasets/sst', keep_in_memory=True)
-    if(mode == 'hg'):
+def csa_attack(config, client, record_id, task_id, user_id, model_path, mode='file', hgToken=''):
+    dataset = datasets.load_from_disk('datasets/ChnSentiCorp', keep_in_memory=True)
+
+    if (mode == 'hg'):
         tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, use_auth_token=hgToken)
         model = transformers.AutoModelForSequenceClassification.from_pretrained(
             model_path,
@@ -25,8 +26,9 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, mode='fil
         )
     else:
         tokenizer = transformers.AutoTokenizer.from_pretrained(model_path)
-        model = transformers.AutoModelForSequenceClassification.from_pretrained(model_path, num_labels=2, output_hidden_states=False)
-    
+        model = transformers.AutoModelForSequenceClassification.from_pretrained(model_path, num_labels=2,
+                                                                                output_hidden_states=False)
+
     victim = oa.classifiers.TransformersClassifier(model, tokenizer, model.bert.embeddings.word_embeddings)
 
     print("[attack] model loaded")
@@ -47,11 +49,10 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, mode='fil
     total = 0
 
     print("[attack] PWWSAttacker Start")
-    attacker = oa.attackers.PWWSAttacker()
+    attacker = oa.attackers.PWWSAttacker(lang="chinese")
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
     print("[attack] PWWSAttacker Finished")
-
     result.append({
         "attacker": "PWWSAttacker",
         "result": res
@@ -59,27 +60,13 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, mode='fil
     success = success + res.get("Successful Instances")
     total = total + res.get("Total Attacked Instances")
 
-    print("[attack] DeepWordBugAttacker Start")
-    attacker = oa.attackers.DeepWordBugAttacker()
+    print("[attack] HotFlipAttacker Start")
+    attacker = oa.attackers.HotFlipAttacker(lang="chinese")
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    print("[attack] DeepWordBugAttacker Finished")
-
+    print("[attack] HotFlipAttacker Finished")
     result.append({
-        "attacker": "DeepWordBugAttacker",
-        "result": res
-    })
-    success = success + res.get("Successful Instances")
-    total = total + res.get("Total Attacked Instances")
-
-    print("[attack] GANAttacker Start")
-    attacker = oa.attackers.GANAttacker()
-    attack_eval = oa.AttackEval(attacker, victim)
-    res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    print("[attack] GANAttacker Finished")
-
-    result.append({
-        "attacker": "GANAttacker",
+        "attacker": "HotFlipAttacker",
         "result": res
     })
     success = success + res.get("Successful Instances")
@@ -97,13 +84,13 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, mode='fil
     success = success + res.get("Successful Instances")
     total = total + res.get("Total Attacked Instances")
 
-    print("[attack] HotFlipAttacker Start")
-    attacker = oa.attackers.HotFlipAttacker(lang="chinese")
+    print("[attack] UATAttacker Start")
+    attacker = oa.attackers.UATAttacker(lang="chinese")
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    print("[attack] HotFlipAttacker Finished")
+    print("[attack] UATAttacker Finished")
     result.append({
-        "attacker": "HotFlipAttacker",
+        "attacker": "UATAttacker",
         "result": res
     })
     success = success + res.get("Successful Instances")

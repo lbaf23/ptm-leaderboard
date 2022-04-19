@@ -15,14 +15,14 @@ tokenizer = transformers.AutoTokenizer.from_pretrained(model_path)
 model = transformers.AutoModelForSequenceClassification.from_pretrained(model_path)
 classifier = transformers.pipeline('text-classification', tokenizer=tokenizer, model=model)
 
+s0 = "I hate that movie"
 s1 = "I like that movie"
-s2 = "I hate that movie"
 
-classifier(s1, s2)
+classifier([s0, s1])
 ```
 
 ```
-[{'label': 'LABEL_1', 'score': 0.9992368221282959},
- {'label': 'LABEL_0', 'score': 0.9988390803337097}]
+[{'label': 'LABEL_0', 'score': 0.9988390803337097},
+ {'label': 'LABEL_1', 'score': 0.9992368221282959}]
 ```
 

@@ -8,7 +8,7 @@ def sst_dataset(x):
     }
 
 
-def imdb_dataset(x):
+def ChnSentiCorp_dataset(x):
     return {
         "x": x["text"],
         "y": x["label"],
@@ -20,4 +20,16 @@ def download_sst(len):
     dataset.save_to_disk('datasets/sst')
 
 
-download_sst(10)
+def download_ChnSentiCorp(len):
+    dataset = datasets.load_dataset("seamew/ChnSentiCorp", split="train[:%s]" % len).map(function=ChnSentiCorp_dataset)
+    dataset.save_to_disk('datasets/ChnSentiCorp')
+
+
+def download_nltk():
+    import nltk
+    nltk.download('omw-1.4')
+
+
+# download_sst(10)
+download_ChnSentiCorp(10)
+# download_nltk()
