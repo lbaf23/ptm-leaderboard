@@ -50,7 +50,7 @@ def start_attack(config, client, record_id, task_id, user_id, file_url, modelBas
         else:
             print("[attack] download model file")
             model_path = unzip_file(get_file(file_url))
-            print("[attack] start attack " + task_id)
+            print("[attack] start attack " + task_id + ", based on " + modelBasedOn)
 
         status = 'succeed'
         message = ''
