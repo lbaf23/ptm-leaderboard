@@ -86,7 +86,7 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, mode='fil
     total = total + res.get("Total Attacked Instances")
 
     print("[attack] PSOAttacker Start")
-    attacker = oa.attackers.PSOAttacker(lang="chinese")
+    attacker = oa.attackers.PSOAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
     print("[attack] PSOAttacker Finished")
@@ -98,7 +98,7 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, mode='fil
     total = total + res.get("Total Attacked Instances")
 
     print("[attack] HotFlipAttacker Start")
-    attacker = oa.attackers.HotFlipAttacker(lang="chinese")
+    attacker = oa.attackers.HotFlipAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
     print("[attack] HotFlipAttacker Finished")
