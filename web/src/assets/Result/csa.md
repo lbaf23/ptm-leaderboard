@@ -4,9 +4,7 @@
   - PWWSAttacker
   - DeepWordBugAttacker
   - GANAttacker
-  - PSOAttacker
-  - HotFlipAttacker
-  
+
 - result: 攻击结果，以Json类型展示
   - Total Attack Instances: 攻击的样本数量
   - Successful Instances: 攻击成功的样本数量，即模型做出失败判断的数量
