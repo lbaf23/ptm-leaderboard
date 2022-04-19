@@ -12,14 +12,15 @@ import (
 )
 
 type SubmitAttack struct {
-	RecordId  uint   `json:"recordId"`
-	FileUrl   string `json:"fileUrl"`
-	UserId    string `json:"userId"`
-	UserName  string `json:"userName"`
-	TaskId    string `json:"taskId"`
-	ModelName string `json:"modelName"`
-	Mode      string `json:"mode"`
-	HgToken   string `json:"hgToken"`
+	RecordId     uint   `json:"recordId"`
+	FileUrl      string `json:"fileUrl"`
+	UserId       string `json:"userId"`
+	UserName     string `json:"userName"`
+	TaskId       string `json:"taskId"`
+	ModelName    string `json:"modelName"`
+	ModelBasedOn string `json:"modelBasedOn"`
+	Mode         string `json:"mode"`
+	HgToken      string `json:"hgToken"`
 }
 
 func CreateSubmit(c *gin.Context) {
@@ -33,18 +34,20 @@ func CreateSubmit(c *gin.Context) {
 	modelName := c.PostForm("modelName")
 	fileUrl := c.PostForm("fileUrl")
 	taskId := c.PostForm("taskId")
+	modelBasedOn := c.PostForm("modelBasedOn")
 	mode := c.PostForm("mode")
 	hgToken := c.PostForm("hgToken")
 
 	record := models.Record{
-		UserId:      userId,
-		TaskId:      taskId,
-		SubmittedAt: time.Now(),
-		Status:      "pending",
-		ModelName:   modelName,
-		FileUrl:     fileUrl,
-		Result:      "[]",
-		Mode:        mode,
+		UserId:       userId,
+		TaskId:       taskId,
+		SubmittedAt:  time.Now(),
+		Status:       "pending",
+		ModelName:    modelName,
+		FileUrl:      fileUrl,
+		Result:       "[]",
+		ModelBasedOn: modelBasedOn,
+		Mode:         mode,
 	}
 
 	id, err := models.CreateRecord(record)
@@ -56,14 +59,15 @@ func CreateSubmit(c *gin.Context) {
 	}
 
 	data := SubmitAttack{
-		RecordId:  id,
-		FileUrl:   fileUrl,
-		UserId:    userId,
-		UserName:  userName,
-		TaskId:    taskId,
-		ModelName: modelName,
-		Mode:      mode,
-		HgToken:   hgToken,
+		RecordId:     id,
+		FileUrl:      fileUrl,
+		UserId:       userId,
+		UserName:     userName,
+		TaskId:       taskId,
+		ModelName:    modelName,
+		ModelBasedOn: modelBasedOn,
+		Mode:         mode,
+		HgToken:      hgToken,
 	}
 
 	err = queue.Publish(utils.StructToByte(data))

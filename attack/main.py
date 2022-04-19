@@ -42,6 +42,7 @@ with NATSClient(config.get("config", "natsURL")) as client:
                 message.get('taskId'),
                 message.get('userId'),
                 message.get('fileUrl'),
+                message.get('modelBasedOn'),
                 message.get('mode'),
                 message.get('hgToken'),
             )

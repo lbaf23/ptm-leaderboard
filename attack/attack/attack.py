@@ -37,7 +37,7 @@ def del_all():
         os.remove('user_model.zip')
 
 
-def start_attack(config, client, record_id, task_id, user_id, file_url, mode, hgToken):
+def start_attack(config, client, record_id, task_id, user_id, file_url, modelBasedOn, mode, hgToken):
     score = 0
     result = {}
     started_at = datetime.datetime.now()
@@ -62,6 +62,7 @@ def start_attack(config, client, record_id, task_id, user_id, file_url, mode, hg
                 task_id,
                 user_id,
                 model_path,
+                modelBasedOn,
                 mode,
                 hgToken
             )
@@ -73,6 +74,7 @@ def start_attack(config, client, record_id, task_id, user_id, file_url, mode, hg
                 task_id,
                 user_id,
                 model_path,
+                modelBasedOn,
                 mode,
                 hgToken
             )

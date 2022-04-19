@@ -1,18 +1,26 @@
 import React, {useEffect, useState} from "react";
-import {Button, Card, Divider, Input, message, Space, Upload, Progress} from "antd";
+import {Button, Card, Divider, Input, message, Space, Upload, Progress, Select, Tabs, Col, Row, Tag} from "antd";
 import {UploadOutlined} from "@ant-design/icons"
 import {useParams} from "react-router-dom";
+
 import SubmitBackend from "../../../backend/SubmitBackend";
 import SubmitDescription from "./component/SubmitDescription";
-
-import { Tabs } from 'antd';
 import FileBackend from "../../../backend/FileBackend";
-
 import hgMarkdown from '../../../assets/submit/hg.md'
 import fileMarkdown from '../../../assets/submit/file.md'
 import Tips from "../component/Tips";
 
 const { TabPane } = Tabs;
+
+const { Option } = Select;
+
+
+const modelTypes = [
+  "bert",
+  "roberta",
+]
+
+
 
 function Submit(obj) {
   const params = useParams();
@@ -31,6 +39,8 @@ function Submit(obj) {
   const [hgMd, setHgMd] = useState('')
   const [fileMd, setFileMd] = useState('')
 
+  const [modelBasedOn, setModelBasedOn] = useState('bert')
+
   useEffect(()=>{
     fetch(hgMarkdown)
       .then(res=>res.text()).then((text)=>{
@@ -44,6 +54,10 @@ function Submit(obj) {
 
   const changeTab = (e) => {
     setMode(e)
+  }
+
+  const chooseModelType = (key) => {
+    setModelBasedOn(key)
   }
 
   const preCheck = () => {
@@ -82,7 +96,7 @@ function Submit(obj) {
         name = hg
       }
     }
-    SubmitBackend.submitModel(name, url, params.id, mode, hgToken)
+    SubmitBackend.submitModel(name, url, params.id, modelBasedOn, mode, hgToken)
       .then(res=>{
         setLoading(false)
         if(res.data.code === 200) {
@@ -221,7 +235,30 @@ function Submit(obj) {
 
       <div>
         <Space direction="vertical" size="middle" style={{width: '100%'}}>
-          <Input addonBefore="Model Name" maxLength={20} showCount onChange={inputModelName} value={modelName}/>
+          <Input addonBefore="Model name" maxLength={20} showCount onChange={inputModelName} value={modelName}/>
+
+          <Row>
+            <Col>
+              <Tag
+                style={{
+                  paddingTop: '5px',
+                  paddingBottom: '5px',
+                  paddingLeft: '10px',
+                  paddingRight: '10px',
+                  fontSize: '14px',
+                }}
+              >
+                Model based on
+              </Tag>
+            </Col>
+            <Col>
+              <Select defaultValue="bert" style={{ width: 120 }} onChange={chooseModelType}>
+                {modelTypes.map((item, index)=>(
+                  <Option key={index} value={item}>{item}</Option>
+                ))}
+              </Select>
+            </Col>
+          </Row>
 
           <Tabs defaultActiveKey="hg" onChange={changeTab}>
             <TabPane tab="Hugging Face Model" key="hg">

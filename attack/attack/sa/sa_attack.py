@@ -13,7 +13,7 @@ class DateEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, obj)
 
 
-def sa_attack(config, client, record_id, task_id, user_id, model_path, mode='file', hgToken=''):
+def sa_attack(config, client, record_id, task_id, user_id, model_path, modelBasedOn='bert', mode='file', hgToken=''):
     dataset = datasets.load_from_disk('datasets/sst', keep_in_memory=True)
     if mode == 'hg':
         tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, use_auth_token=hgToken)
@@ -26,8 +26,11 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, mode='fil
     else:
         tokenizer = transformers.AutoTokenizer.from_pretrained(model_path)
         model = transformers.AutoModelForSequenceClassification.from_pretrained(model_path, num_labels=2, output_hidden_states=False)
-    
-    victim = oa.classifiers.TransformersClassifier(model, tokenizer, model.bert.embeddings.word_embeddings)
+
+    emb = model.bert.embeddings.word_embeddings
+    if modelBasedOn == 'roberta':
+        emb = model.roberta.embeddings.word_embeddings
+    victim = oa.classifiers.TransformersClassifier(model, tokenizer, emb)
 
     print("[attack] model loaded")
     started_at = datetime.datetime.now()

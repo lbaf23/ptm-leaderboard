@@ -2,7 +2,7 @@ import {apiRequest} from "./request";
 import qs from "qs";
 
 const SubmitBackend = {
-  submitModel(modelName, fileUrl, taskId, mode, hgToken) {
+  submitModel(modelName, fileUrl, taskId, modelBasedOn, mode, hgToken) {
     return apiRequest({
       url: '/submit/',
       method: 'post',
@@ -10,8 +10,9 @@ const SubmitBackend = {
         modelName: modelName,
         fileUrl: fileUrl,
         taskId: taskId,
+        modelBasedOn: modelBasedOn,
         mode: mode,
-        hgToken: hgToken
+        hgToken: hgToken,
       }),
       params: {
         token: localStorage.getItem("token")

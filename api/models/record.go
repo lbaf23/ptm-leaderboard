@@ -20,7 +20,9 @@ type Record struct {
 	Message string `json:"message" gorm:"column:message"`
 
 	FileUrl string `json:"fileUrl" gorm:"column:file_url"`
-	Mode    string `json:"mode" gorm:"column:mode"` // hg: hugging face model    file: zip file
+
+	ModelBasedOn string `json:"modelBasedOn" gorm:"column:model_based_on"` // bert  roberta
+	Mode         string `json:"mode" gorm:"column:mode"`                   // hg: hugging face model    file: zip file
 
 	ModelName string  `json:"modelName" gorm:"column:model_name"`
 	Result    string  `json:"result" gorm:"column:result"`
