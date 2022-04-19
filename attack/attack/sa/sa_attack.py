@@ -15,7 +15,7 @@ class DateEncoder(json.JSONEncoder):
 
 def sa_attack(config, client, record_id, task_id, user_id, model_path, mode='file', hgToken=''):
     dataset = datasets.load_from_disk('datasets/sst', keep_in_memory=True)
-    if(mode == 'hg'):
+    if mode == 'hg':
         tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, use_auth_token=hgToken)
         model = transformers.AutoModelForSequenceClassification.from_pretrained(
             model_path,
