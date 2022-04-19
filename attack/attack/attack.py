@@ -1,13 +1,10 @@
-from tracemalloc import start
-
-from numpy import record
 from attack.sa import sa_attack
+from attack.csa import csa_attack
 import shutil
 import zipfile
 import os
 import time
 import requests
-import json
 import datetime
 
 
@@ -21,7 +18,7 @@ def unzip_file(name):
 
 def get_file(url):
     del_all()
-    if(url.startswith('http')):
+    if url.startswith('http'):
         r = requests.get(url=url, stream=True)
         f = open('user_model.zip', 'wb')
         for chunk in r.iter_content(chunk_size=1024):
@@ -34,9 +31,9 @@ def get_file(url):
 
 
 def del_all():
-    if(os.path.exists('user_model')):
+    if os.path.exists('user_model'):
         shutil.rmtree('user_model')
-    if(os.path.exists('user_model.zip')):
+    if os.path.exists('user_model.zip'):
         os.remove('user_model.zip')
 
 
@@ -57,8 +54,19 @@ def start_attack(config, client, record_id, task_id, user_id, file_url, mode, hg
         status = 'succeed'
         message = ''
         started_at = datetime.datetime.now()
-        if(task_id == 'sa'):
+        if task_id == 'sa':
             score, result, started_at = sa_attack(
+                config,
+                client,
+                record_id,
+                task_id,
+                user_id,
+                model_path,
+                mode,
+                hgToken
+            )
+        elif task_id == 'csa':
+            score, result, started_at = csa_attack(
                 config,
                 client,
                 record_id,
