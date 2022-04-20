@@ -20,6 +20,8 @@ const PUBLIC_URL = process.env.PUBLIC_URL
 const map = {
   "sa": "Sentiment Analysis",
   "csa": "Chinese Sentiment Analysis",
+  "nli": "Natural Language Inference",
+  "qqp": "Quora Question Pairs"
 }
 
 function TaskLayout(props) {
