@@ -22,6 +22,13 @@ def snli_mapping(x):
     }
 
 
+def qqp_mapping(x):
+    return {
+        "x": x["question1"] + ", " + x["question2"],
+        "y": x["label"],
+    }
+
+
 def download_sst(len):
     dataset = datasets.load_dataset("sst", split="train[:%s]" % len).map(function=sst_dataset)
     dataset.save_to_disk('datasets/sst')
@@ -37,12 +44,18 @@ def download_snli(len):
     dataset.save_to_disk('datasets/snli')
 
 
+def download_qqp(len):
+    dataset = datasets.load_dataset("glue", "qqp", split="train[:%s]" % len).map(function=qqp_mapping)
+    dataset.save_to_disk('datasets/qqp')
+
+
 def download_nltk():
     import nltk
     nltk.download('omw-1.4')
 
 
-download_sst(10)
-download_ChnSentiCorp(10)
-download_snli(10)
+#download_sst(10)
+#download_ChnSentiCorp(10)
+#download_snli(10)
+download_qqp(10)
 # download_nltk()

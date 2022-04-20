@@ -1,6 +1,8 @@
 from attack.sa import sa_attack
 from attack.csa import csa_attack
 from attack.nli import nli_attack
+from attack.qqp import qqp_attack
+
 import shutil
 import zipfile
 import os
@@ -81,6 +83,18 @@ def start_attack(config, client, record_id, task_id, user_id, file_url, modelBas
             )
         elif task_id == 'nli':
             score, result, started_at = nli_attack(
+                config,
+                client,
+                record_id,
+                task_id,
+                user_id,
+                model_path,
+                modelBasedOn,
+                mode,
+                hgToken
+            )
+        elif task_id == 'qqp':
+            score, result, started_at = qqp_attack(
                 config,
                 client,
                 record_id,
