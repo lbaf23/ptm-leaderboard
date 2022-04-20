@@ -14,7 +14,7 @@ class DateEncoder(json.JSONEncoder):
 
 
 def qqp_attack(config, client, record_id, task_id, user_id, model_path, modelBasedOn='bert', mode='file', hgToken=''):
-    dataset = datasets.load_from_disk('datasets/qqp', keep_in_memory=True)
+    dataset = datasets.load_from_disk('datasets/qqp', keep_in_memory=False)
     if mode == 'hg':
         tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, use_auth_token=hgToken)
         model = transformers.AutoModelForSequenceClassification.from_pretrained(
