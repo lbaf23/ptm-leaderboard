@@ -42,7 +42,7 @@ def del_all():
 
 def start_attack(config, client, record_id, task_id, user_id, file_url, modelBasedOn, mode, hgToken):
     score = 0
-    result = {}
+    result = []
     started_at = datetime.datetime.now()
 
     try:
