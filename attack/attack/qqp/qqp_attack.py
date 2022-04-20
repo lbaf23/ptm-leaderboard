@@ -27,9 +27,10 @@ def qqp_attack(config, client, record_id, task_id, user_id, model_path, modelBas
         tokenizer = transformers.AutoTokenizer.from_pretrained(model_path)
         model = transformers.AutoModelForSequenceClassification.from_pretrained(model_path, num_labels=2, output_hidden_states=False)
 
-    emb = model.bert.embeddings.word_embeddings
     if modelBasedOn == 'roberta':
         emb = model.roberta.embeddings.word_embeddings
+    else:
+        emb = model.bert.embeddings.word_embeddings
     victim = oa.classifiers.TransformersClassifier(model, tokenizer, emb)
 
     print("[attack] model loaded")
