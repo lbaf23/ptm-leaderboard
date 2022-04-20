@@ -4,8 +4,21 @@ import ReactEcharts from "echarts-for-react";
 import {useEffect, useState} from "react";
 
 import saMd from "../../../assets/result/sa.md";
+import csaMd from "../../../assets/result/csa.md"
+import nliMd from "../../../assets/result/nli.md"
+import qqpMd from "../../../assets/result/qqp.md"
+import {useParams} from "react-router-dom";
+
+const taskTypes = {
+  "sa": saMd,
+  "csa": csaMd,
+  "nli": nliMd,
+  "qqp": qqpMd,
+}
 
 function AttackResult(props) {
+  const params = useParams()
+
   const [md, setMd] = useState('')
   const [option, setOption] = useState({})
   useEffect(()=>{
@@ -14,7 +27,7 @@ function AttackResult(props) {
   }, [])
 
   const initMd = () => {
-    fetch(saMd)
+    fetch(taskTypes[params.id])
       .then(res=>res.text()).then((text)=>{
       setMd(text)
     })

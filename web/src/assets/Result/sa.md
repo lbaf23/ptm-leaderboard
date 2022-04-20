@@ -21,15 +21,15 @@ success = \sum_{i=1}^n Successful\space Instances_i
 \\
 total = \sum_{i=1}^n Total\space Attacked\space Instances_i
 \\
-score = (total - success) \times 100 \div total
+
+总分：score = (total - success) \times 100 \div total
+
+\\
+\\
+
+单项得分：score = (Total\space Attacked\space Instances - Successful\space Instances) 
+\\
+\times 100 \div Total\space Attacked\space Instances
 $$
 
----
-
-**chart**
-- score: 单项得分
-
-$$
-score = (Total\space Attacked\space Instances - Successful\space Instances) \times 100 \div Total\space Attacked\space Instances
-$$
 
