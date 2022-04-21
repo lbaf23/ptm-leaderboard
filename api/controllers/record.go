@@ -80,13 +80,3 @@ func GetRecord(c *gin.Context) {
 	res.Code = 200
 	c.JSON(http.StatusOK, &res)
 }
-
-func CreateRecord(c *gin.Context) {
-
-	c.JSON(http.StatusOK, gin.H{"msg": "ok"})
-}
-
-func DeleteRecord(c *gin.Context) {
-
-	c.JSON(http.StatusOK, gin.H{"msg": "ok"})
-}

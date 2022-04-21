@@ -17,13 +17,6 @@ func Init(r *gin.Engine) {
 		authGroup.GET("/account/", controllers.GetAccount)
 	}
 
-	homeGroup := r.Group("/home/")
-	homeGroup.Use()
-	{
-		homeGroup.GET("/", controllers.GetHomeContent)
-		homeGroup.POST("/", controllers.UpdateHomeContent)
-	}
-
 	rankListGroup := r.Group("/ranklist")
 	rankListGroup.Use()
 	{
@@ -67,6 +60,5 @@ func Init(r *gin.Engine) {
 	recordGroup.Use(AuthMiddleware())
 	{
 		recordGroup.GET("/", controllers.GetRecord)
-		recordGroup.DELETE("/", controllers.DeleteRecord)
 	}
 }
