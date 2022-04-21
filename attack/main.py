@@ -35,6 +35,7 @@ with NATSClient(config.get("config", "natsURL")) as client:
         except BrokenPipeError:
             while True:
                 try:
+                    print("[nats] reconnect")
                     client.reconnect()
                     client.publish(subject="loadAttack", payload=res)
                     break
@@ -81,6 +82,7 @@ with NATSClient(config.get("config", "natsURL")) as client:
         except BrokenPipeError:
             while True:
                 try:
+                    print("[nats] reconnect")
                     client.reconnect()
                     client.publish(subject="finishAttack", payload=res)
                     break

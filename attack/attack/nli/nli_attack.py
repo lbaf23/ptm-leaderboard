@@ -49,6 +49,7 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     except BrokenPipeError:
         while True:
             try:
+                print("[nats] reconnect")
                 client.reconnect()
                 client.publish(subject="startAttack", payload=res)
                 break
