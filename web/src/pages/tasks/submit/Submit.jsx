@@ -98,7 +98,11 @@ function Submit(obj) {
         name = hg
       }
     }
-    SubmitBackend.submitModel(name, url, params.id, modelBasedOn, mode, secret.encode(hgToken))
+    let ht = ""
+    if(hgToken !== "") {
+      ht = secret.encode(hgToken)
+    }
+    SubmitBackend.submitModel(name, url, params.id, modelBasedOn, mode, ht)
       .then(res=>{
         setLoading(false)
         if(res.data.code === 200) {
