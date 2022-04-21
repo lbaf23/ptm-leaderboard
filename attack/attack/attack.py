@@ -52,7 +52,8 @@ def start_attack(config, client, record_id, task_id, user_id, file_url, modelBas
             print("[attack] use Hugging Face Model")
             model_path = file_url
             # rsa
-            hgToken = utils.decode(hgToken)
+            if hgToken != "":
+                hgToken = utils.decode(hgToken)
         else:
             print("[attack] download model file")
             model_path = unzip_file(get_file(file_url))
