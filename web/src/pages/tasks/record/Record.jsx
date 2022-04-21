@@ -6,7 +6,7 @@ import {useParams} from "react-router-dom";
 import RecordList from "./component/RecordList";
 import RecordChart from "./component/RecordChart";
 
-const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL
+const REACT_APP_SEND_URL = process.env.REACT_APP_SEND_URL
 
 let e = null;
 
@@ -18,7 +18,7 @@ function Record(obj) {
 
   useEffect(()=>{
     const path = `${params.id}-${obj.account.id}`
-    e =  new EventSource(`${REACT_APP_BASE_URL}/events/${path}`);
+    e =  new EventSource(`${REACT_APP_SEND_URL}/events/${path}`);
     e.onmessage = function (event){
       rlist.current.update()
       rchart.current.update()
