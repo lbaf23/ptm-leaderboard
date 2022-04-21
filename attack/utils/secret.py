@@ -1,3 +1,5 @@
+import base64
+
 import rsa
 
 
@@ -7,8 +9,5 @@ with open("private.pem", "rb") as f:
 
 
 def decode(data):
-    return rsa.decrypt(
-        bytes(data, encoding="utf8"),
-        key
-    ).decode("utf-8")
-
+    b = base64.b64decode(data.encode("utf-8"))
+    return rsa.decrypt(b, key).decode("utf-8")
