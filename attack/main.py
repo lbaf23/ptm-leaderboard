@@ -30,7 +30,16 @@ with NATSClient(config.get("config", "natsURL")) as client:
             "status": "loading",
         }
         res = json.dumps(data, cls=DateEncoder).encode()
-        client.publish(subject="loadAttack", payload=res)
+        try:
+            client.publish(subject="loadAttack", payload=res)
+        except BrokenPipeError:
+            while True:
+                try:
+                    client.reconnect()
+                    client.publish(subject="loadAttack", payload=res)
+                    break
+                except:
+                    pass
         
         if config.get("config", "fake") == 'on':
             attack_result, started_at = fake_attack(message.get('fileUrl'))
@@ -66,7 +75,17 @@ with NATSClient(config.get("config", "natsURL")) as client:
             "message": attack_result.get('message')
         }
         res = json.dumps(data, cls=DateEncoder).encode()
-        client.publish(subject="finishAttack", payload=res)
+
+        try:
+            client.publish(subject="finishAttack", payload=res)
+        except BrokenPipeError:
+            while True:
+                try:
+                    client.reconnect()
+                    client.publish(subject="finishAttack", payload=res)
+                    break
+                except:
+                    pass
 
     client.subscribe(subject="attack", callback=handle)
     client.wait()
