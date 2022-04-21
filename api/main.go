@@ -3,7 +3,6 @@ package main
 import (
 	"api/conf"
 	"api/controllers"
-	"api/event"
 	"api/models"
 	"api/queue"
 	"api/routers"
@@ -25,8 +24,6 @@ func main() {
 
 	routers.Init(r)
 	controllers.InitCasdoor()
-
-	event.Init(r)
 
 	r.Run(fmt.Sprintf(":%s", conf.Config.HttpPort))
 }
