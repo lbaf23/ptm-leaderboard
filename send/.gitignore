@@ -1,0 +1,4 @@
+.idea
+.vscode
+conf/app.debug.ini
+conf/app.release.ini

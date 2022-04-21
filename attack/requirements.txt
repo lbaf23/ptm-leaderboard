@@ -3,3 +3,4 @@ OpenAttack==2.1.1
 nats-python
 requests==2.22.0
 transformers==4.17.0
+rsa

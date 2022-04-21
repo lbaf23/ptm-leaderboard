@@ -11,3 +11,4 @@ def decode(data):
         bytes(data, encoding="utf8"),
         key
     ).decode("utf-8")
+

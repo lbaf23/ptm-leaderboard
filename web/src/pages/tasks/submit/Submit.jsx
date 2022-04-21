@@ -3,6 +3,8 @@ import {Button, Card, Divider, Input, message, Space, Upload, Progress, Select, 
 import {UploadOutlined} from "@ant-design/icons"
 import {useParams} from "react-router-dom";
 
+import secret from "../../utils/Secret";
+
 import SubmitBackend from "../../../backend/SubmitBackend";
 import SubmitDescription from "./component/SubmitDescription";
 import FileBackend from "../../../backend/FileBackend";
@@ -96,7 +98,7 @@ function Submit(obj) {
         name = hg
       }
     }
-    SubmitBackend.submitModel(name, url, params.id, modelBasedOn, mode, hgToken)
+    SubmitBackend.submitModel(name, url, params.id, modelBasedOn, mode, secret.encode(hgToken))
       .then(res=>{
         setLoading(false)
         if(res.data.code === 200) {
@@ -235,7 +237,7 @@ function Submit(obj) {
 
       <div>
         <Space direction="vertical" size="middle" style={{width: '100%'}}>
-          <Input addonBefore="Model name" maxLength={20} showCount onChange={inputModelName} value={modelName}/>
+          <Input addonBefore="Model name" maxLength={100} showCount onChange={inputModelName} value={modelName}/>
 
           <Row>
             <Col>
@@ -264,8 +266,8 @@ function Submit(obj) {
             <TabPane tab="Hugging Face Model" key="hg">
               <Tips md={hgMd} />
               <br/>
-              <Input addonBefore="Hugging Face Model" maxLength={1000} showCount onChange={inputHg} value={hg}/>
-              <Input style={{marginTop: '20px'}} addonBefore="Auth Token" maxLength={1000} showCount onChange={inputHgToken} value={hgToken}/>
+              <Input addonBefore="Hugging Face Model" maxLength={100} showCount onChange={inputHg} value={hg}/>
+              <Input.Password style={{marginTop: '20px'}} addonBefore="Auth Token" maxLength={100} showCount onChange={inputHgToken} value={hgToken}/>
             </TabPane>
             <TabPane tab="Upload file" key="file">
               <Tips md={fileMd} />
