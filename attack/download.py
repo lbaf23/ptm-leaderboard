@@ -54,8 +54,8 @@ def download_nltk():
     nltk.download('omw-1.4')
 
 
-#download_sst(10)
-#download_ChnSentiCorp(10)
-#download_snli(10)
+download_sst(10)
+download_ChnSentiCorp(10)
+download_snli(10)
 download_qqp(10)
 # download_nltk()
