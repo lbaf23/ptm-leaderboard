@@ -1,11 +1,13 @@
 package queue
 
 import (
-	"api/conf"
-	"api/models"
 	"encoding/json"
-	"github.com/nats-io/nats.go"
+	"fmt"
+	"send/conf"
+	"send/event"
 	"time"
+
+	"github.com/nats-io/nats.go"
 )
 
 var nc *nats.Conn
@@ -16,15 +18,15 @@ func Init() {
 	if err != nil {
 		panic(err.Error())
 	}
-	_, err = nc.QueueSubscribe("startAttack", "api", handleStart)
+	_, err = nc.QueueSubscribe("startAttack", "send", handleStart)
 	if err != nil {
 		panic(err.Error())
 	}
-	_, err = nc.QueueSubscribe("loadAttack", "api", handleLoad)
+	_, err = nc.QueueSubscribe("loadAttack", "send", handleLoad)
 	if err != nil {
 		panic(err.Error())
 	}
-	_, err = nc.QueueSubscribe("finishAttack", "api", handleFinished)
+	_, err = nc.QueueSubscribe("finishAttack", "send", handleFinished)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -45,13 +47,7 @@ type LoadResponse struct {
 func handleLoad(m *nats.Msg) {
 	var res LoadResponse
 	json.Unmarshal(m.Data, &res)
-	r := models.Record{
-		Id:     res.RecordId,
-		Status: res.Status,
-	}
-	models.UpdateRecord(r)
-
-	//event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "loading")
+	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "loading")
 }
 
 type StartResponse struct {
@@ -65,14 +61,7 @@ type StartResponse struct {
 func handleStart(m *nats.Msg) {
 	var res StartResponse
 	json.Unmarshal(m.Data, &res)
-	r := models.Record{
-		Id:        res.RecordId,
-		StartedAt: res.StartedAt,
-		Status:    res.Status,
-	}
-	models.UpdateRecord(r)
-
-	//event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "running")
+	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), "running")
 }
 
 type FinishedResponse struct {
@@ -95,41 +84,8 @@ func handleFinished(m *nats.Msg) {
 	var res FinishedResponse
 	json.Unmarshal(m.Data, &res)
 
-	r := models.Record{
-		Id:          res.RecordId,
-		FinishedAt:  res.FinishedAt,
-		RunningTime: res.RunningTime,
-		Status:      res.Status,
-		Message:     res.Message,
-		Result:      res.Result,
-		Score:       res.Score,
-	}
-
-	models.UpdateRecord(r)
-
 	if res.Status == "succeed" {
-		rank, err := models.GetUserRank(res.UserId, res.TaskId)
-		if err != nil {
-			rank = models.Rank{
-				TaskId:    res.TaskId,
-				UserId:    res.UserId,
-				UserName:  res.UserName,
-				ModelName: res.ModelName,
-				Score:     res.Score,
-				Result:    res.Result,
-			}
-			models.CreateRank(rank)
-		} else {
-			rank = models.Rank{
-				TaskId:    rank.TaskId,
-				UserId:    rank.UserId,
-				UserName:  res.UserName,
-				ModelName: res.ModelName,
-				Score:     res.Score,
-				Result:    res.Result,
-			}
-			models.UpdateRank(rank)
-		}
+
 	}
-	//event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), res.Status)
+	event.Send(fmt.Sprintf("%s-%s", res.TaskId, res.UserId), res.Status)
 }

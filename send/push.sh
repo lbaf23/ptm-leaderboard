@@ -1,0 +1,1 @@
+docker push lbaf23/ptm-leaderboard-send:1.0.0

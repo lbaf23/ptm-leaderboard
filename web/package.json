@@ -13,6 +13,7 @@
     "casdoor-js-sdk": "^0.2.5",
     "echarts": "^5.3.2",
     "echarts-for-react": "^3.0.2",
+    "jsencrypt": "^3.2.1",
     "katex": "^0.15.3",
     "qs": "^6.10.3",
     "react": "^17.0.2",
