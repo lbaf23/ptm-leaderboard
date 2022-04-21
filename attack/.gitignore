@@ -11,10 +11,11 @@ attack/csa/__pycache__
 attack/nli/__pycache__
 
 conf/__pycache__
+utils/__pycache__
 
 user_model.zip
 user_model
 data
 datasets
 
-utils/private.pem
+private.pem
