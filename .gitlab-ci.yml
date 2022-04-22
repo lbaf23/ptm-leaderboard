@@ -1,15 +1,16 @@
-stages:  # 阶段
+image: lbaf23/ptm-leaderboard-api:1.0.0
+
+stages:
   - deploy
 
-deploy_dev:
+deploy:
   stage: deploy
-  only:
-    - dev
+  when: manual
+  variables:
+    CI_DEBUG_TRACE: "true"
+  script:
+    - bash api/up.sh
   tags:
-    - dev
-  script: # 构建命令
-    - envsubst < Dockerfile | docker build -t $IMAGE -f - .
-    - docker push $IMAGE
-    - envsubst < app.dev.yaml | kubectl apply -f -
-  variables: # 声明环境变量
-    NAMESPACE: ptm
+    - ptm
+  only:
+    - master
