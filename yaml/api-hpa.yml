@@ -4,10 +4,11 @@ metadata:
   name: api
   namespace: ptm
 spec:
-  maxReplicas: 5
+  maxReplicas: 10
   minReplicas: 2
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
     name: api
-  targetCPUUtilizationPercentage: 10
+  targetCPUUtilizationPercentage: 40
+  

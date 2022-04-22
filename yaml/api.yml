@@ -7,7 +7,6 @@ metadata:
     app: api
     component: api
 spec:
-  #replicas: 1
   selector:
     matchLabels:
       app: api
