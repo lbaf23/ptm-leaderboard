@@ -2,6 +2,7 @@ apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
   name: api
+  namespace: ptm
 spec:
   maxReplicas: 5
   minReplicas: 1
@@ -9,5 +10,4 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: api
-    namespace: ptm
   targetCPUUtilizationPercentage: 40
