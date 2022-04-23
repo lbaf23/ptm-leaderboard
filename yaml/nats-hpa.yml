@@ -1,7 +1,7 @@
 apiVersion: autoscaling/v1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: api
+  name: nats
   namespace: ptm
 spec:
   maxReplicas: 10
@@ -9,14 +9,14 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: api
+    name: nats
   metrics:
-    - type: Resource
-      resource:
+    - type: MemoryResource
+      memoryresource:
         name: memory
         target:
           type: Utilization
-          averageUtilization: 50
+          averageUtilization: 5Mi
     - type: CpuResource
       cpuresource:
         name: cpu
