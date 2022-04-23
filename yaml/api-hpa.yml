@@ -11,4 +11,4 @@ spec:
     kind: Deployment
     name: api
   targetCPUUtilizationPercentage: 50
-  targetMemoryUtilizationPercentage: 50
+  targetMemoryAverageValue: 5Mi
