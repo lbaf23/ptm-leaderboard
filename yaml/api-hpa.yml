@@ -1,4 +1,4 @@
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: api
@@ -10,5 +10,12 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: api
-  targetCPUUtilizationPercentage: 50
-  targetMemoryAverageValue: 5Mi
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 50
+  - type: Resource
+    resource:
+      name: memory
+      targetAverageValue: 5Mi
