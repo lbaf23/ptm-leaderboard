@@ -24,20 +24,6 @@ func CorsMiddleware() gin.HandlerFunc {
 
 		c.Next()
 	}
-	/*return func(c *gin.Context) {
-		method := c.Request.Method
-		origin := c.Request.Header.Get("Origin")
-		if origin != "" {
-			c.Writer.Header().Set("Access-Control-Allow-Origin", origin)
-			c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-			c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-			c.Writer.Header().Set("Access-Control-Allow-Headers", "Accept, Authorization, Content-Type, Content-Length, X-CSRF-Token, Token, session, Origin, Host, Connection, Accept-Encoding, Accept-Language, X-Requested-With")
-		}
-		if method == "OPTIONS" {
-			c.JSON(http.StatusOK, "ok")
-		}
-		c.Next()
-	}*/
 }
 
 func AuthMiddleware() gin.HandlerFunc {

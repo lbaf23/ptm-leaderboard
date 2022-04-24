@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Button, Card, Divider, Input, message, Space, Upload, Progress, Select, Tabs, Col, Row, Tag} from "antd";
 import {UploadOutlined} from "@ant-design/icons"
 import {useParams} from "react-router-dom";
+import OSS from 'ali-oss'
 
 import secret from "../../utils/Secret";
 
@@ -11,11 +12,14 @@ import FileBackend from "../../../backend/FileBackend";
 import hgMarkdown from '../../../assets/submit/hg.md'
 import fileMarkdown from '../../../assets/submit/file.md'
 import Tips from "../component/Tips";
+import fileBackend from "../../../backend/FileBackend";
 
 const { TabPane } = Tabs;
 
 const { Option } = Select;
 
+const REACT_APP_OSS = process.env.REACT_APP_OSS
+const REACT_APP_OSS_REGION = process.env.REACT_APP_OSS_REGION
 
 const modelTypes = [
   "bert",
@@ -155,15 +159,41 @@ function Submit(obj) {
       setLoading(false)
       return
     }
-    uploadChunks(file)
+    const path = `/ptm-leaderboard/${obj.account.name}/${params.id}`
+    const name = file.name
+    if (REACT_APP_OSS === "on") {
+      uploadOSS(file, path, name)
+    } else {
+      uploadChunks(file, path, name)
+    }
   }
 
-  const uploadChunks = async (file) => {
+  const uploadOSS = (file, path, name) => {
+    fileBackend.getSTS()
+      .then(res=>{
+        if (res.data.code === 200) {
+          const store = new OSS({
+            accessKeyId: res.data.accessKeyId,
+            accessKeySecret: res.data.accessKeySecret,
+            stsToken: res.data.securityToken,
+            region: REACT_APP_OSS_REGION,
+            bucket: res.data.bucket,
+          })
+          store.put(`${path}/${name}`, file)
+            .then(res=>{
+              setPercent(100)
+              const url = res.res.requestUrls[0];
+              submit(url)
+            })
+            .catch(e=>{console.log(e)})
+        }
+      })
+  }
+
+  const uploadChunks = async (file, path, name) => {
     // 1 MB
     const chunkSize = 1024 * 1024 * 1
     const chunks = getFileChunks(file, chunkSize)
-    const path = `/ptm-leaderboard/${obj.account.name}/${params.id}`
-    const name = file.name
     const chunkLength = chunks.length
 
     for (let i=0; i<chunkLength; i++) {

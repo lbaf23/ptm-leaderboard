@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"github.com/casdoor/casdoor-go-sdk/auth"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -21,5 +22,25 @@ func CorsMiddleware() gin.HandlerFunc {
 		c.Request.Header.Del("Origin")
 
 		c.Next()
+	}
+}
+
+func AuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		method := c.Request.Method
+		if method == "OPTIONS" {
+			c.JSON(http.StatusOK, "ok")
+			c.Next()
+		}
+
+		token := c.Query("token")
+		claims, err := auth.ParseJwtToken(token)
+		if err != nil {
+			c.Abort()
+			c.JSON(http.StatusOK, gin.H{"code": 403, "message": "please login first"})
+		} else {
+			c.Set("userId", claims.Id)
+			c.Next()
+		}
 	}
 }

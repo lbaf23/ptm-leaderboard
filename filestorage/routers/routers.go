@@ -13,4 +13,10 @@ func Init(r *gin.Engine) {
 		fileGroup.GET("/", controllers.GetFile)
 		fileGroup.DELETE("/", controllers.DeleteFile)
 	}
+
+	ossGroup := r.Group("/oss")
+	ossGroup.Use(AuthMiddleware())
+	{
+		ossGroup.GET("/sts/", controllers.GetSTS)
+	}
 }

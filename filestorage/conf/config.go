@@ -12,6 +12,23 @@ type config struct {
 	RunMode     string
 	HttpPort    string
 	LocalServer string
+
+	CasdoorEndpoint     string
+	CasdoorClientId     string
+	CasdoorClientSecret string
+	CasdoorOrganization string
+	ApplicationName     string
+
+	OSS     string
+	OSSHost string
+
+	Region          string
+	AccessKeyId     string
+	AccessKeySecret string
+	RoleArn         string
+	RoleSessionName string
+
+	Bucket string
 }
 
 var Config = &config{}

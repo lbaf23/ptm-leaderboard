@@ -10,6 +10,15 @@ const FileBackend = {
       withCredentials: true
     })
   },
+  getSTS() {
+    return fileRequest({
+      url: '/oss/sts/',
+      method: 'get',
+      params: {
+        token: localStorage.getItem("token")
+      }
+    })
+  }
 }
 
 export default FileBackend

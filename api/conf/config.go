@@ -19,8 +19,6 @@ type config struct {
 	SSLMode    string
 	TimeZone   string
 
-	AllowOrigin string
-
 	CasdoorEndpoint     string
 	CasdoorClientId     string
 	CasdoorClientSecret string

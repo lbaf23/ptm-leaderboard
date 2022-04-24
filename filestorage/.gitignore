@@ -1,8 +1,10 @@
-/conf/app.release.ini
-/conf/app.debug.ini
+conf/app.release.ini
+conf/app.debug.ini
 
 .idea
 .vscode
 
 
 files
+
+controllers/token_jwt_key.pem
