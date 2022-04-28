@@ -19,7 +19,7 @@ export const casdoorRequest = axios.create({
 
 export const fileRequest = axios.create({
   baseURL: REACT_APP_FILE_URL,
-  timeout: 10000,
+  timeout: 100000,
   withCredentials: true
 })
 
