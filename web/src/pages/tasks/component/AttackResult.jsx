@@ -21,10 +21,16 @@ function AttackResult(props) {
 
   const [md, setMd] = useState('')
   const [option, setOption] = useState({})
+
   useEffect(()=>{
     initMd()
-    initChart()
   }, [])
+
+  useEffect(()=>{
+    if (props.showD) {
+      initChart()
+    }
+  }, [props.showD])
 
   const initMd = () => {
     fetch(taskTypes[params.id])

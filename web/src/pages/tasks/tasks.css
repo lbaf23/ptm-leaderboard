@@ -30,6 +30,8 @@
     color: gray;
     height: 50px;
 
+    background-color: #e3e3e3;
+
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;

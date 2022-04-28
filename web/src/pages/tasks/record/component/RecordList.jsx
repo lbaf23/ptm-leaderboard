@@ -247,7 +247,7 @@ function RecordList(props) {
             {item.status === 'succeed' ?
               <>
                 <Divider>Attack Result</Divider>
-                <AttackResult item={item}  />
+                <AttackResult item={item} showD={showDrawer} />
               </> : null
             }
 

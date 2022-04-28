@@ -5,6 +5,9 @@ import {Divider, Drawer, Pagination, Table, Col, Row} from "antd";
 import RankBackend from "../../../../backend/RankBackend";
 import AttackResult from "../../component/AttackResult";
 
+import rank1 from "../../../../assets/rank/rank1.svg"
+import rank2 from "../../../../assets/rank/rank2.svg"
+import rank3 from "../../../../assets/rank/rank3.svg"
 
 function RankList(props) {
   const params = useParams()
@@ -62,7 +65,24 @@ function RankList(props) {
       title: 'Rank',
       key: 'rank',
       render: (text, record, index) => {
-        return `${(page-1) * pageSize + index + 1}`
+        return (
+          <>
+            {((page-1) * pageSize + index + 1) === 1 ?
+              <img src={rank1} alt="1" /> : null
+            }
+            {((page-1) * pageSize + index + 1) === 2 ?
+              <img src={rank2} alt="2" /> : null
+            }
+            {((page-1) * pageSize + index + 1) === 3 ?
+              <img src={rank3} alt="3" /> : null
+            }
+            {((page-1) * pageSize + index + 1) !== 1 &&
+            ((page-1) * pageSize + index + 1) !== 2 &&
+            ((page-1) * pageSize + index + 1) !== 3 ?
+              <div style={{fontWeight: '500'}}>{`${(page-1) * pageSize + index + 1}`}</div> : null
+            }
+          </>
+        )
       }
     },
     {
@@ -121,7 +141,7 @@ function RankList(props) {
             </Col>
           </Row>
           <Divider>Attack Result</Divider>
-          <AttackResult item={item} />
+          <AttackResult item={item} showD={showD} />
         </div>
       </Drawer>
     </>
