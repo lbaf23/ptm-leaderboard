@@ -1,11 +1,8 @@
 package conf
 
 import (
-	"io/ioutil"
-	"os"
-	"strings"
-
 	"github.com/go-ini/ini"
+	"os"
 )
 
 type config struct {
@@ -36,18 +33,13 @@ func Init() {
 		if err != nil {
 			loadConfigFile("conf/app.ini")
 		}
+		loadK8SSecret()
 	} else {
 		err := loadConfigFile("conf/app.debug.ini")
 		if err != nil {
 			loadConfigFile("conf/app.ini")
 		}
 	}
-}
-
-func loadSecret(secret string) string {
-	secretfile, _ := ioutil.ReadFile("/var/openfaas/secrets/" + secret)
-	password := strings.Split(string(secretfile), "\n")[0]
-	return password
 }
 
 func loadConfigFile(f string) error {
@@ -62,4 +54,20 @@ func loadConfigFile(f string) error {
 		return err
 	}
 	return nil
+}
+
+func loadK8SSecret() {
+	Config.DBHost = os.Getenv("DBHost")
+	Config.DBUser = os.Getenv("DBUser")
+	Config.DBPassword = os.Getenv("DBPassword")
+	Config.DBPort = os.Getenv("DBPort")
+	Config.DBName = os.Getenv("DBName")
+
+	Config.CasdoorEndpoint = os.Getenv("CasdoorEndpoint")
+	Config.CasdoorClientId = os.Getenv("CasdoorClientId")
+	Config.CasdoorClientSecret = os.Getenv("CasdoorClientSecret")
+	Config.CasdoorOrganization = os.Getenv("CasdoorOrganization")
+	Config.ApplicationName = os.Getenv("ApplicationName")
+
+	Config.NATSURL = os.Getenv("NATSURL")
 }

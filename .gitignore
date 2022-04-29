@@ -10,3 +10,6 @@ casdoor
 casdoor.yml
 template
 build
+
+secret-prod.yaml
+
