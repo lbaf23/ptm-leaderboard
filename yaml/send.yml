@@ -17,12 +17,21 @@ spec:
         app: send
     spec:
       containers:
-      - name: send
-        image: lbaf23/ptm-leaderboard-send:1.0.0
-        imagePullPolicy: Always
-        resources:
-          limits:
-            memory: "100Mi"
-            cpu: "100m"
-        ports:
-        - containerPort: 12007
+        - name: send
+          image: lbaf23/ptm-leaderboard-send:1.0.0
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: "100Mi"
+              cpu: "100m"
+          ports:
+            - containerPort: 12007
+          env:
+            - name: RunMode
+              value: release
+              
+            - name: NATSURL
+              valueFrom:
+                secretKeyRef:
+                  name: ptm-secret
+                  key: natsurl

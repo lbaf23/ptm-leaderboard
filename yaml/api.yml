@@ -28,6 +28,7 @@ spec:
           env:
             - name: RunMode
               value: release
+              
             - name: DBHost
               valueFrom:
                 secretKeyRef:
@@ -53,6 +54,7 @@ spec:
                 secretKeyRef:
                   name: ptm-secret
                   key: dbname
+
             - name: CasdoorEndpoint
               valueFrom:
                 secretKeyRef:

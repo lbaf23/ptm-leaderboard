@@ -29,6 +29,72 @@ spec:
           volumeMounts:
             - name: files
               mountPath: /files
+          env:
+            - name: RunMode
+              value: release
+            
+            - name: LocalServer
+              valueFrom:
+                secretKeyRef:
+                  name: ptm-secret
+                  key: localserver
+            
+            - name: Region
+              valueFrom:
+                secretKeyRef:
+                  name: ptm-secret
+                  key: region
+            - name: AccessKeyId
+              valueFrom:
+                secretKeyRef:
+                  name: ptm-secret
+                  key: accesskeyid
+            - name: AccessKeySecret
+              valueFrom:
+                secretKeyRef:
+                  name: ptm-secret
+                  key: accesskeysecret
+            - name: RoleArn
+              valueFrom:
+                secretKeyRef:
+                  name: ptm-secret
+                  key: rolearn
+            - name: RoleSessionName
+              valueFrom:
+                secretKeyRef:
+                  name: ptm-secret
+                  key: rolesessionname
+            - name: Bucket
+              valueFrom:
+                secretKeyRef:
+                  name: ptm-secret
+                  key: bucket
+
+            - name: CasdoorEndpoint
+              valueFrom:
+                secretKeyRef:
+                  name: ptm-secret
+                  key: casdoorendpoint
+            - name: CasdoorClientId
+              valueFrom:
+                secretKeyRef:
+                  name: ptm-secret
+                  key: casdoorclientid
+            - name: CasdoorClientSecret
+              valueFrom:
+                secretKeyRef:
+                  name: ptm-secret
+                  key: casdoorclientsecret
+            - name: CasdoorOrganization
+              valueFrom:
+                secretKeyRef:
+                  name: ptm-secret
+                  key: casdoororganization
+            - name: ApplicationName
+              valueFrom:
+                secretKeyRef:
+                  name: ptm-secret
+                  key: applicationname
       volumes:
         - name: files
           hostPath:
