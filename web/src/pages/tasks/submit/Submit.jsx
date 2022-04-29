@@ -21,9 +21,10 @@ const { Option } = Select;
 const REACT_APP_OSS = process.env.REACT_APP_OSS
 const REACT_APP_OSS_REGION = process.env.REACT_APP_OSS_REGION
 
-const modelTypes = [
+const modelBasedOnTypes = [
   "bert",
   "roberta",
+  "distilbert",
 ]
 
 
@@ -289,7 +290,7 @@ function Submit(obj) {
             </Col>
             <Col>
               <Select defaultValue="bert" style={{ width: 120 }} onChange={chooseModelType}>
-                {modelTypes.map((item, index)=>(
+                {modelBasedOnTypes.map((item, index)=>(
                   <Option key={index} value={item}>{item}</Option>
                 ))}
               </Select>

@@ -29,6 +29,8 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, modelBase
 
     if modelBasedOn == 'roberta':
         emb = model.roberta.embeddings.word_embeddings
+    elif modelBasedOn == 'distilbert':
+        emb = model.distilbert.embeddings.word_embeddings
     else:
         emb = model.bert.embeddings.word_embeddings
     victim = oa.classifiers.TransformersClassifier(model, tokenizer, emb)
