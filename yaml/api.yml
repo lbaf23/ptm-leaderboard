@@ -26,6 +26,8 @@ spec:
           ports:
             - containerPort: 12002
           env:
+            - name: RunMode
+              value: release
             - name: DBHost
               valueFrom:
                 secretKeyRef:

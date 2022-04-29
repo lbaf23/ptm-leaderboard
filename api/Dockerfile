@@ -18,8 +18,6 @@ WORKDIR /home/app
 
 COPY --from=build /home/app .
 
-ENV RunMode=release
-
 EXPOSE 12002
 
 CMD ["./app"]
