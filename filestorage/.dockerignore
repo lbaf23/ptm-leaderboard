@@ -1,6 +1,8 @@
-/main
+main
 
 .idea
 .vscode
 
 files
+
+conf/app.debug.ini
