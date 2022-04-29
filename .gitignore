@@ -12,4 +12,4 @@ template
 build
 
 secret-prod.yaml
-
+base64prod.sh
