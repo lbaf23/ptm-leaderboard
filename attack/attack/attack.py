@@ -11,6 +11,7 @@ import os
 import time
 import requests
 import datetime
+import logging
 
 
 def unzip_file(name):
@@ -49,15 +50,15 @@ def start_attack(config, client, record_id, task_id, user_id, file_url, modelBas
 
     try:
         if mode == 'hg':
-            print("[attack] use Hugging Face Model")
+            logging.info("[attack] use Hugging Face Model")
             model_path = file_url
             # rsa
             if hgToken != "":
                 hgToken = utils.decode(hgToken)
         else:
-            print("[attack] download model file")
+            logging.info("[attack] download model file")
             model_path = unzip_file(get_file(file_url))
-            print("[attack] start attack " + task_id + ", based on " + modelBasedOn)
+            logging.info(f"[attack] start attack {task_id} based on {modelBasedOn}")
 
         status = 'succeed'
         message = ''
@@ -114,7 +115,7 @@ def start_attack(config, client, record_id, task_id, user_id, file_url, modelBas
         status = 'error'
         message = str(e)
     
-    print("[attack] attack all finished")
+    logging.info("[attack] attack all finished")
 
     result = {
         "score": score,
@@ -124,53 +125,3 @@ def start_attack(config, client, record_id, task_id, user_id, file_url, modelBas
     }
 
     return result, started_at
-
-
-def fake_attack(file_url):
-    started_at = datetime.datetime.now()
-    print("[attack] download model file")
-    model_path = unzip_file(get_file(file_url))
-    print("[attack] start attack")
-
-    time.sleep(10)
-
-    return {
-        "score": 25,
-        "result": [
-            {
-                "attacker": "PWWSAttacker",
-                "result": {
-                    "Total Attacked Instances": 20,
-                    "Successful Instances": 14,
-                    "Attack Success Rate": 0.7,
-                    "Avg. Running Time": 0.022733259201049804,
-                    "Total Query Exceeded": 0,
-                    "Avg. Victim Model Queries": 178.2
-                }
-            },
-            {
-                "attacker": "TextBuggerAttacker",
-                "result": {
-                    "Total Attacked Instances": 20,
-                    "Successful Instances": 15,
-                    "Attack Success Rate": 0.75,
-                    "Avg. Running Time": 0.0022499561309814453,
-                    "Total Query Exceeded": 0,
-                    "Avg. Victim Model Queries": 45.8
-                },
-            },
-            {
-                "attacker": "SCPNAttacker",
-                "result": {
-                    "Total Attacked Instances": 20,
-                    "Successful Instances": 16,
-                    "Attack Success Rate": 0.8,
-                    "Avg. Running Time": 0.0022499561309814453,
-                    "Total Query Exceeded": 0,
-                    "Avg. Victim Model Queries": 45.8
-                }
-            }
-        ],
-        "status": "succeed",
-        "message": "msg",
-    }, started_at

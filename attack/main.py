@@ -3,6 +3,7 @@ import json
 import datetime
 from attack import start_attack, fake_attack
 from conf import init_config
+import logging
 
 
 class DateEncoder(json.JSONEncoder):
@@ -18,7 +19,7 @@ config = init_config()
 
 with NATSClient(config.get("config", "natsURL")) as client:
     client.connect()
-    print("[attack] nats connected")
+    logging.info("[attack] nats connected")
 
     def handle(msg):
         message = json.loads(msg.payload)
@@ -35,27 +36,24 @@ with NATSClient(config.get("config", "natsURL")) as client:
         except BrokenPipeError:
             while True:
                 try:
-                    print("[nats] reconnect")
+                    logging.error("[nats] reconnect")
                     client.reconnect()
                     client.publish(subject="loadAttack", payload=res)
                     break
                 except:
                     pass
         
-        if config.get("config", "fake") == 'on':
-            attack_result, started_at = fake_attack(message.get('fileUrl'))
-        else:
-            attack_result, started_at = start_attack(
-                config,
-                client,
-                message.get('recordId'),
-                message.get('taskId'),
-                message.get('userId'),
-                message.get('fileUrl'),
-                message.get('modelBasedOn'),
-                message.get('mode'),
-                message.get('hgToken'),
-            )
+        attack_result, started_at = start_attack(
+            config,
+            client,
+            message.get('recordId'),
+            message.get('taskId'),
+            message.get('userId'),
+            message.get('fileUrl'),
+            message.get('modelBasedOn'),
+            message.get('mode'),
+            message.get('hgToken'),
+        )
 
         finished_at = datetime.datetime.now()
         running_time = (finished_at - started_at).seconds
@@ -82,7 +80,7 @@ with NATSClient(config.get("config", "natsURL")) as client:
         except BrokenPipeError:
             while True:
                 try:
-                    print("[nats] reconnect")
+                    logging.error("[nats] reconnect")
                     client.reconnect()
                     client.publish(subject="finishAttack", payload=res)
                     break

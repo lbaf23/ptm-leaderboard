@@ -1,1 +1,1 @@
-from .attack import start_attack, fake_attack
+from .attack import start_attack

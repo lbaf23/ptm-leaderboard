@@ -1,3 +1,5 @@
+import logging
+
 import OpenAttack as oa
 import datasets
 import transformers
@@ -37,7 +39,7 @@ def csa_attack(config, client, record_id, task_id, user_id, model_path, modelBas
         emb = model.bert.embeddings.word_embeddings
     victim = oa.classifiers.TransformersClassifier(model, tokenizer, emb)
 
-    print("[attack] model loaded")
+    logging.info("[attack] model loaded")
     started_at = datetime.datetime.now()
     data = {
         "recordId": record_id,
@@ -53,7 +55,7 @@ def csa_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     except BrokenPipeError:
         while True:
             try:
-                print("[nats] reconnect")
+                logging.error("[nats] reconnect")
                 client.reconnect()
                 client.publish(subject="startAttack", payload=res)
                 break
@@ -64,11 +66,11 @@ def csa_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     success = 0
     total = 0
 
-    print("[attack] PWWSAttacker Start")
+    logging.info("[attack] PWWSAttacker Start")
     attacker = oa.attackers.PWWSAttacker(lang="chinese")
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    print("[attack] PWWSAttacker Finished")
+    logging.info("[attack] PWWSAttacker Finished")
     result.append({
         "attacker": "PWWSAttacker",
         "result": res
@@ -76,11 +78,11 @@ def csa_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     success = success + res.get("Successful Instances")
     total = total + res.get("Total Attacked Instances")
 
-    print("[attack] HotFlipAttacker Start")
+    logging.info("[attack] HotFlipAttacker Start")
     attacker = oa.attackers.HotFlipAttacker(lang="chinese")
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    print("[attack] HotFlipAttacker Finished")
+    logging.info("[attack] HotFlipAttacker Finished")
     result.append({
         "attacker": "HotFlipAttacker",
         "result": res
@@ -88,11 +90,11 @@ def csa_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     success = success + res.get("Successful Instances")
     total = total + res.get("Total Attacked Instances")
 
-    print("[attack] PSOAttacker Start")
+    logging.info("[attack] PSOAttacker Start")
     attacker = oa.attackers.PSOAttacker(lang="chinese")
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    print("[attack] PSOAttacker Finished")
+    logging.info("[attack] PSOAttacker Finished")
     result.append({
         "attacker": "PSOAttacker",
         "result": res
@@ -100,11 +102,11 @@ def csa_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     success = success + res.get("Successful Instances")
     total = total + res.get("Total Attacked Instances")
 
-    print("[attack] UATAttacker Start")
+    logging.info("[attack] UATAttacker Start")
     attacker = oa.attackers.UATAttacker(lang="chinese")
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    print("[attack] UATAttacker Finished")
+    logging.info("[attack] UATAttacker Finished")
     result.append({
         "attacker": "UATAttacker",
         "result": res

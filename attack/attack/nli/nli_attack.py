@@ -1,3 +1,5 @@
+import logging
+
 import OpenAttack as oa
 import datasets
 import transformers
@@ -35,7 +37,7 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
         emb = model.bert.embeddings.word_embeddings
     victim = oa.classifiers.TransformersClassifier(model, tokenizer, emb)
 
-    print("[attack] model loaded")
+    logging.info("[attack] model loaded")
     started_at = datetime.datetime.now()
     data = {
         "recordId": record_id,
@@ -51,7 +53,7 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     except BrokenPipeError:
         while True:
             try:
-                print("[nats] reconnect")
+                logging.error("[nats] reconnect")
                 client.reconnect()
                 client.publish(subject="startAttack", payload=res)
                 break
@@ -62,11 +64,11 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     success = 0
     total = 0
 
-    print("[attack] PWWSAttacker Start")
+    logging.info("[attack] PWWSAttacker Start")
     attacker = oa.attackers.PWWSAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    print("[attack] PWWSAttacker Finished")
+    logging.info("[attack] PWWSAttacker Finished")
 
     result.append({
         "attacker": "PWWSAttacker",
@@ -75,11 +77,11 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     success = success + res.get("Successful Instances")
     total = total + res.get("Total Attacked Instances")
 
-    print("[attack] DeepWordBugAttacker Start")
+    logging.info("[attack] DeepWordBugAttacker Start")
     attacker = oa.attackers.DeepWordBugAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    print("[attack] DeepWordBugAttacker Finished")
+    logging.info("[attack] DeepWordBugAttacker Finished")
 
     result.append({
         "attacker": "DeepWordBugAttacker",
@@ -88,11 +90,11 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     success = success + res.get("Successful Instances")
     total = total + res.get("Total Attacked Instances")
 
-    print("[attack] GANAttacker Start")
+    logging.info("[attack] GANAttacker Start")
     attacker = oa.attackers.GANAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    print("[attack] GANAttacker Finished")
+    logging.info("[attack] GANAttacker Finished")
 
     result.append({
         "attacker": "GANAttacker",
@@ -101,11 +103,11 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     success = success + res.get("Successful Instances")
     total = total + res.get("Total Attacked Instances")
 
-    print("[attack] PSOAttacker Start")
+    logging.info("[attack] PSOAttacker Start")
     attacker = oa.attackers.PSOAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    print("[attack] PSOAttacker Finished")
+    logging.info("[attack] PSOAttacker Finished")
     result.append({
         "attacker": "PSOAttacker",
         "result": res
@@ -113,11 +115,11 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     success = success + res.get("Successful Instances")
     total = total + res.get("Total Attacked Instances")
 
-    print("[attack] HotFlipAttacker Start")
+    logging.info("[attack] HotFlipAttacker Start")
     attacker = oa.attackers.HotFlipAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    print("[attack] HotFlipAttacker Finished")
+    logging.info("[attack] HotFlipAttacker Finished")
     result.append({
         "attacker": "HotFlipAttacker",
         "result": res

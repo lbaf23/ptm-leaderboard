@@ -1,8 +1,17 @@
 import os
 import configparser
+import logging
 
 
 def init_config():
+    logging.basicConfig(
+        level=logging.DEBUG,
+        filename="attack.log",
+        filemode="w",
+        format="%(asctime)s - %(name)s - %(levelname)-9s - %(filename)-8s : %(lineno)s line - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S"
+    )
+
     config = configparser.ConfigParser()
     run_mode = os.getenv("run_mode")
     if run_mode == "release":
