@@ -31,14 +31,14 @@ spec:
               port: 12002
             initialDelaySeconds: 10
             timeoutSeconds: 10
-            periodSeconds: 20
+            periodSeconds: 30
           readinessProbe:
             httpGet:
               path: /tasklist/english/
               port: 12002
             initialDelaySeconds: 10
             timeoutSeconds: 10
-            periodSeconds: 20
+            periodSeconds: 30
           
 
           env:
