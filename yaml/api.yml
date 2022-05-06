@@ -25,6 +25,22 @@ spec:
               cpu: "10m"
           ports:
             - containerPort: 12002
+          livenessProbe:
+            httpGet:
+              path: /tasklist/english/
+              port: 12002
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /tasklist/english/
+              port: 12002
+            initialDelaySeconds: 10
+            timeoutSeconds: 10
+            periodSeconds: 20
+          
+
           env:
             - name: RunMode
               value: release
