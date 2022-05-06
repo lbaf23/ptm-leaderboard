@@ -1,1 +1,1 @@
-docker push lbaf23/ptm-leaderboard-api:1.0.1
+docker push lbaf23/ptm-leaderboard-api:1.0.0
