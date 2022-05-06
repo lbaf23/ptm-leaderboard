@@ -38,9 +38,8 @@ spec:
               port: 12002
             initialDelaySeconds: 10
             timeoutSeconds: 10
-            periodSeconds: 30
+            periodSeconds: 10
           
-
           env:
             - name: RunMode
               value: release
