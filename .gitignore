@@ -13,5 +13,5 @@ casdoor.yml
 template
 build
 
-secret-prod.yaml
-base64prod.sh
+secret-*.yaml
+base64-*.sh
