@@ -25,4 +25,35 @@ spec:
             memory: "100Mi"
             cpu: "100m"
         ports:
-        - containerPort: 12001
+          - containerPort: 12001
+        env:
+          - name: REACT_APP_BASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: ptm-secret
+                key: baseurl
+          - name: REACT_APP_FILE_URL
+            valueFrom:
+              secretKeyRef:
+                name: ptm-secret
+                key: fileurl
+          - name: REACT_APP_CASDOOR_ENDPOINT
+            valueFrom:
+              secretKeyRef:
+                name: ptm-secret
+                key: casdoorendpoint
+          - name: REACT_APP_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: ptm-secret
+                key: casdoorclientid
+          - name: REACT_APP_APP_NAME
+            valueFrom:
+              secretKeyRef:
+                name: ptm-secret
+                key: applicationname
+          - name: REACT_APP_CASDOOR_ORGANIZATION
+            valueFrom:
+              secretKeyRef:
+                name: ptm-secret
+                key: casdoororganization
