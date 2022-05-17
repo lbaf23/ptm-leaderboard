@@ -19,7 +19,7 @@ spec:
       containers:
       - name: attack
         image: lbaf23/ptm-leaderboard-attack:1.0.0
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         resources:
           limits:
             memory: "1024Mi"
