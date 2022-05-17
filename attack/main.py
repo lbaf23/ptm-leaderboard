@@ -1,7 +1,7 @@
 from pynats import NATSClient
 import json
 import datetime
-from attack import start_attack, fake_attack
+from attack import start_attack
 from conf import init_config
 import logging
 
