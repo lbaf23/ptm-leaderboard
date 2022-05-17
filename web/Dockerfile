@@ -15,7 +15,7 @@ RUN yarn add react-scripts
 RUN yarn build
 
 
-FROM nginx
+FROM nginx:1.21
 
 COPY --from=build /web/build /usr/share/nginx/html
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
