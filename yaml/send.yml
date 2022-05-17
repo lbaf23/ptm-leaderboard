@@ -19,7 +19,7 @@ spec:
       containers:
         - name: send
           image: lbaf23/ptm-leaderboard-send:1.0.0
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           resources:
             limits:
               memory: "100Mi"

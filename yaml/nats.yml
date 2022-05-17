@@ -19,7 +19,7 @@ spec:
       containers:
       - name: nats
         image: lbaf23/ptm-leaderboard-nats:1.0.0
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         resources:
           limits:
             memory: "100Mi"
