@@ -4,6 +4,7 @@ import (
 	"api/conf"
 	"api/models"
 	"encoding/json"
+	"fmt"
 	"github.com/nats-io/nats.go"
 	"time"
 )
@@ -13,6 +14,7 @@ var nc *nats.Conn
 func Init() {
 	var err error
 	nc, err = nats.Connect(conf.Config.NATSURL)
+	fmt.Println(conf.Config.NATSURL)
 	if err != nil {
 		panic(err.Error())
 	}

@@ -27,6 +27,15 @@ spec:
         ports:
           - containerPort: 12001
         env:
+          - name: PUBLIC_URL
+            value: "/"
+          - name: REACT_APP_OSS
+            value: "off"
+          - name: REACT_APP_OSS_REGION
+            valueFrom:
+              secretKeyRef:
+                name: ptm-secret
+                key: region
           - name: REACT_APP_BASE_URL
             valueFrom:
               secretKeyRef:

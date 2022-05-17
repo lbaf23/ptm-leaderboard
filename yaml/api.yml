@@ -80,7 +80,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: ptm-secret
-                  key: casdoorendpoint
+                  key: casdoorendpoint-local
             - name: CasdoorClientId
               valueFrom:
                 secretKeyRef:
