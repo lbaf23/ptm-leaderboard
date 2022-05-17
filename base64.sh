@@ -37,7 +37,7 @@ echo -n ptm-leaderboard | base64
 echo ===============nats===============
 
 echo natsurl
-echo -n nats://xxx@xxx.xxx.xxx.xxx:30005 | base64
+echo -n nats://xxx@nats.ptm.svc.cluster.local:4222 | base64
 
 
 echo ===============file===============
