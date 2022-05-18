@@ -36,7 +36,7 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, modelBase
         emb = model.bert.embeddings.word_embeddings
     victim = oa.classifiers.TransformersClassifier(model, tokenizer, emb)
 
-    logging.info("[attack] model loaded")
+    print("[attack] model loaded")
     started_at = datetime.datetime.now()
     data = {
         "recordId": record_id,
@@ -52,7 +52,7 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, modelBase
     except BrokenPipeError:
         while True:
             try:
-                logging.error("[nats] reconnect")
+                print("[nats] reconnect")
                 client.reconnect()
                 client.publish(subject="startAttack", payload=res)
                 break
@@ -63,11 +63,11 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, modelBase
     success = 0
     total = 0
 
-    logging.info("[attack] PWWSAttacker Start")
+    print("[attack] PWWSAttacker Start")
     attacker = oa.attackers.PWWSAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    logging.info("[attack] PWWSAttacker Finished")
+    print("[attack] PWWSAttacker Finished")
 
     result.append({
         "attacker": "PWWSAttacker",
@@ -76,11 +76,11 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, modelBase
     success = success + res.get("Successful Instances")
     total = total + res.get("Total Attacked Instances")
 
-    logging.info("[attack] DeepWordBugAttacker Start")
+    print("[attack] DeepWordBugAttacker Start")
     attacker = oa.attackers.DeepWordBugAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    logging.info("[attack] DeepWordBugAttacker Finished")
+    print("[attack] DeepWordBugAttacker Finished")
 
     result.append({
         "attacker": "DeepWordBugAttacker",
@@ -89,11 +89,11 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, modelBase
     success = success + res.get("Successful Instances")
     total = total + res.get("Total Attacked Instances")
 
-    logging.info("[attack] GANAttacker Start")
+    print("[attack] GANAttacker Start")
     attacker = oa.attackers.GANAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    logging.info("[attack] GANAttacker Finished")
+    print("[attack] GANAttacker Finished")
 
     result.append({
         "attacker": "GANAttacker",
@@ -102,11 +102,11 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, modelBase
     success = success + res.get("Successful Instances")
     total = total + res.get("Total Attacked Instances")
 
-    logging.info("[attack] PSOAttacker Start")
+    print("[attack] PSOAttacker Start")
     attacker = oa.attackers.PSOAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    logging.info("[attack] PSOAttacker Finished")
+    print("[attack] PSOAttacker Finished")
     result.append({
         "attacker": "PSOAttacker",
         "result": res
@@ -114,11 +114,11 @@ def sa_attack(config, client, record_id, task_id, user_id, model_path, modelBase
     success = success + res.get("Successful Instances")
     total = total + res.get("Total Attacked Instances")
 
-    logging.info("[attack] HotFlipAttacker Start")
+    print("[attack] HotFlipAttacker Start")
     attacker = oa.attackers.HotFlipAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
-    logging.info("[attack] HotFlipAttacker Finished")
+    print("[attack] HotFlipAttacker Finished")
     result.append({
         "attacker": "HotFlipAttacker",
         "result": res

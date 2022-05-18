@@ -8,7 +8,6 @@ import utils
 import shutil
 import zipfile
 import os
-import time
 import requests
 import datetime
 import logging
@@ -50,15 +49,15 @@ def start_attack(config, client, record_id, task_id, user_id, file_url, modelBas
 
     try:
         if mode == 'hg':
-            logging.info("[attack] use Hugging Face Model")
+            print("[attack] use Hugging Face Model")
             model_path = file_url
             # rsa
             if hgToken != "":
                 hgToken = utils.decode(hgToken)
         else:
-            logging.info("[attack] download model file")
+            print("[attack] download model file")
             model_path = unzip_file(get_file(file_url))
-            logging.info(f"[attack] start attack {task_id} based on {modelBasedOn}")
+            print(f"[attack] start attack {task_id} based on {modelBasedOn}")
 
         status = 'succeed'
         message = ''
@@ -115,7 +114,7 @@ def start_attack(config, client, record_id, task_id, user_id, file_url, modelBas
         status = 'error'
         message = str(e)
     
-    logging.info("[attack] attack all finished")
+    print("[attack] attack all finished")
 
     result = {
         "score": score,

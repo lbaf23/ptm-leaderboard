@@ -19,7 +19,7 @@ config = init_config()
 
 with NATSClient(config.get("config", "natsURL")) as client:
     client.connect()
-    logging.info("[attack] nats connected")
+    print("[attack] nats connected")
 
     def handle(msg):
         message = json.loads(msg.payload)
@@ -36,7 +36,7 @@ with NATSClient(config.get("config", "natsURL")) as client:
         except BrokenPipeError:
             while True:
                 try:
-                    logging.error("[nats] reconnect")
+                    print("[nats] reconnect")
                     client.reconnect()
                     client.publish(subject="loadAttack", payload=res)
                     break
@@ -80,7 +80,7 @@ with NATSClient(config.get("config", "natsURL")) as client:
         except BrokenPipeError:
             while True:
                 try:
-                    logging.error("[nats] reconnect")
+                    print("[nats] reconnect")
                     client.reconnect()
                     client.publish(subject="finishAttack", payload=res)
                     break
