@@ -3,6 +3,7 @@ import datasets
 import transformers
 import datetime
 import json
+import logging
 
 
 class DateEncoder(json.JSONEncoder):
@@ -36,7 +37,7 @@ def qqp_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     victim = oa.classifiers.TransformersClassifier(model, tokenizer, emb)
 
     logging.info("[attack] model loaded")
-    started_at = datetime.datetime.now()
+    started_at = datetime.datetime.now(datetime.timezone.utc)
     data = {
         "recordId": record_id,
         "startedAt": started_at,

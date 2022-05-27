@@ -55,7 +55,7 @@ with NATSClient(config.get("config", "natsURL")) as client:
             message.get('hgToken'),
         )
 
-        finished_at = datetime.datetime.now()
+        finished_at = datetime.datetime.now(datetime.timezone.utc)
         running_time = (finished_at - started_at).seconds
 
         data = {
