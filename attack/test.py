@@ -10,8 +10,7 @@ def test(model_path, hgToken=''):
     model = transformers.AutoModelForSequenceClassification.from_pretrained(
         model_path,
         num_labels=2,
-        output_hidden_states=False,
-        use_auth_token=hgToken
+        output_hidden_states=False
     )
     
     emb = model.bert.embeddings.word_embeddings
