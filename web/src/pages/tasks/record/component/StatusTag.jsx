@@ -1,5 +1,5 @@
 import {Tag} from "antd";
-import {LoadingOutlined} from "@ant-design/icons"
+import {LoadingOutlined, DownloadOutlined} from "@ant-design/icons"
 
 function StatusTag(obj) {
   return (
@@ -13,7 +13,7 @@ function StatusTag(obj) {
       }
       {
         obj.status === 'loading' ?
-          <span style={{color: 'gray'}}>{obj.status}&nbsp;...</span> : null
+          <span style={{color: 'gray'}}>{obj.status}&nbsp;<DownloadOutlined /></span> : null
       }
       {
         obj.status === 'succeed' ?
