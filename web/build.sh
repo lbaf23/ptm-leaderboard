@@ -1,1 +1,1 @@
-docker build -t lbaf23/ptm-leaderboard-web:1.0.0 .
+docker build -t lbaf23/ptm-leaderboard-web:1.0.1 .
