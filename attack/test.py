@@ -28,5 +28,6 @@ def test(model_path, hgToken=''):
 
 
 if __name__ == "__main__":
-    model_path = 'echarlaix/bert-base-uncased-sst2-acc91.1-d37-hybrid'
+    # model_path = 'echarlaix/bert-base-uncased-sst2-acc91.1-d37-hybrid'
+    model_path = './user_model'
     test(model_path, "")
