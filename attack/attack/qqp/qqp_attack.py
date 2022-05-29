@@ -1,10 +1,10 @@
 import OpenAttack as oa
 import datasets
 from utils import no_ssl_verify
+from attack.loader import load_victim
 from nats import publish
 import datetime
 import json
-from attack import load_victim
 import logging
 
 

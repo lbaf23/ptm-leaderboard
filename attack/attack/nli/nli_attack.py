@@ -1,5 +1,5 @@
 import logging
-from attack import load_victim
+from attack.loader import load_victim
 from utils import no_ssl_verify
 from nats import publish
 import OpenAttack as oa
