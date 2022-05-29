@@ -60,7 +60,7 @@ def test(model_path, hgToken=''):
         output_hidden_states=False
     )
     
-    emb = model.bert.embeddings.word_embeddings
+    emb = model.roberta.embeddings.word_embeddings
     victim = oa.classifiers.TransformersClassifier(model, tokenizer, emb)
 
     print("[attack] model loaded")
