@@ -62,6 +62,7 @@ def start_attack(config, client, record_id, task_id, user_id, file_url, modelBas
         status = 'succeed'
         message = ''
         started_at = datetime.datetime.now(datetime.timezone.utc)
+
         if task_id == 'sa':
             score, result, started_at = sa_attack(
                 config,

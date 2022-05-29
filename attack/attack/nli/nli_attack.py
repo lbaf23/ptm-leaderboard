@@ -1,8 +1,9 @@
 import logging
-
+from attack import load_victim
+from utils import no_ssl_verify
+from queue import publish
 import OpenAttack as oa
 import datasets
-import transformers
 import datetime
 import json
 
@@ -17,25 +18,13 @@ class DateEncoder(json.JSONEncoder):
 
 def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBasedOn='bert', mode='file', hgToken=''):
     dataset = datasets.load_from_disk('datasets/snli', keep_in_memory=False)
-    if mode == 'hg':
-        tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, use_auth_token=hgToken)
-        model = transformers.AutoModelForSequenceClassification.from_pretrained(
-            model_path,
-            num_labels=3,
-            output_hidden_states=False,
-            use_auth_token=hgToken
-        )
-    else:
-        tokenizer = transformers.AutoTokenizer.from_pretrained(model_path)
-        model = transformers.AutoModelForSequenceClassification.from_pretrained(model_path, num_labels=3, output_hidden_states=False)
 
-    if modelBasedOn == 'roberta':
-        emb = model.roberta.embeddings.word_embeddings
-    elif modelBasedOn == 'distilbert':
-        emb = model.distilbert.embeddings.word_embeddings
-    else:
-        emb = model.bert.embeddings.word_embeddings
-    victim = oa.classifiers.TransformersClassifier(model, tokenizer, emb)
+    victim = load_victim(
+        mode=mode,
+        model_path=model_path,
+        hgToken=hgToken,
+        modelBasedOn=modelBasedOn
+    )
 
     logging.info("[attack] model loaded")
     started_at = datetime.datetime.now(datetime.timezone.utc)
@@ -48,24 +37,15 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     }
     res = json.dumps(data, cls=DateEncoder).encode()
 
-    try:
-        client.publish(subject="startAttack", payload=res)
-    except BrokenPipeError:
-        while True:
-            try:
-                logging.error("[nats] reconnect")
-                client.reconnect()
-                client.publish(subject="startAttack", payload=res)
-                break
-            except:
-                pass
+    publish(client, subject="startAttack", payload=res)
 
     result = []
     success = 0
     total = 0
 
     logging.info("[attack] PWWSAttacker Start")
-    attacker = oa.attackers.PWWSAttacker()
+    with no_ssl_verify():
+        attacker = oa.attackers.PWWSAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
     logging.info("[attack] PWWSAttacker Finished")
@@ -78,7 +58,8 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     total = total + res.get("Total Attacked Instances")
 
     logging.info("[attack] DeepWordBugAttacker Start")
-    attacker = oa.attackers.DeepWordBugAttacker()
+    with no_ssl_verify():
+        attacker = oa.attackers.DeepWordBugAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
     logging.info("[attack] DeepWordBugAttacker Finished")
@@ -91,7 +72,8 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     total = total + res.get("Total Attacked Instances")
 
     logging.info("[attack] GANAttacker Start")
-    attacker = oa.attackers.GANAttacker()
+    with no_ssl_verify():
+        attacker = oa.attackers.GANAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
     logging.info("[attack] GANAttacker Finished")
@@ -104,7 +86,8 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     total = total + res.get("Total Attacked Instances")
 
     logging.info("[attack] PSOAttacker Start")
-    attacker = oa.attackers.PSOAttacker()
+    with no_ssl_verify():
+        attacker = oa.attackers.PSOAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
     logging.info("[attack] PSOAttacker Finished")
@@ -116,7 +99,8 @@ def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBas
     total = total + res.get("Total Attacked Instances")
 
     logging.info("[attack] HotFlipAttacker Start")
-    attacker = oa.attackers.HotFlipAttacker()
+    with no_ssl_verify():
+        attacker = oa.attackers.HotFlipAttacker()
     attack_eval = oa.AttackEval(attacker, victim)
     res = attack_eval.eval(dataset, visualize=False, progress_bar=True)
     logging.info("[attack] HotFlipAttacker Finished")
