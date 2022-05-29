@@ -16,12 +16,12 @@ class DateEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, obj)
 
 
-def nli_attack(config, client, record_id, task_id, user_id, model_path, modelBasedOn='bert', mode='file', hgToken=''):
+def nli_attack(config, client, record_id, task_id, user_id, file_url, modelBasedOn='bert', mode='file', hgToken=''):
     dataset = datasets.load_from_disk('datasets/snli', keep_in_memory=False)
 
     victim = load_victim(
         mode=mode,
-        model_path=model_path,
+        file_url=file_url,
         hgToken=hgToken,
         modelBasedOn=modelBasedOn
     )
