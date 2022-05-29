@@ -33,7 +33,8 @@ def sa_attack(
         mode=mode,
         file_url=file_url,
         hgToken=hgToken,
-        modelBasedOn=modelBasedOn
+        modelBasedOn=modelBasedOn,
+        num_labels=2
     )
 
     print("[attack] model loaded")

@@ -23,7 +23,8 @@ def csa_attack(config, client, record_id, task_id, user_id, file_url, modelBased
         mode=mode,
         file_url=file_url,
         hgToken=hgToken,
-        modelBasedOn=modelBasedOn
+        modelBasedOn=modelBasedOn,
+        num_labels=2
     )
 
     logging.info("[attack] model loaded")

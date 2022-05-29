@@ -36,7 +36,7 @@ def get_file(url):
         return url
 
 
-def load_victim(mode, file_url, hgToken, modelBasedOn):
+def load_victim(mode, file_url, hgToken, modelBasedOn, num_labels=2):
     if mode == 'hg':
         print("[attack] use Hugging Face Model")
         model_path = file_url
@@ -47,7 +47,7 @@ def load_victim(mode, file_url, hgToken, modelBasedOn):
         tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, use_auth_token=hgToken)
         model = transformers.AutoModelForSequenceClassification.from_pretrained(
             model_path,
-            num_labels=2,
+            num_labels=num_labels,
             output_hidden_states=False,
             use_auth_token=hgToken
         )
@@ -55,7 +55,11 @@ def load_victim(mode, file_url, hgToken, modelBasedOn):
         print("[attack] download model file")
         model_path = unzip_file(get_file(file_url))
         tokenizer = transformers.AutoTokenizer.from_pretrained(model_path)
-        model = transformers.AutoModelForSequenceClassification.from_pretrained(model_path, num_labels=2, output_hidden_states=False)
+        model = transformers.AutoModelForSequenceClassification.from_pretrained(
+            model_path,
+            num_labels=num_labels,
+            output_hidden_states=False
+        )
 
     if modelBasedOn == 'roberta':
         emb = model.roberta.embeddings.word_embeddings
