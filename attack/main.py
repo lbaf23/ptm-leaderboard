@@ -3,7 +3,7 @@ import json
 import datetime
 from attack import start_attack
 from conf import init_config
-from queue import publish
+from nats import publish
 import logging
 
 
@@ -20,7 +20,7 @@ config = init_config()
 
 with NATSClient(config.get("config", "natsURL")) as client:
     client.connect()
-    print("[attack] queue connected")
+    print("[attack] nats connected")
 
     def handle(msg):
         message = json.loads(msg.payload)

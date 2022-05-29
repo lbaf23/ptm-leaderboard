@@ -6,7 +6,7 @@ def publish(client, subject, payload):
     except BrokenPipeError:
         while True:
             try:
-                print("[queue] reconnect")
+                print("[nats] reconnect")
                 client.reconnect()
                 client.publish(subject=subject, payload=payload)
                 break

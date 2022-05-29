@@ -1,7 +1,7 @@
 import logging
 from attack import load_victim
 from utils import no_ssl_verify
-from queue import publish
+from nats import publish
 import OpenAttack as oa
 import datasets
 import datetime
