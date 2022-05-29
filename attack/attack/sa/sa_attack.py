@@ -16,7 +16,17 @@ class DateEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, obj)
 
 
-def sa_attack(config, client, record_id, task_id, user_id, file_url, modelBasedOn='bert', mode='file', hgToken=''):
+def sa_attack(
+        config,
+        client,
+        record_id,
+        task_id,
+        user_id,
+        file_url,
+        modelBasedOn='bert',
+        mode='file',
+        hgToken=''
+    ):
     dataset = datasets.load_from_disk('datasets/sst', keep_in_memory=False)
 
     victim = load_victim(
