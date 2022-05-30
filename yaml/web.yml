@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: web
-        image: lbaf23/ptm-leaderboard-web:1.0.1
+        image: lbaf23/ptm-leaderboard-web:1.0.2
         imagePullPolicy: IfNotPresent
         resources:
           limits:
