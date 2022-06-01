@@ -11,9 +11,9 @@
   - Total Attack Instances: 攻击的样本数量
   - Successful Instances: 攻击成功的样本数量，即模型做出失败判断的数量
   - Attack Success Rate: 攻击成功率
-  - Avg. Running Time: 平均攻击时间
-  - Total Query Exceeded: 
-  - Avg. Victim Model Queries: 
+  - Avg. Running Time: 平均运行时间
+  - Total Query Exceeded: 总查询超限次数
+  - Avg. Victim Model Queries: 平均查询数量
 - score: 最终得分
 
 $$
@@ -31,5 +31,4 @@ total = \sum_{i=1}^n Total\space Attacked\space Instances_i
 \\
 \times 100 \div Total\space Attacked\space Instances
 $$
-
 
