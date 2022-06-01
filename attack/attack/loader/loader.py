@@ -44,12 +44,17 @@ def load_victim(mode, file_url, hgToken, modelBasedOn, num_labels=2):
         if hgToken != "":
             hgToken = decode(hgToken)
 
-        tokenizer = transformers.AutoTokenizer.from_pretrained(model_path, use_auth_token=hgToken)
+        tokenizer = transformers.AutoTokenizer.from_pretrained(
+            model_path,
+            use_auth_token=hgToken,
+            mirror='https://mirrors.tuna.tsinghua.edu.cn/hugging-face-models'
+        )
         model = transformers.AutoModelForSequenceClassification.from_pretrained(
             model_path,
             num_labels=num_labels,
             output_hidden_states=False,
-            use_auth_token=hgToken
+            use_auth_token=hgToken,
+            mirror='https://mirrors.tuna.tsinghua.edu.cn/hugging-face-models'
         )
     else:
         print("[attack] download model file")
